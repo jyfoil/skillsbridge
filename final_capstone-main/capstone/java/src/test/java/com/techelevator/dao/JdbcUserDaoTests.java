@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 
 public class JdbcUserDaoTests extends BaseDaoTests {
-    protected static final User USER_1 = new User(1, "user1", "user1", "ROLE_USER");
-    protected static final User USER_2 = new User(2, "user2", "user2", "ROLE_USER");
-    private static final User USER_3 = new User(3, "user3", "user3", "ROLE_USER");
+    protected static final User USER_1 = new User(1, "user1", "bob", "ross", "user1", "ROLE_USER");
+    protected static final User USER_2 = new User(2, "user2", "sam", "lock", "user2", "ROLE_USER");
+    private static final User USER_3 = new User(3, "user3", "Rita", "Ore", "user3", "ROLE_USER");
 
     private JdbcUserDao sut;
 
@@ -83,24 +83,24 @@ public class JdbcUserDaoTests extends BaseDaoTests {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_null_username() {
-        sut.create(null, USER_3.getPassword(), "ROLE_USER");
+        sut.create(null, "bob", "ross", USER_3.getPassword(), "ROLE_USER");
     }
 
     @Test(expected = DataIntegrityViolationException.class)
     public void create_user_with_existing_username() {
-        sut.create(USER_1.getUsername(), USER_3.getPassword(), "ROLE_USER");
+        sut.create(USER_1.getUsername(), "bob", "ross", USER_3.getPassword(), "ROLE_USER");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void create_user_with_null_password() {
-        sut.create(USER_3.getUsername(), null, "ROLE_USER");
+        sut.create(USER_3.getUsername(), "bob", "ross", null, "ROLE_USER");
     }
 
     @Test
     public void create_user_creates_a_user() {
-        User newUser = new User(-1, "new", "user", "ROLE_USER");
+        User newUser = new User(-1, "new", "firstname", "lastname", "user", "ROLE_USER");
 
-        boolean userWasCreated = sut.create(newUser.getUsername(), newUser.getPassword(), "ROLE_USER");
+        boolean userWasCreated = sut.create(newUser.getUsername(), "bob", "ross", newUser.getPassword(), "ROLE_USER");
 
         Assert.assertTrue(userWasCreated);
 
