@@ -23,11 +23,11 @@ public class JdbcCourseDao implements CourseDao {
     public Course createCourse(Course course) {
         Course newCourse = null;
 
-        String sql = "INSERT INTO courses (teacher_id, description, difficulty, cost) " +
-                "VALUES (?, ?, ?, ?) RETURNING course_id";
+        String sql = "INSERT INTO courses (teacher_id, name, description, difficulty, cost) " +
+                "VALUES (?, ?, ?, ?, ?) RETURNING course_id";
 
         try {
-            int newCourseId = jdbcTemplate.queryForObject(sql, int.class, course.getTeacherId(),
+            int newCourseId = jdbcTemplate.queryForObject(sql, int.class, course.getTeacherId(), course.getName(),
                     course.getDescription(), course.getDifficultyLevel(), course.getCost());
             newCourse = getCourse(newCourseId);
         } catch (CannotGetJdbcConnectionException e) {
