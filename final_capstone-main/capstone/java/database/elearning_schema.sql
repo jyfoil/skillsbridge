@@ -29,6 +29,7 @@ CREATE TABLE student_courses (
 CREATE TABLE lessons (
     lesson_id SERIAL,
     course_id INT NOT NULL,
+    title VARCHAR(60) NOT NULL,
     content TEXT NOT NULL,
     resources TEXT,
     due_date TIMESTAMP,
