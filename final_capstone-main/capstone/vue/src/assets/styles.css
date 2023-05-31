@@ -1,0 +1,38 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    width: 50px;
+    margin-right: 10px;
+}
+
+.header-link {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+#header {
+    background-color: teal;
+    color: white;
+    padding: 10px;
+}
+
+.portal-title {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    font-size: 24px;
+}

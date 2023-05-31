@@ -31,9 +31,11 @@
         v-model="user.password"
         required
       />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      <router-link :to="{ name: 'register' }">Sign Up</router-link>
       <button type="submit">Sign in</button>
     </form>
+    <button class="view-courses-button" @click="navigateToCourses">View Courses</button>
+   
   </div>
 </template>
 
@@ -70,7 +72,13 @@ export default {
             this.invalidCredentials = true;
           }
         });
+    },
+    navigateToCourses() {
+      this.$router.push("/course-list");
     }
   }
 };
 </script>
+<style>
+@import url('../assets/styles.css');
+</style>
