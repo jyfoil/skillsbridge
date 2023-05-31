@@ -9,7 +9,8 @@ DROP TABLE IF EXISTS notifications;
 CREATE TABLE courses (
 	course_id SERIAL,
     teacher_id INT NOT NULL,
-    description VARCHAR(255),
+    name VARCHAR(50),
+    description VARCHAR,
     difficulty VARCHAR(20) DEFAULT '',
     cost NUMERIC(7,2) DEFAULT 0.0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

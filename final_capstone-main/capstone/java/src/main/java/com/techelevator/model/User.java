@@ -10,6 +10,8 @@ public class User {
 
    private int id;
    private String username;
+   private String firstname;
+   private String lastname;
    @JsonIgnore
    private String password;
    @JsonIgnore
@@ -18,9 +20,11 @@ public class User {
 
    public User() { }
 
-   public User(int id, String username, String password, String authorities) {
+   public User(int id, String username, String firstname, String lastname, String password, String authorities) {
       this.id = id;
       this.username = username;
+      this.firstname = firstname;
+      this.lastname = lastname;
       this.password = password;
       if(authorities != null) this.setAuthorities(authorities);
       this.activated = true;
@@ -42,6 +46,25 @@ public class User {
       this.username = username;
    }
 
+   public String getFirstname() {
+      return firstname;
+   }
+
+   public void setFirstname(String firstname) {
+      this.firstname = firstname;
+   }
+
+   public String getLastname() {
+      return lastname;
+   }
+
+   public String getFullname() {
+      return firstname + " " + lastname;
+   }
+
+   public void setLastname(String lastname) {
+      this.lastname = lastname;
+   }
    public String getPassword() {
       return password;
    }
@@ -96,6 +119,7 @@ public class User {
       return "User{" +
               "id=" + id +
               ", username='" + username + '\'' +
+              ", name='" + firstname + " " + lastname +
               ", activated=" + activated +
               ", authorities=" + authorities +
               '}';
