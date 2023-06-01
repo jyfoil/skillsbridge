@@ -17,22 +17,27 @@ h1, h2, h3 {
     margin-right: 10px;
 }
 
-.header-link {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
 #header {
-    background-color: teal;
+    /*background-color: teal;
     color: white;
-    padding: 10px;
+    padding: 10px;*/
+}
+#notifications { position:relative; }
+
+#notifications img { opacity:0.5; }
+
+#notifications.alert::before { content:"•"; color:red; font-size:50px; position:absolute; top:-21px; z-index:10;  }
+
+#nav {
+    display:flex;
+    gap:12px;
+    align-items:center;
 }
 
 .portal-title {
-    color: white;
+    color:#444;
     font-family: 'Roboto', sans-serif;
     margin: 0;
     font-size: 24px;
+    flex-grow:1;
 }

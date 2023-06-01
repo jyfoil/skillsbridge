@@ -1,7 +1,12 @@
 package com.techelevator.dao;
 
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.Lesson;
+import com.techelevator.model.LessonDTO;
 import com.techelevator.model.LessonNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -43,6 +48,26 @@ public class JdbcLessonDao implements LessonDao{
             lessons.add(mapRowToLesson(results));
         }
         return lessons;
+    }
+
+    @Override
+    public Lesson createLesson(LessonDTO lesson) {
+        String sql = "INSERT INTO lessons (course_id, title, content, resources, due_date, instructions, has_assignment) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING lesson_id;";
+        Lesson newLesson = null;
+        try {
+            int lessonId = 0;
+            lessonId = jdbcTemplate.queryForObject(sql, int.class, lesson.getCourseId(), lesson.getTitle(),
+                    lesson.getContent(), lesson.getResources(), lesson.getDue_date(), lesson.getInstructions(),
+            lesson.isHas_assignment());
+            newLesson = getLessonById(lessonId, lesson.getCourseId());
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return newLesson;
     }
 
     private Lesson mapRowToLesson(SqlRowSet rs) {
