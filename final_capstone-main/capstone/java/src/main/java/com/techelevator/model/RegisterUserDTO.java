@@ -7,9 +7,9 @@ public class RegisterUserDTO {
     @NotEmpty
     private String username;
     @NotEmpty
-    private String firstname;
+    private String firstName;
     @NotEmpty
-    private String lastname;
+    private String lastName;
     @NotEmpty
     private String password;
     @NotEmpty
@@ -25,24 +25,24 @@ public class RegisterUserDTO {
         this.username = username;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getFullname() {
-        return firstname + " " + lastname;
+        return firstName + " " + lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {

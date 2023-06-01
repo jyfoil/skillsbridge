@@ -3,10 +3,10 @@ BEGIN TRANSACTION;
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('user', 'Sally', 'User', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_USER');
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('admin', 'Theresa', 'Admin', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_ADMIN');
 
-INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('user1@test.com', 'Studious', 'Maxiumus', '$2a$10$0k0K2koW5bDX0sIBLusVVuy/OEf0bPmbSgMs0sIcm5uuCW.oCzd1C','ROLE_USER'); --user1/user1
+INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('user1@test.com', 'Studious', 'Maxiumus', '$2a$10$0k0K2koW5bDX0sIBLusVVuy/OEf0bPmbSgMs0sIcm5uuCW.oCzd1C','ROLE_USER'); --user1@test.com/user1
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('user2@test.com', 'Ferris', 'Beuller', '$2a$10$0k0K2koW5bDX0sIBLusVVuy/OEf0bPmbSgMs0sIcm5uuCW.oCzd1C','ROLE_USER'); --user1/user1
-INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher1@test.edu', 'John', 'Kimble', '$2a$10$fvi6xnxafiZQm5y0.OAULOhLRJSUxEUIP0/1VIbmavTm7rQyMilrO','ROLE_TEACHER'); --teacher1/teacher1
-INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher2@nowhere.edu', 'Nicole', 'Teacherly', '$2a$10$ncPxcUqCZHQpCgckZ32ubOKpG/doLvAoCGEKGHIY/WXcVwI4sY7em','ROLE_TEACHER'); -- teacher2/teacher2
+INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher1@test.edu', 'John', 'Kimble', '$2a$10$fvi6xnxafiZQm5y0.OAULOhLRJSUxEUIP0/1VIbmavTm7rQyMilrO','ROLE_ADMIN'); --teacher1@test.edu/teacher1
+INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher2@nowhere.edu', 'Nicole', 'Teacherly', '$2a$10$ncPxcUqCZHQpCgckZ32ubOKpG/doLvAoCGEKGHIY/WXcVwI4sY7em','ROLE_ADMIN'); -- teacher2/teacher2
 INSERT INTO courses (teacher_id, name, description, difficulty) VALUES ((SELECT user_id FROM users WHERE username = 'teacher1@test.edu'), 'Intro to Things', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Moderate');
 insert into courses (teacher_id, name, description, difficulty) values ((SELECT user_id FROM users WHERE username = 'teacher2@nowhere.edu'), 'Debt, The', 'Donec posuere metus vitae ipsum. Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet.', 'Expert');
 insert into courses (teacher_id, name, description, difficulty) values ((SELECT user_id FROM users WHERE username = 'teacher1@test.edu'), 'I Love You Too', 'Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam. Nam tristique tortor eu pede.', 'Hard');
@@ -26,4 +26,12 @@ INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM
 --SELECT * FROM courses c JOIN student_courses sc on sc.course_id = c.course_id JOIN users u ON u.user_id = sc.student_id WHERE user_id = (SELECT user_id FROM users WHERE username = 'user1@test.com');
 -- Listing teacher's courses:
 -- SELECT * FROM courses WHERE teacher_id = (SELECT user_id FROM users WHERE username='teacher1@test.edu');
+
+INSERT INTO lessons (course_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day One Lesson', '<h1>Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-05-2023', 'Create an ecommerce app!', true);
+INSERT INTO lessons (course_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day Two Lesson', '<h1>Second Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
+INSERT INTO lessons (course_id, title, content, resources, due_date, instructions, has_assignment) VALUES (4, 'There is but one lesson', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
+
+--INSERT INTO
+
+
 COMMIT TRANSACTION;
