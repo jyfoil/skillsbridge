@@ -1,5 +1,5 @@
 <template>
-    <div class="student-dashboard">
+    <div class="dashboard">
         <h1 class="dashboard-title">{{ userFirstName }} Dashboard</h1>
     </div>
 </template>
