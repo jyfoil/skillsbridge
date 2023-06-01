@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @PreAuthorize("isAuthenticated()")
@@ -34,5 +37,17 @@ public class TeacherController {
 
         // We want to return a CourseDto with an id
         // This id might be used later in the frontend
+    }
+
+    @GetMapping("/{teacher_id}/course")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Course> getTeacherCourses() {
+        List<Course> teacherCourses = new ArrayList<>();
+
+
+
+
+
+        return teacherCourses;
     }
 }

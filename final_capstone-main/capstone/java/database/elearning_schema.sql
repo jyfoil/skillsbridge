@@ -10,7 +10,7 @@ CREATE TABLE courses (
 	course_id SERIAL,
     teacher_id INT NOT NULL,
     name VARCHAR(50),
-    description VARCHAR,
+    description TEXT,
     difficulty VARCHAR(20) DEFAULT '',
     cost NUMERIC(7,2) DEFAULT 0.0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -26,9 +26,18 @@ CREATE TABLE student_courses (
     CONSTRAINT FK_student_course_course FOREIGN KEY(course_id) REFERENCES courses(course_id)
 );
 
+CREATE TABLE modules (
+    module_id SERIAL,
+    course_id INT NOT NULL,
+    name VARCHAR(20),
+    description TEXT,
+    CONSTRAINT PK_module PRIMARY KEY(module_id),
+    CONSTRAINT FK_module_course FOREIGN KEY(course_id) REFERENCES courses(course_id)
+);
+
 CREATE TABLE lessons (
     lesson_id SERIAL,
-    course_id INT NOT NULL,
+    module_id INT NOT NULL,
     title VARCHAR(60) NOT NULL,
     content TEXT NOT NULL,
     resources TEXT,
@@ -37,7 +46,7 @@ CREATE TABLE lessons (
 --    add assignment value? (out of x points?)
     has_assignment BOOLEAN DEFAULT false,
     CONSTRAINT PK_lesson PRIMARY KEY(lesson_id),
-    CONSTRAINT FK_lesson_course FOREIGN KEY(course_id) REFERENCES courses(course_id)
+    CONSTRAINT FK_lesson_module FOREIGN KEY(module_id) REFERENCES modules(module_id)
 );
 
 CREATE TABLE submissions (
@@ -47,7 +56,7 @@ CREATE TABLE submissions (
     student_id INT NOT NULL,
     grade INT,
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT PK_submissions PRIMARY KEY(submission_id),
+    CONSTRAINT PK_submission PRIMARY KEY(submission_id),
     CONSTRAINT FK_submission_lesson FOREIGN KEY(lesson_id) REFERENCES lessons(lesson_id),
     CONSTRAINT FK_submission_student FOREIGN KEY(student_id) REFERENCES users(user_id)
 );
@@ -59,5 +68,6 @@ CREATE TABLE notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     viewed BOOLEAN DEFAULT false
 );
+
 
 COMMIT TRANSACTION;
