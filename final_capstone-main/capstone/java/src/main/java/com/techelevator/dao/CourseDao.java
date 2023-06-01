@@ -10,4 +10,6 @@ public interface CourseDao {
     Course getCourse(int id);
     Course mapRowToCourse(SqlRowSet rowSet);
     Course mapCourseDtoToCourse(CourseDTO courseDTO, int id);
+    CourseDTO mapCourseToCourseDTO(Course course);
+//    int getCourseIdByCourseName();
 }

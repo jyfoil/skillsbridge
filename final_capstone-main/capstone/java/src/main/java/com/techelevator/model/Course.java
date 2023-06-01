@@ -14,7 +14,10 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, String description, String difficultyLevel, BigDecimal cost) {
+    public Course(int courseId, int teacherId, String name, String description, String difficultyLevel,
+                  BigDecimal cost) {
+        this.courseId = courseId;
+        this.teacherId = teacherId;
         this.name = name;
         this.description = description;
         this.difficultyLevel = difficultyLevel;

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class CourseDTO {
 
+    private int courseId;
     private String name;
     private String description;
     private String difficulty;
@@ -17,6 +18,14 @@ public class CourseDTO {
         this.description = description;
         this.difficulty = difficulty;
         this.cost = cost;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public String getName() {
