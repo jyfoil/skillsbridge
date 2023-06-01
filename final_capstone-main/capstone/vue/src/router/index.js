@@ -6,6 +6,8 @@ import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
 import Courses from '../views/CourseList.vue'
+import StudentHome from '../views/StudentHome.vue'
+import TeacherHome from '../views/TeacherHome.vue'
 
 
 Vue.use(Router)
@@ -63,6 +65,18 @@ const router = new Router({
       meta: {
         requiresAuth: false
       }
+    },
+
+    {
+      path: "/student-home",
+      name: "Student Home",
+      component: StudentHome
+    },
+
+    {
+      path: "/teacher-home",
+      name: "Teacher Home",
+      component: TeacherHome
     }
   ]
 })

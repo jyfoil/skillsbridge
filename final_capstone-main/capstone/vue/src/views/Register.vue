@@ -1,21 +1,46 @@
 <template>
   <div id="register" class="text-center">
+    <h1>New Student Sign-Up</h1>
     <form class="form-register" @submit.prevent="register">
-      <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+      <h2 class="h3 mb-3 font-weight-normal">Create Account</h2>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
-      <label for="username" class="sr-only">Username</label>
+      <div>
       <input
         type="text"
-        id="username"
+        id="first-name"
         class="form-control"
-        placeholder="Username"
+        placeholder="First Name"
+        v-model="user.firstName"
+        required
+        autofocus
+      />
+      </div>
+      <div>
+      <input
+        type="text"
+        id="last-name"
+        class="form-control"
+        placeholder="Last Name"
+        v-model="user.lastName"
+        required
+        autofocus
+      />
+      </div>
+      <div>
+      <input
+        type="text"
+        id="email"
+        class="form-control"
+        placeholder="Email (will serve as your username)"
         v-model="user.username"
         required
         autofocus
       />
-      <label for="password" class="sr-only">Password</label>
+      </div>
+      <div>
+    
       <input
         type="password"
         id="password"
@@ -24,6 +49,8 @@
         v-model="user.password"
         required
       />
+      </div>
+      <div>
       <input
         type="password"
         id="confirmPassword"
@@ -32,10 +59,13 @@
         v-model="user.confirmPassword"
         required
       />
+      </div>
       <router-link :to="{ name: 'login' }">Have an account?</router-link>
+      <div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
       </button>
+      </div>
     </form>
   </div>
 </template>
