@@ -41,7 +41,7 @@
 
 <script>
 import authService from "../services/AuthService";
-
+import HeaderNav from '../components/LoginHeader.vue'
 export default {
   name: "home",
   components: {

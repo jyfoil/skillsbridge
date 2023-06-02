@@ -102,6 +102,21 @@ public class JdbcCourseDao implements CourseDao {
         }
     }
 
+    @Override
+    public void deleteStudentFromCourse(int studentId, int courseId) {
+        String sql = "DELETE FROM student_courses WHERE student_id = ? AND course_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, studentId, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+    }
+
     private Course mapRowToCourse(SqlRowSet rowSet) {
         Course course = new Course();
         course.setCourseId(rowSet.getInt("course_id"));
