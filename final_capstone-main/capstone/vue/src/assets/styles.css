@@ -1,5 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
+    margin:0;
 }
 
 h1, h2, h3 {
@@ -39,12 +40,9 @@ h1, h2, h3 {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     font-size: 24px;
-<<<<<<< HEAD
-    flex-grow:1;
-=======
 }
 
-.student-dashboard {
+.dashboard {
     background-image: linear-gradient(to right, rgb(35, 85, 221), rgb(24, 187, 133));
     padding: 20px;
     border-radius: 10px;
@@ -56,5 +54,49 @@ h1, h2, h3 {
 .dashboard-title {
     font-size: 40px;
     margin: 40px;
->>>>>>> main
+}
+
+button {
+    font-size: 16px;
+    font-weight:bold;
+    background:#429CB9;
+    border-radius:4px;
+    color:white;
+    padding:0.75rem 2rem;
+    border:none;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    cursor:pointer;
+    opacity:0.8;
+    transition:all 200ms;
+}
+
+button:hover {
+    opacity:1;
+}
+
+a {
+    transition:all 200ms;
+}
+
+.flex-column {
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+.form-control {
+    padding: .375rem .75rem;
+    line-height:1.5;
+    color:#213519;
+    border: 1px solid #CCC;
+    border-radius:0.25rem;
+    box-sizing:border-box;
+    width:100%;
+}
+
+label {
+    display:block;
+    margin-bottom:0.5rem;
+    font-size:0.8rem;
+    font-weight:bold;
 }
