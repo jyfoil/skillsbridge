@@ -1,12 +1,15 @@
 package com.techelevator.controller;
 
-import com.techelevator.dao.CourseDao;
+import com.techelevator.dao.TeacherCourseDao;
+import com.techelevator.dao.UserDao;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
+import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,38 +19,70 @@ import java.util.List;
 public class TeacherController {
 
     @Autowired
-    private CourseDao courseDao;
+    private TeacherCourseDao teacherDao;
+    @Autowired
+    private UserDao userDao;
 
-    @PostMapping("/{teacher_id}/course")
+    @PostMapping("/course")
     @PreAuthorize("hasRole('ADMIN')")
-    public CourseDTO createCourse(@RequestBody CourseDTO courseDto, @PathVariable int teacher_id) {
-        // Currently uses a @PathVariable to link the created course to the specific teacher user ID
-        // The frontend might have some way to get this teacher ID from the logged in teacher user login
+    public CourseDTO createCourse(@RequestBody CourseDTO courseDto, Principal principal) {
 
+
+        // Uses principal to get the currently logged in users name
+        // This name is used to get the id of the teacher through a method
+        int teacherId = userDao.findIdByUsername(principal.getName());
         // Maps the user courseDTO input into a course object
-       Course course = courseDao.mapCourseDtoToCourse(courseDto, teacher_id);
+        Course course = teacherDao.mapCourseDtoToCourse(courseDto, teacherId);
         // Uses the course object to create an entry in the course table with all the valid column values
-       Course createdCourse = courseDao.createCourse(course);
+        Course createdCourse = teacherDao.createCourse(course);
         // Maps the created course object back into a courseDTO
         // Note: this createdCourse object has the courseId now from the SQL string in the createCourse method
         // The courseDTO is what is returned in the POST body back to the client
-       CourseDTO newCourseDto = courseDao.mapCourseToCourseDTO(createdCourse);
+        CourseDTO newCourseDto = teacherDao.mapCourseToCourseDTO(createdCourse);
 
-       return newCourseDto;
+        return newCourseDto;
 
         // We want to return a CourseDto with an id
         // This id might be used later in the frontend
     }
 
-    @GetMapping("/{teacher_id}/course")
+    @GetMapping("/courses")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Course> getTeacherCourses() {
-        List<Course> teacherCourses = new ArrayList<>();
+    public List<CourseDTO> getTeacherCourses(Principal principal) {
 
+        // Similar behavior to create method
+        int teacherId = userDao.findIdByUsername(principal.getName());
 
+        List<Course> teacherCourses = teacherDao.getTeacherCoursesByTeacherId(teacherId);
+        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
+        for (Course eachTeacherCourse : teacherCourses) {
+            teacherCoursesDto.add(teacherDao.mapCourseToCourseDTO(eachTeacherCourse));
+        }
 
+        return teacherCoursesDto;
+    }
 
+    @GetMapping("/students")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<String> getStudentNamesByStudentId() {
+        // Not sure if this should return a String which is the full name
+        // Or if it should return some kind of StudentDTO with more information
+        // Not sure how it would work on the frontend
+        // Principal is not needed to decide role as students are always ROLE_USER
 
-        return teacherCourses;
+        // Create user object list
+        // add all the users who are not role ADMIN to the list
+        List<User> users = userDao.getStudentNamesByRoleName("ROLE_USER");
+
+        // Create another String list
+        List<String> names = new ArrayList<>();
+
+        // Add the names of user in the user list to the String list
+        for (User eachUser : users) {
+            names.add(eachUser.getFullname());
+        }
+
+        // Return the string list names
+        return names;
     }
 }

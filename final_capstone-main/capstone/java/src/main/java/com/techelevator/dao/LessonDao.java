@@ -10,4 +10,5 @@ public interface LessonDao {
     Lesson getLessonById(int lessonId, int courseId);
     List<Lesson> getLessonsByCourseId(int courseId);
     Lesson createLesson(LessonDTO newLesson);
+    List<Lesson> getLessonsByModule(int moduleId, int courseId);
 }

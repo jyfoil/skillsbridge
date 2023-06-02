@@ -20,7 +20,6 @@ insert into courses (teacher_id, name, description, difficulty) values ((SELECT 
 insert into courses (teacher_id, name, description, difficulty) values ((SELECT user_id FROM users WHERE username = 'teacher1@test.edu'), 'Valley of Decision, The', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.', 'Easy');
 
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'user1@test.com'), 1);
-INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'user1@test.com'), 1);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'user2@test.com'), 1);
 -- Listing student courses:
 --SELECT * FROM courses c JOIN student_courses sc on sc.course_id = c.course_id JOIN users u ON u.user_id = sc.student_id WHERE user_id = (SELECT user_id FROM users WHERE username = 'user1@test.com');
@@ -33,7 +32,7 @@ INSERT INTO modules (course_id, name, description) VALUES (2, 'ThingsTwo', 'Abou
 
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day One Lesson', '<h1>Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-05-2023', 'Create an ecommerce app!', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day Two Lesson', '<h1>Second Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
-INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (4, 'There is but one lesson', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
+INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (2, 'There is but one lesson', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
 
 --INSERT INTO
 

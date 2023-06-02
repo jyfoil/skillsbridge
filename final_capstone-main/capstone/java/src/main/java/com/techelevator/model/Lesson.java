@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Lesson {
     private int id;
-    private int courseId;
+    private int moduleId;
     private String title;
     private String content;
     private String resources;
@@ -16,9 +16,9 @@ public class Lesson {
 
     }
 
-    public Lesson(int id, int courseId, String title, String content, String resources, LocalDate due_date, String instructions, boolean has_assignment) {
+    public Lesson(int id, int moduleId, String title, String content, String resources, LocalDate due_date, String instructions, boolean has_assignment) {
         this.id = id;
-        this.courseId = courseId;
+        this.moduleId = moduleId;
         this.title = title;
         this.content = content;
         this.resources = resources;
@@ -35,12 +35,12 @@ public class Lesson {
         this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getModuleId() {
+        return moduleId;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setModuleId(int moduleId) {
+        this.moduleId = moduleId;
     }
 
     public String getTitle() {
@@ -95,7 +95,7 @@ public class Lesson {
     public String toString() {
         return "Lesson{" +
                 "id=" + id +
-                ", courseId=" + courseId +
+                ", moduleId=" + moduleId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", resources='" + resources + '\'' +

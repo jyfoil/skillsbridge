@@ -42,8 +42,20 @@ public class JdbcLessonDao implements LessonDao{
         // need to add course_id to both WHERE sections below:
         // SELECT lesson_id FROM lessons l JOIN courses c ON c.course_id = l.course_id JOIN student_courses sc ON sc.course_id = l.course_id WHERE sc.student_id = 4 UNION SELECT lesson_id FROM lessons l JOIN courses c ON c.course_id = l.course_id WHERE c.teacher_id = 4;
         List<Lesson> lessons = new ArrayList<>();
-        String sql = "SELECT * FROM lessons WHERE course_id = ?";
+        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+        while (results.next()) {
+            lessons.add(mapRowToLesson(results));
+        }
+        return lessons;
+    }
+
+
+    @Override
+    public List<Lesson> getLessonsByModule(int moduleId, int courseId) {
+        List<Lesson> lessons = new ArrayList<>();
+        String sql = "SELECT * FROM lessons l JOIN modules m ON m.module_id = l.module_id WHERE m.course_id = ? AND l.module_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId, moduleId);
         while (results.next()) {
             lessons.add(mapRowToLesson(results));
         }
@@ -56,10 +68,10 @@ public class JdbcLessonDao implements LessonDao{
         Lesson newLesson = null;
         try {
             int lessonId = 0;
-            lessonId = jdbcTemplate.queryForObject(sql, int.class, lesson.getCourseId(), lesson.getTitle(),
+            lessonId = jdbcTemplate.queryForObject(sql, int.class, lesson.getModuleId(), lesson.getTitle(),
                     lesson.getContent(), lesson.getResources(), lesson.getDue_date(), lesson.getInstructions(),
             lesson.isHas_assignment());
-            newLesson = getLessonById(lessonId, lesson.getCourseId());
+            newLesson = getLessonById(lessonId, lesson.getModuleId());
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (BadSqlGrammarException e) {
@@ -70,10 +82,11 @@ public class JdbcLessonDao implements LessonDao{
         return newLesson;
     }
 
+
     private Lesson mapRowToLesson(SqlRowSet rs) {
         Lesson lesson = new Lesson();
         lesson.setId(rs.getInt("lesson_id"));
-        lesson.setCourseId(rs.getInt("course_id"));
+        lesson.setModuleId(rs.getInt("module_id"));
         lesson.setTitle(rs.getString("title"));
         lesson.setContent(rs.getString("content"));
         lesson.setResources(rs.getString("resources"));
