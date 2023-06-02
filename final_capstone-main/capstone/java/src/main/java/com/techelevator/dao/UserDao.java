@@ -12,12 +12,9 @@ public interface UserDao {
 
     User findByUsername(String username);
 
-    // Unsure if below uncommented method is needed for getStudentNamesByStudentId
-//    String findRoleByUsername(String username);
-
     int findIdByUsername(String username);
 
-    List<User> getStudentNamesByRoleName(String role);
+    List<User> getStudentsByRoleName(String role);
 
     boolean create(String username, String firstname, String lastname, String password, String role);
 }

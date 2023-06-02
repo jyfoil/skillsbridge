@@ -1,9 +1,11 @@
 <template>
   <div id="register" class="text-center">
-    <login-header :msg="'Welcome to SkillsBridge'"/>
-    <h1>New Student Sign-Up</h1>
-    <form class="form-register" @submit.prevent="register">
-      <h2 class="h3 mb-3 font-weight-normal">Create Account</h2>
+    <div id="heading-bg" class="center">
+      <h1>Register New Account</h1>
+    </div>
+    <main>
+    <form class="form-register flex-column" @submit.prevent="register">
+      <!--<h2 class="h3 mb-3 font-weight-normal">Create Account</h2>-->
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -61,13 +63,14 @@
         required
       />
       </div>
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
-      <div>
+      
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
       </button>
-      </div>
+      <br />
+      <router-link :to="{ name: 'login' }">Have an account?</router-link>
     </form>
+    </main>
   </div>
 </template>
 
