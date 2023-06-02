@@ -1,5 +1,6 @@
 <template>
   <div id="register" class="text-center">
+    <login-header :msg="'Welcome to SkillsBridge'"/>
     <h1>New Student Sign-Up</h1>
     <form class="form-register" @submit.prevent="register">
       <h2 class="h3 mb-3 font-weight-normal">Create Account</h2>
@@ -72,9 +73,13 @@
 
 <script>
 import authService from '../services/AuthService';
+import LoginHeader from '../components/LoginHeader.vue'
 
 export default {
   name: 'register',
+  components: {
+    LoginHeader,
+  },
   data() {
     return {
       user: {

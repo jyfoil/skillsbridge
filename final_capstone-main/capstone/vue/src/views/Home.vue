@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <header-nav msg="Welcome to Unnamed eLearning Platform" />
+    <header-nav msg="Welcome to SkillsBridge" />
     <div id="hero">
         <div class="content"><h1>Home</h1></div>
         <div class="sidebar">
@@ -41,7 +41,7 @@
 
 <script>
 import authService from "../services/AuthService";
-import HeaderNav from '../components/HeaderNav.vue'
+import HeaderNav from '../components/LoginHeader.vue'
 export default {
   name: "home",
   components: {
