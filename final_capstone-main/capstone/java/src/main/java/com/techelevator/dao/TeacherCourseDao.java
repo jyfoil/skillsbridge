@@ -12,6 +12,7 @@ public interface TeacherCourseDao {
     Course createCourse(Course course);
     Course getCourseByCourseId(int id);
     List<Course> getTeacherCoursesByTeacherId(int id);
+    void addStudentToCourse(int studentId, int courseId);
     Course mapCourseDtoToCourse(CourseDTO courseDTO, int id);
     CourseDTO mapCourseToCourseDTO(Course course);
 }

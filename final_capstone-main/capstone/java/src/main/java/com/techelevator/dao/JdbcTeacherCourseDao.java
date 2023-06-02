@@ -88,6 +88,21 @@ public class JdbcTeacherCourseDao implements TeacherCourseDao {
         return courses;
     }
 
+    @Override
+    public void addStudentToCourse(int studentId, int courseId) {
+        String sql = "INSERT INTO student_courses VALUES (?, ?)";
+
+        try {
+            jdbcTemplate.update(sql, studentId, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+    }
+
     private Course mapRowToCourse(SqlRowSet rowSet) {
         Course course = new Course();
         course.setCourseId(rowSet.getInt("course_id"));
