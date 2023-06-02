@@ -42,7 +42,7 @@ h1, h2, h3 {
     font-size: 24px;
 }
 
-.student-dashboard {
+.dashboard {
     background-image: linear-gradient(to right, rgb(35, 85, 221), rgb(24, 187, 133));
     padding: 20px;
     border-radius: 10px;
