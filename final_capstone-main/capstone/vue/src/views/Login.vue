@@ -68,7 +68,12 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            this.$router.push("/");
+            if (this.$store.state.user.authorities[0].name == 'ROLE_USER') {
+              this.$router.push({name: 'Student Home'});
+            }
+            else if (this.$store.state.user.authorities[0].name == 'ROLE_ADMIN') {
+              this.$router.push({name: 'Teacher Home'});
+            }
           }
         })
         .catch(error => {
@@ -87,14 +92,7 @@ export default {
 </script>
 <style>
 @import url('../assets/styles.css');
-  .form-signin, .form-register {
-    width:100%;
-    max-width: 400px;
-    padding:20px;
-    background:#F5F5F5;
-    border:1px solid #D8D8D8;
-    box-shadow:0 3px 15px rgba(0,0,0,0.1);
-    border-radius:4px;
-    margin:0 auto;
-  }
+
+
+
 </style>
