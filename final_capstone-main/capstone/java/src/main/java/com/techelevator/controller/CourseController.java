@@ -1,6 +1,6 @@
 package com.techelevator.controller;
 
-import com.techelevator.dao.TeacherCourseDao;
+import com.techelevator.dao.CourseDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
@@ -17,10 +17,10 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @PreAuthorize("isAuthenticated()")
-public class TeacherController {
+public class CourseController {
 
     @Autowired
-    private TeacherCourseDao teacherDao;
+    private CourseDao teacherDao;
     @Autowired
     private UserDao userDao;
 
@@ -82,6 +82,6 @@ public class TeacherController {
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
-        teacherDao.addStudentToCourse(courseId, studentId);
+        teacherDao.addStudentToCourse(studentId, courseId);
     }
 }

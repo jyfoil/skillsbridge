@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
-import com.techelevator.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcTeacherCourseDao implements TeacherCourseDao {
+public class JdbcCourseDao implements CourseDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcTeacherCourseDao(JdbcTemplate jdbcTemplate) {
+    public JdbcCourseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
