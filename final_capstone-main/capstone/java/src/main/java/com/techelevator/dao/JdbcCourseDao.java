@@ -45,6 +45,23 @@ public class JdbcCourseDao implements CourseDao {
     }
 
     @Override
+    public void deleteCourseByCourseId(int id) {
+        // This will delete a specified course with the courseId
+        String sql = "DELETE FROM courses WHERE course_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, id);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+    }
+
+    @Override
     public Course getCourseByCourseId(int courseId) {
         Course course = null;
         String sql = "SELECT course_id, teacher_id, name, description, difficulty, cost " +
@@ -108,6 +125,21 @@ public class JdbcCourseDao implements CourseDao {
 
         try {
             jdbcTemplate.update(sql, studentId, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+    }
+
+    @Override
+    public void deleteStudentsFromCourse(int courseId) {
+        String sql = "DELETE FROM student_courses WHERE course_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, courseId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (BadSqlGrammarException e) {

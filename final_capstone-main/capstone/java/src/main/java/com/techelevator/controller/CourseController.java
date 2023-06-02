@@ -33,6 +33,7 @@ public class CourseController {
         // This name is used to get the id of the teacher through a method
         int teacherId = userDao.findIdByUsername(principal.getName());
         // Maps the user courseDTO input into a course object
+        // This creates the course for the currently logged in teacher
         Course course = teacherDao.mapCourseDtoToCourse(courseDto, teacherId);
         // Uses the course object to create an entry in the course table with all the valid column values
         Course createdCourse = teacherDao.createCourse(course);
@@ -45,6 +46,19 @@ public class CourseController {
 
         // We want to return a CourseDto with an id
         // This id might be used later in the frontend
+    }
+
+    @DeleteMapping("/course/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCourseByCourseId(@PathVariable int id) {
+        // Method works and deletes course of specified course ID
+        // TODO Needs business logic to prevent teachers from deleting courses they don't own
+
+        // The first DAO method makes sure to delete all students in the course before deleting the course
+        // This prevents foreign key constraints
+        teacherDao.deleteStudentsFromCourse(id);
+        teacherDao.deleteCourseByCourseId(id);
     }
 
     @GetMapping("/courses")
