@@ -76,12 +76,12 @@
 
 <script>
 import authService from '../services/AuthService';
-import LoginHeader from '../components/LoginHeader.vue'
+//import LoginHeader from '../components/LoginHeader.vue'
 
 export default {
   name: 'register',
   components: {
-    LoginHeader,
+    //LoginHeader,
   },
   data() {
     return {
