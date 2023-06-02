@@ -1,0 +1,94 @@
+package com.techelevator.dao;
+
+import com.techelevator.exception.DaoException;
+import com.techelevator.model.Lesson;
+import com.techelevator.model.Module;
+import com.techelevator.model.ModuleNotFoundException;
+import com.techelevator.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class JdbcModuleDao implements ModuleDao{
+    private final JdbcTemplate jdbcTemplate;
+    public JdbcModuleDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public List<Module> getModulesByUser(User user) {
+        List<Module> modules = new ArrayList<>();
+        String sql = "SELECT module_id, m.course_id, name, description FROM modules m JOIN student_courses sc ON sc.course_id = m.course_id WHERE student_id = ?;";
+        if (user.getAuthorities().contains("ROLE_ADMIN")) {
+            sql = "SELECT module_id, m.course_id, m.name, m.description FROM modules m JOIN courses c ON c.course_id = m.course_id WHERE c.teacher_id = ?;";
+        }
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user.getId());
+        if (results.next()) {
+            modules.add(mapRowToModule(results));
+        } else {
+            throw new ModuleNotFoundException();
+        }
+        return modules;
+    }
+
+    @Override
+    public Module getModuleById(int moduleId) {
+        String sql = "SELECT * FROM modules WHERE module_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, moduleId);
+        if (results.next()) {
+            return mapRowToModule(results);
+        } else {
+            throw new ModuleNotFoundException();
+        }
+    }
+
+    @Override
+    public Module createModule(Module module) {
+        String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
+        Module newModule = null;
+        try {
+            Integer moduleId = 0;
+            moduleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(), module.getName(), module.getDescription());
+            newModule = getModuleById(moduleId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return newModule;
+    }
+
+    @Override
+    public int deleteModule(int moduleId) {
+        String sql = "DELETE FROM modules WHERE module_id = ?;";
+        int numberOfRows = 0;
+        try {
+            numberOfRows = jdbcTemplate.update(sql, moduleId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return numberOfRows;
+    }
+
+    private Module mapRowToModule(SqlRowSet rs) {
+        Module module = new Module();
+        module.setId(rs.getInt("module_id"));
+        module.setCourseId(rs.getInt("course_id"));
+        module.setDescription(rs.getString("description"));
+        module.setName(rs.getString("name"));
+        return module;
+    }
+}

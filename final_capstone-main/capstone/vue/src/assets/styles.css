@@ -7,6 +7,10 @@ h1, h2, h3 {
     font-family: 'Roboto', sans-serif;
 }
 
+#heading-bg h1, #heading-bg h2, #heading-bg h3 {
+    font-family: 'Roboto Condensed'; font-weight: bold;
+}
+
 .logo-container {
     display: flex;
     align-items: center;
@@ -42,6 +46,7 @@ h1, h2, h3 {
     font-size: 24px;
 }
 
+/*
 .dashboard {
     background-image: linear-gradient(to right, rgb(35, 85, 221), rgb(24, 187, 133));
     padding: 20px;
@@ -55,6 +60,7 @@ h1, h2, h3 {
     font-size: 40px;
     margin: 40px;
 }
+*/
 
 button {
     font-size: 16px;
@@ -94,6 +100,17 @@ a {
     width:100%;
 }
 
+.form-signin, .form-register {
+    width:100%;
+    max-width: 350px;
+    padding:20px;
+    background:#F5F5F5;
+    border:1px solid #D8D8D8;
+    box-shadow:0 3px 15px rgba(0,0,0,0.1);
+    border-radius:4px;
+    margin:0 auto;
+  }
+
 label {
     display:block;
     margin-bottom:0.5rem;
@@ -107,9 +124,10 @@ label {
 
 #heading-bg {
     background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
-    padding:1em;
+    padding:1rem 2rem;
     color:white;
     margin-bottom:2rem;
+    border-radius:6px;
 }
 
 #heading-bg.center h1 {
@@ -117,4 +135,26 @@ label {
     background: rgba(0,0,0,0.4);
     padding: 10px;
     border-radius: 4px;
+}
+
+#dashboard-content {
+    display:grid;
+    grid-template-columns: 4fr 1fr;
+    gap:20px;
+    padding:0 2rem;
+}
+
+
+@media screen and (max-width: 400px)  {
+    .form-signin, .form-register {
+        max-width:none;
+        width:auto;
+        margin:0 10px;
+    }
+}
+
+@media screen and (max-width: 1280px)  {
+    #heading-bg {
+        border-radius:0;
+    }
 }

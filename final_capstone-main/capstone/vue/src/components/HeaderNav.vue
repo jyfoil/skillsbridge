@@ -5,7 +5,8 @@
         </router-link>
         <h3 class="portal-title">{{ msg }}</h3>
         <div id="nav" v-if="$store.state.token != ''">
-            <a href="#">My Courses</a>
+            <router-link v-if="$store.state.user.authorities[0].name === 'ROLE_ADMIN'" :to="{ name: 'Teacher Home' }">My Courses</router-link>
+            <router-link v-if="$store.state.user.authorities[0].name === 'ROLE_USER'" :to="{ name: 'Student Home' }">My Courses</router-link>
             <div @click="toggleNotification" id="notifications" class="icon alert" :class="{ show: showNotification }"><img src="../assets/notifications.svg" /><div id="notification-tray"><ul><li>Notification #1</li><li>Notification #2</li></ul></div></div>
             <router-link v-bind:to="{ name: 'logout' }" >Logout</router-link>
         </div>
