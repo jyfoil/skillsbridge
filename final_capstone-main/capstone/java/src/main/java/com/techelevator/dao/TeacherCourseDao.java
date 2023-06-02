@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
+import com.techelevator.model.User;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.util.List;

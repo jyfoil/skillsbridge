@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.UserNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,16 +40,16 @@ public class JdbcUserDao implements UserDao {
         return userId;
     }
 
-	@Override
-	public User getUserById(int userId) {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-		if (results.next()) {
-			return mapRowToUser(results);
-		} else {
-			throw new UserNotFoundException();
-		}
-	}
+    @Override
+    public User getUserById(int userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        if (results.next()) {
+            return mapRowToUser(results);
+        } else {
+            throw new UserNotFoundException();
+        }
+    }
 
     @Override
     public List<User> findAll() {
@@ -63,6 +66,27 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
+    public List<User> getStudentNamesByRoleName(String role) {
+        List<User> users = new ArrayList<>();
+
+        String sql = "SELECT * FROM users WHERE role = ?";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, role);
+
+            while (results.next()) {
+                users.add(mapRowToUser(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return users;
+    }
+
+    @Override
     public User findByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
 
@@ -73,6 +97,31 @@ public class JdbcUserDao implements UserDao {
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
+
+    // Unsure if below uncommented method is needed for getStudentNamesByStudentId
+    // For now likely not needed
+
+//    @Override
+//    public String findRoleByUsername(String username) {
+//        String string = "";
+//
+//        String sql = "SELECT role FROM users WHERE username = ?";
+//
+//        try {
+//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
+//
+//            while (results.next()) {
+//
+//            }
+//        } catch (CannotGetJdbcConnectionException e) {
+//            throw new DaoException("Unable to connect to server or database", e);
+//        } catch (BadSqlGrammarException e) {
+//            throw new DaoException("SQL syntax error", e);
+//        }
+//
+//
+//        return string;
+//    }
 
     @Override
     public boolean create(String username, String firstname, String lastname, String password, String role) {
