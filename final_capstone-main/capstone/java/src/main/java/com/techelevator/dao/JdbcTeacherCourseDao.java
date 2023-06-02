@@ -88,8 +88,7 @@ public class JdbcTeacherCourseDao implements TeacherCourseDao {
         return courses;
     }
 
-    @Override
-    public Course mapRowToCourse(SqlRowSet rowSet) {
+    private Course mapRowToCourse(SqlRowSet rowSet) {
         Course course = new Course();
         course.setCourseId(rowSet.getInt("course_id"));
         course.setTeacherId(rowSet.getInt("teacher_id"));

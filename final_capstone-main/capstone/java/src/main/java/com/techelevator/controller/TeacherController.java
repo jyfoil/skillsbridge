@@ -64,25 +64,15 @@ public class TeacherController {
 
     @GetMapping("/students")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<String> getStudentNamesByStudentId() {
+    public List<User> getStudents() {
         // Not sure if this should return a String which is the full name
-        // Or if it should return some kind of StudentDTO with more information
+        // Or if it should return user object
         // Not sure how it would work on the frontend
         // Principal is not needed to decide role as students are always ROLE_USER
 
         // Create user object list
-        // add all the users who are not role ADMIN to the list
-        List<User> users = userDao.getStudentNamesByRoleName("ROLE_USER");
-
-        // Create another String list
-        List<String> names = new ArrayList<>();
-
-        // Add the names of user in the user list to the String list
-        for (User eachUser : users) {
-            names.add(eachUser.getFullname());
-        }
-
-        // Return the string list names
-        return names;
+        // add all the users who are ROLE_USER (aka students)
+        List<User> users = userDao.getStudentsByRoleName("ROLE_USER");
+        return users;
     }
 }
