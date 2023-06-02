@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class LessonDTO {
     private int id = 0;
-    private int courseId;
+    private int moduleId;
     @NotEmpty
     private String title;
     @NotEmpty
@@ -31,8 +31,8 @@ public class LessonDTO {
         }
     }
 
-    public LessonDTO(int courseId, String title, String content, String resources, LocalDate due_date, String instructions) {
-        this.courseId = courseId;
+    public LessonDTO(int moduleId, String title, String content, String resources, LocalDate due_date, String instructions) {
+        this.moduleId = moduleId;
         this.title = title;
         this.content = content;
         this.resources = resources;
@@ -51,12 +51,12 @@ public class LessonDTO {
         this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getModuleId() {
+        return moduleId;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setModuleId(int moduleId) {
+        this.moduleId = moduleId;
     }
 
     public String getTitle() {
@@ -116,7 +116,7 @@ public class LessonDTO {
     public String toString() {
         return "Lesson{" +
                 "id=" + id +
-                ", courseId=" + courseId +
+                ", moduleId=" + moduleId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", resources='" + resources + '\'' +

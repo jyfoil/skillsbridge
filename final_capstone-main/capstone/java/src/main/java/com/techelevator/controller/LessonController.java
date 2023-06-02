@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-
 @RestController
 @CrossOrigin
+
 @PreAuthorize("isAuthenticated()")
 public class LessonController {
     @Autowired
@@ -35,10 +35,15 @@ public class LessonController {
         return lessonDao.getLessonById(lessonId, courseId);
     }
 
+    @GetMapping("/courses/{courseId}/modules/{moduleId}/lessons")
+    public List<Lesson> getLessonsByModule(@PathVariable int courseId, @PathVariable int moduleId) {
+        return lessonDao.getLessonsByModule(moduleId, courseId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/courses/{courseId}/lessons")
-    public Lesson createLesson(@Valid @PathVariable int courseId, @RequestBody LessonDTO newLesson) {
-        newLesson.setCourseId(courseId);
+    public Lesson createLesson(@Valid @PathVariable int courseId, @PathVariable int moduleId, @RequestBody LessonDTO newLesson) {
+        newLesson.setModuleId(moduleId);
         return lessonDao.createLesson(newLesson);
     }
 
