@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
-import com.techelevator.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcTeacherCourseDao implements TeacherCourseDao {
+public class JdbcCourseDao implements CourseDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcTeacherCourseDao(JdbcTemplate jdbcTemplate) {
+    public JdbcCourseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -86,6 +85,21 @@ public class JdbcTeacherCourseDao implements TeacherCourseDao {
         }
 
         return courses;
+    }
+
+    @Override
+    public void addStudentToCourse(int studentId, int courseId) {
+        String sql = "INSERT INTO student_courses VALUES (?, ?)";
+
+        try {
+            jdbcTemplate.update(sql, studentId, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
     }
 
     private Course mapRowToCourse(SqlRowSet rowSet) {

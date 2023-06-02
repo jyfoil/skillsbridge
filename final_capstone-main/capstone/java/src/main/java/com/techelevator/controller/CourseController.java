@@ -1,11 +1,12 @@
 package com.techelevator.controller;
 
-import com.techelevator.dao.TeacherCourseDao;
+import com.techelevator.dao.CourseDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
 import com.techelevator.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +17,10 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @PreAuthorize("isAuthenticated()")
-public class TeacherController {
+public class CourseController {
 
     @Autowired
-    private TeacherCourseDao teacherDao;
+    private CourseDao teacherDao;
     @Autowired
     private UserDao userDao;
 
@@ -74,5 +75,13 @@ public class TeacherController {
         // add all the users who are ROLE_USER (aka students)
         List<User> users = userDao.getStudentsByRoleName("ROLE_USER");
         return users;
+    }
+
+    @PostMapping("/course/{courseId}/students/{studentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
+        // Path variables used to get the courseId and studentId from the endpoint
+        teacherDao.addStudentToCourse(studentId, courseId);
     }
 }
