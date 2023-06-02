@@ -32,7 +32,12 @@ public class LessonController {
 
     @GetMapping("/courses/{courseId}/lessons/{lessonId}")
     public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
-        return lessonDao.getLessonById(lessonId, courseId);
+        return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
+    }
+
+    @GetMapping("/lessons/{lessonId}")
+    public Lesson getLesson(@PathVariable int lessonId) {
+        return lessonDao.getLessonById(lessonId);
     }
 
     @GetMapping("/courses/{courseId}/modules/{moduleId}/lessons")
@@ -41,7 +46,7 @@ public class LessonController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/courses/{courseId}/lessons")
+    @PostMapping("/courses/{courseId}/modules/{moduleId}/lessons")
     public Lesson createLesson(@Valid @PathVariable int courseId, @PathVariable int moduleId, @RequestBody LessonDTO newLesson) {
         newLesson.setModuleId(moduleId);
         return lessonDao.createLesson(newLesson);

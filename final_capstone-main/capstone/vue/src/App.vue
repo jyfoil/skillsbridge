@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!--
     <header id="header">
         <div class="logo-container">
           <img src="logo.png" alt="Logo" class="logo">
@@ -10,18 +11,20 @@
           </router-link>
         </div>
       
-    </header>
+    </header>-->
     <div id="nav">
       <!-- <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp; -->
       <!-- <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link> -->
     </div>
+    <header-nav msg="Welcome to SkillsBridge" />
     <router-view />
   </div>
 </template>
 <script>
+import HeaderNav from './components/HeaderNav.vue';
   export default {
     components: {
-
+      HeaderNav
     }
   };
 </script>

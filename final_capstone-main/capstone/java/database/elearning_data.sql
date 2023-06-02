@@ -26,15 +26,16 @@ INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM
 -- Listing teacher's courses:
 -- SELECT * FROM courses WHERE teacher_id = (SELECT user_id FROM users WHERE username='teacher1@test.edu');
 
-INSERT INTO modules (course_id, name, description) VALUES (1, 'ThingsOne', 'About ThingsOne');
-INSERT INTO modules (course_id, name, description) VALUES (2, 'ThingsTwo', 'About ThingsTwo');
+INSERT INTO modules (course_id, name, description) VALUES (1, 'Course 1 Module 1', 'About ThingsOne');
+INSERT INTO modules (course_id, name, description) VALUES (1, 'Course 1 Module 2', 'About ThingsOne');
+INSERT INTO modules (course_id, name, description) VALUES (2, 'Course 2 Module 1', 'Things you should know...');
 
 
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day One Lesson', '<h1>Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-05-2023', 'Create an ecommerce app!', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day Two Lesson', '<h1>Second Lesson Heading</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (2, 'There is but one lesson', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '<a href="https://www.wikipedia.org">Wikipedia</a>', '06-06-2023', 'Create an ecommerce app!', true);
 
---INSERT INTO
-
+INSERT INTO submissions (content, lesson_id, student_id) VALUES ('<p>The dog ate my homework</p>', 1, (SELECT user_id FROM users WHERE username = 'user1@test.com'));
+INSERT INTO submissions (content, lesson_id, student_id) VALUES ('<p>The dog ate my homework AGAIN!</p>', 2, (SELECT user_id FROM users WHERE username = 'user1@test.com'));
 
 COMMIT TRANSACTION;

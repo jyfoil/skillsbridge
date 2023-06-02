@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <header-nav msg="Welcome to SkillsBridge" />
+    <!--<header-nav msg="Welcome to SkillsBridge" />-->
     <div id="hero">
         <div class="content"><h1>Home</h1></div>
         <div class="sidebar">
@@ -41,11 +41,11 @@
 
 <script>
 import authService from "../services/AuthService";
-import HeaderNav from '../components/HeaderNav.vue'
+
 export default {
   name: "home",
   components: {
-    HeaderNav
+
   },
   data() {
     return {
