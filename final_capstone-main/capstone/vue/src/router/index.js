@@ -78,6 +78,7 @@ const router = new Router({
       name: "Teacher Home",
       component: TeacherHome
     }
+
   ]
 })
 
