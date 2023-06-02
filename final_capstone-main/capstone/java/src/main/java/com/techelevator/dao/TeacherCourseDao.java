@@ -6,7 +6,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.util.List;
 
-public interface CourseDao {
+public interface TeacherCourseDao {
 
     Course createCourse(Course course);
     Course getCourseByCourseId(int id);

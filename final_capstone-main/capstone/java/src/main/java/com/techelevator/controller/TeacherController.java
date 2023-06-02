@@ -1,6 +1,6 @@
 package com.techelevator.controller;
 
-import com.techelevator.dao.CourseDao;
+import com.techelevator.dao.TeacherCourseDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
@@ -18,7 +18,7 @@ import java.util.List;
 public class TeacherController {
 
     @Autowired
-    private CourseDao courseDao;
+    private TeacherCourseDao teacherDao;
     @Autowired
     private UserDao userDao;
 
@@ -31,13 +31,13 @@ public class TeacherController {
         // This name is used to get the id of the teacher through a method
         int teacherId = userDao.findIdByUsername(principal.getName());
         // Maps the user courseDTO input into a course object
-        Course course = courseDao.mapCourseDtoToCourse(courseDto, teacherId);
+        Course course = teacherDao.mapCourseDtoToCourse(courseDto, teacherId);
         // Uses the course object to create an entry in the course table with all the valid column values
-        Course createdCourse = courseDao.createCourse(course);
+        Course createdCourse = teacherDao.createCourse(course);
         // Maps the created course object back into a courseDTO
         // Note: this createdCourse object has the courseId now from the SQL string in the createCourse method
         // The courseDTO is what is returned in the POST body back to the client
-        CourseDTO newCourseDto = courseDao.mapCourseToCourseDTO(createdCourse);
+        CourseDTO newCourseDto = teacherDao.mapCourseToCourseDTO(createdCourse);
 
         return newCourseDto;
 
@@ -52,10 +52,10 @@ public class TeacherController {
         // Similar behavior to create method
         int teacherId = userDao.findIdByUsername(principal.getName());
 
-        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
+        List<Course> teacherCourses = teacherDao.getTeacherCoursesByTeacherId(teacherId);
         List<CourseDTO> teacherCoursesDto = new ArrayList<>();
         for (Course eachTeacherCourse : teacherCourses) {
-            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
+            teacherCoursesDto.add(teacherDao.mapCourseToCourseDTO(eachTeacherCourse));
         }
 
         return teacherCoursesDto;

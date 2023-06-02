@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcCourseDao implements CourseDao {
+public class JdbcTeacherCourseDao implements TeacherCourseDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcCourseDao(JdbcTemplate jdbcTemplate) {
+    public JdbcTeacherCourseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
