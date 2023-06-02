@@ -84,4 +84,12 @@ public class CourseController {
         // Path variables used to get the courseId and studentId from the endpoint
         teacherDao.addStudentToCourse(studentId, courseId);
     }
+
+    @DeleteMapping("/course/{courseId}/students/{studentId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteStudentFromCourse(@PathVariable int courseId, @PathVariable int studentId) {
+        // Path variables used to get the courseId and studentId from the endpoint
+        teacherDao.deleteStudentFromCourse(studentId, courseId);
+    }
 }
