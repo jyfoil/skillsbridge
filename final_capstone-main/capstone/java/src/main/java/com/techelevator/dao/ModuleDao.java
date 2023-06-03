@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ModuleDao {
     List<Module> getModulesByUser(User user);
+//     This method should pass in user Id and not a full user object
 
     Module getModuleById(int moduleId);
 

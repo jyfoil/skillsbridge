@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.CourseDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
 import com.techelevator.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -62,35 +64,67 @@ public class CourseController {
         courseDao.deleteCourseByCourseId(id);
     }
 
-    @GetMapping("/teacher/courses")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<CourseDTO> getTeacherCourses(Principal principal) {
 
-        // Similar behavior to create method
-        int teacherId = userDao.findIdByUsername(principal.getName());
+//    @GetMapping("/teacher/courses")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public List<CourseDTO> getTeacherCourses(Principal principal) {
+//        // Similar behavior to create method
+//        int teacherId = userDao.findIdByUsername(principal.getName());
+//
+//        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
+//        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
+//        for (Course eachTeacherCourse : teacherCourses) {
+//            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
+//        }
+//
+//        return teacherCoursesDto;
+//    }
 
-        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
-        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
-        for (Course eachTeacherCourse : teacherCourses) {
-            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
+
+//    @GetMapping("/student/courses")
+//    @PreAuthorize("hasRole('USER')")
+//    public List<CourseDTO> getStudentCourses(Principal principal) {
+//
+//        int studentId = userDao.findIdByUsername(principal.getName());
+//
+//        List<Course> studentCourses = courseDao.getStudentCoursesByStudentId(studentId);
+//        List<CourseDTO> studentCoursesDto = new ArrayList<>();
+//        for (Course eachCourse : studentCourses) {
+//            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+//        }
+//
+//        return studentCoursesDto;
+//    }
+
+    @GetMapping("/courses")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<CourseDTO> getCourses(Principal principal) {
+
+        // This method gets the courses of the logged in user
+        // This does what the getStudentCourses and getTeacherCourses does but in a single method
+        // Those methods currently commented out and kept in case needed later
+
+        int userId = userDao.findIdByUsername(principal.getName());
+        User currentLoggedInUser = userDao.getUserById(userId);
+
+        String role = "";
+        Set<Authority> auth = currentLoggedInUser.getAuthorities();
+
+        for (Authority eachAuth : auth) {
+            String authorityName = eachAuth.getName();
+            if (authorityName.equals("ROLE_ADMIN") || (authorityName.equals("ROLE_USER"))) {
+                role = authorityName;
+            }
         }
 
-        return teacherCoursesDto;
-    }
-
-    @GetMapping("/student/courses")
-    @PreAuthorize("hasRole('USER')")
-    public List<CourseDTO> getStudentCourses(Principal principal) {
-
-        int studentId = userDao.findIdByUsername(principal.getName());
-
-        List<Course> studentCourses = courseDao.getStudentCoursesByStudentId(studentId);
-        List<CourseDTO> studentCoursesDto = new ArrayList<>();
-        for (Course eachCourse : studentCourses) {
-            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+        List<Course> courses = (role.equals("ROLE_ADMIN")) ? courseDao.getTeacherCoursesByTeacherId(userId) :
+                courseDao.getStudentCoursesByStudentId(userId);
+        List<CourseDTO> coursesDto = new ArrayList<>();
+        for (Course eachCourse : courses) {
+            coursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
         }
 
-        return studentCoursesDto;
+        return coursesDto;
     }
 
     @GetMapping("/students")

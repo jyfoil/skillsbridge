@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.ModuleDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.techelevator.model.Module;
@@ -24,9 +25,17 @@ public class ModuleController {
     public Module createModule(@RequestBody Module module, Principal principal) {
 
         // Returns a JSON body to the user consisting of module_id, course_id, name, description
-        // TODO Somewhere on the frontend we need the list of courses to display the course Id or allow teachers to get it
+        // TODO Somewhere on the frontend we might need the list of courses to display the course Id or allow
+        //  teachers to get it
         // TODO because the requestbody needs to include the course id, name, and description
         return moduleDao.createModule(module);
     }
 
+    @DeleteMapping("/course/module/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteModule(@PathVariable int id) {
+        // TODO Logic to prevent teachers from deleting modules not tired to their course
+        moduleDao.deleteModule(id);
+    }
 }
