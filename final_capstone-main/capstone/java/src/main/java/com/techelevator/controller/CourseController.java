@@ -82,15 +82,11 @@ public class CourseController {
     @PreAuthorize("hasRole('USER')")
     public List<CourseDTO> getStudentCourses(Principal principal) {
 
-        // TODO Currently gives a invalid column error in postman
-        // TODO Think I figured it out it has to do with the mapping methods
-        // TODO Mapping methods use course_id to get the rowset value
-        // TODO need to figure out a way to change sql string to reflect this
-        // Seems like something about the query string but it works in pgadmin fine
         int studentId = userDao.findIdByUsername(principal.getName());
-        List<Course> courses = courseDao.getStudentCoursesByStudentId(studentId);
+
+        List<Course> studentCourses = courseDao.getStudentCoursesByStudentId(studentId);
         List<CourseDTO> studentCoursesDto = new ArrayList<>();
-        for (Course eachCourse : courses) {
+        for (Course eachCourse : studentCourses) {
             studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
         }
 
@@ -100,10 +96,6 @@ public class CourseController {
     @GetMapping("/students")
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getStudents() {
-        // Not sure if this should return a String which is the full name
-        // Or if it should return user object
-        // Not sure how it would work on the frontend
-        // Principal is not needed to decide role as students are always ROLE_USER
 
         // Create user object list
         // add all the users who are ROLE_USER (aka students)
@@ -116,6 +108,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
+        // TODO teachers should only be able to add to courses they created
         courseDao.addStudentToCourse(studentId, courseId);
     }
 
@@ -124,6 +117,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentFromCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
+        // TODO teachers should only be able to delete from courses they created
         courseDao.deleteStudentFromCourse(studentId, courseId);
     }
 }
