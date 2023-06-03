@@ -20,7 +20,7 @@ import java.util.List;
 public class CourseController {
 
     @Autowired
-    private CourseDao teacherDao;
+    private CourseDao courseDao;
     @Autowired
     private UserDao userDao;
 
@@ -34,13 +34,13 @@ public class CourseController {
         int teacherId = userDao.findIdByUsername(principal.getName());
         // Maps the user courseDTO input into a course object
         // This creates the course for the currently logged in teacher
-        Course course = teacherDao.mapCourseDtoToCourse(courseDto, teacherId);
+        Course course = courseDao.mapCourseDtoToCourse(courseDto, teacherId);
         // Uses the course object to create an entry in the course table with all the valid column values
-        Course createdCourse = teacherDao.createCourse(course);
+        Course createdCourse = courseDao.createCourse(course);
         // Maps the created course object back into a courseDTO
         // Note: this createdCourse object has the courseId now from the SQL string in the createCourse method
         // The courseDTO is what is returned in the POST body back to the client
-        CourseDTO newCourseDto = teacherDao.mapCourseToCourseDTO(createdCourse);
+        CourseDTO newCourseDto = courseDao.mapCourseToCourseDTO(createdCourse);
 
         return newCourseDto;
 
@@ -57,24 +57,44 @@ public class CourseController {
 
         // The first DAO method makes sure to delete all students in the course before deleting the course
         // This prevents foreign key constraints
-        teacherDao.deleteStudentsFromCourse(id);
-        teacherDao.deleteCourseByCourseId(id);
+        courseDao.deleteStudentsFromCourse(id);
+        // Second method deletes the course after all students in the course are removed
+        courseDao.deleteCourseByCourseId(id);
     }
 
-    @GetMapping("/courses")
+    @GetMapping("/teacher/courses")
     @PreAuthorize("hasRole('ADMIN')")
     public List<CourseDTO> getTeacherCourses(Principal principal) {
 
         // Similar behavior to create method
         int teacherId = userDao.findIdByUsername(principal.getName());
 
-        List<Course> teacherCourses = teacherDao.getTeacherCoursesByTeacherId(teacherId);
+        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
         List<CourseDTO> teacherCoursesDto = new ArrayList<>();
         for (Course eachTeacherCourse : teacherCourses) {
-            teacherCoursesDto.add(teacherDao.mapCourseToCourseDTO(eachTeacherCourse));
+            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
         }
 
         return teacherCoursesDto;
+    }
+
+    @GetMapping("/student/courses")
+    @PreAuthorize("hasRole('USER')")
+    public List<CourseDTO> getStudentCourses(Principal principal) {
+
+        // TODO Currently gives a invalid column error in postman
+        // TODO Think I figured it out it has to do with the mapping methods
+        // TODO Mapping methods use course_id to get the rowset value
+        // TODO need to figure out a way to change sql string to reflect this
+        // Seems like something about the query string but it works in pgadmin fine
+        int studentId = userDao.findIdByUsername(principal.getName());
+        List<Course> courses = courseDao.getStudentCoursesByStudentId(studentId);
+        List<CourseDTO> studentCoursesDto = new ArrayList<>();
+        for (Course eachCourse : courses) {
+            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+        }
+
+        return studentCoursesDto;
     }
 
     @GetMapping("/students")
@@ -96,7 +116,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
-        teacherDao.addStudentToCourse(studentId, courseId);
+        courseDao.addStudentToCourse(studentId, courseId);
     }
 
     @DeleteMapping("/course/{courseId}/students/{studentId}")
@@ -104,6 +124,6 @@ public class CourseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentFromCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
-        teacherDao.deleteStudentFromCourse(studentId, courseId);
+        courseDao.deleteStudentFromCourse(studentId, courseId);
     }
 }

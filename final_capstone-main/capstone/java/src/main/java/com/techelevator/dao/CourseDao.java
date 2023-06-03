@@ -11,6 +11,7 @@ public interface CourseDao {
     void deleteCourseByCourseId(int id);
     Course getCourseByCourseId(int id);
     List<Course> getTeacherCoursesByTeacherId(int id);
+    List<Course> getStudentCoursesByStudentId(int id);
     void addStudentToCourse(int studentId, int courseId);
     void deleteStudentFromCourse(int studentId, int courseId);
     void deleteStudentsFromCourse(int courseId);
