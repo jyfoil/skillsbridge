@@ -144,6 +144,12 @@ label {
     padding:0 2rem;
 }
 
+.sign-up {
+    text-decoration: none;
+    text-align: center;
+    color: #0093E9;
+}
+
 
 @media screen and (max-width: 400px)  {
     .form-signin, .form-register {
