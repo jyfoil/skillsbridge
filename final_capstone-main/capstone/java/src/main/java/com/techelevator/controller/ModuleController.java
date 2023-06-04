@@ -40,6 +40,7 @@ public class ModuleController {
     }
 
     @GetMapping("/course/{id}/modules")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<Module> getModulesByClassId(@PathVariable int id) {
         return moduleDao.getModulesByCourse(id);
     }

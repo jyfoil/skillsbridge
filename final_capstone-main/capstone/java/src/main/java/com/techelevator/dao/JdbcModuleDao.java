@@ -67,7 +67,8 @@ public class JdbcModuleDao implements ModuleDao {
         System.out.println(module);
         String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
         try {
-            Integer newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(), module.getName(),
+            Integer newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(),
+                    module.getName(),
                     module.getDescription());
             newModule = getModuleById(newModuleId);
         } catch (CannotGetJdbcConnectionException e) {
@@ -100,10 +101,19 @@ public class JdbcModuleDao implements ModuleDao {
     public List<Module> getModulesByCourse(int courseId) {
         String sql = "SELECT * FROM modules WHERE course_id = ?";
         List<Module> modules = new ArrayList<>();
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
-        while (results.next()) {
-            modules.add(mapRowToModule(results));
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+            while (results.next()) {
+                modules.add(mapRowToModule(results));
+            }
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
         }
+
         return modules;
     }
 
