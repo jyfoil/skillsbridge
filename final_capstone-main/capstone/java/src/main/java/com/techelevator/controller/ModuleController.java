@@ -35,7 +35,7 @@ public class ModuleController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteModule(@PathVariable int id) {
-        // TODO Logic to prevent teachers from deleting modules not tired to their course
+        // TODO Logic to prevent teachers from deleting modules not tied to their course
         moduleDao.deleteModule(id);
     }
 

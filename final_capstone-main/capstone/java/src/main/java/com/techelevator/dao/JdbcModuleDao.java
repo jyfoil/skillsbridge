@@ -25,6 +25,10 @@ public class JdbcModuleDao implements ModuleDao {
 
     @Override
     public List<Module> getModulesByUser(User user) {
+
+        // Currently unused method not sure if it is even valid as getting modules should not be by User
+        // There is already a getModulesByCourse method so this might need to be deleted
+
         List<Module> modules = new ArrayList<>();
         String sql = "SELECT module_id, m.course_id, name, description FROM modules m JOIN student_courses sc ON sc" +
                 ".course_id = m.course_id WHERE student_id = ?;";
