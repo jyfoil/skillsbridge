@@ -6,8 +6,12 @@ import com.techelevator.model.User;
 import java.util.List;
 
 public interface ModuleDao {
-    public List<Module> getModulesByUser(User user);
-    public Module getModuleById(int moduleId);
-    public Module createModule(Module module);
-    public int deleteModule(int moduleId);
+    List<Module> getModulesByUser(User user);
+//     This method should pass in user Id and not a full user object
+
+    Module getModuleById(int moduleId);
+
+    Module createModule(Module module);
+
+    int deleteModule(int moduleId);
 }

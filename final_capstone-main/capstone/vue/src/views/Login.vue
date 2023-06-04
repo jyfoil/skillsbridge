@@ -37,7 +37,7 @@
         required
       /></div>
       <button type="submit">Sign in</button><br />
-      <router-link :to="{ name: 'register' }">Sign Up</router-link>
+      <router-link :to="{ name: 'register' }" class="sign-up">Not enrolled? Sign up here!</router-link>
     </form>
     </main>
     <!--<button class="view-courses-button" @click="navigateToCourses">View Courses</button>-->
