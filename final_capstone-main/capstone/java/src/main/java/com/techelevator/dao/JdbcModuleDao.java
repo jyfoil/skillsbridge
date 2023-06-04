@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
+import com.techelevator.model.CourseNotFoundException;
 import com.techelevator.model.Module;
 import com.techelevator.model.ModuleNotFoundException;
 import com.techelevator.model.User;
@@ -63,9 +64,10 @@ public class JdbcModuleDao implements ModuleDao {
     @Override
     public Module createModule(Module module) {
         Module newModule = null;
+        System.out.println(module);
         String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
         try {
-            int newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(), module.getName(),
+            Integer newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(), module.getName(),
                     module.getDescription());
             newModule = getModuleById(newModuleId);
         } catch (CannotGetJdbcConnectionException e) {
@@ -92,6 +94,17 @@ public class JdbcModuleDao implements ModuleDao {
             throw new DaoException("Data integrity violation", e);
         }
         return numberOfRows;
+    }
+
+    @Override
+    public List<Module> getModulesByCourse(int courseId) {
+        String sql = "SELECT * FROM modules WHERE course_id = ?";
+        List<Module> modules = new ArrayList<>();
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+        while (results.next()) {
+            modules.add(mapRowToModule(results));
+        }
+        return modules;
     }
 
     private Module mapRowToModule(SqlRowSet rs) {

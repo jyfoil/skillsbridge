@@ -9,7 +9,7 @@
                 <section id="courses">
                     <course-listing :course="course" v-for="course in courses" :key="course.courseId" />
                 </section>
-                <button @click="hideAddClassForm = !hideAddClassForm"><img class="icon" src="../assets/add.svg" /> Add Course</button>
+                <button @click="hideAddClassForm = !hideAddClassForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Course</button>
                 <div class="accordion" :class="{ hide: hideAddClassForm }">
                     <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
                     <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
@@ -35,7 +35,7 @@
                             </select>
                         </div>
                         <div class="button-bar">
-                            <button v-on:click="clearForm" type="button">Cancel</button>
+                            <button v-on:click="cancelForm" type="button">Cancel</button>
                             <button>Submit</button>
                         </div>
                     </form>
@@ -87,6 +87,10 @@ export default {
         CourseListing
     },
     methods: {
+        cancelForm() {
+            this.clearForm();
+            this.hideAddClassForm = true;
+        },
         clearForm() {
             //this.hideAddClassForm = true;
             this.newCourse.name = '';

@@ -38,7 +38,7 @@ public class JdbcLessonDao implements LessonDao{
 
     @Override
     public Lesson getLessonById(int lessonId) {
-        String sql = "SELECT * FROM lessons lesson_id = ?;";
+        String sql = "SELECT * FROM lessons WHERE lesson_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, lessonId);
         if (results.next()) {
             return mapRowToLesson(results);

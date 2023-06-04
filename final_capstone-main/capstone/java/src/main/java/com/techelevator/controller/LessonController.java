@@ -23,30 +23,30 @@ public class LessonController {
     @Autowired
     private UserDao userDao;
 
-    @GetMapping("/courses/{id}/lessons")
+    @GetMapping("/course/{id}/lessons")
     public List<Lesson> showLessons(@Valid @PathVariable int id, Principal p) {
         User user = userDao.findByUsername(p.getName());
         // pass user id?
         return lessonDao.getLessonsByCourseId(id);
     }
 
-    @GetMapping("/courses/{courseId}/lessons/{lessonId}")
+    @GetMapping("/course/{courseId}/lesson/{lessonId}")
     public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
         return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
     }
 
-    @GetMapping("/lessons/{lessonId}")
+    @GetMapping("/lesson/{lessonId}")
     public Lesson getLesson(@PathVariable int lessonId) {
         return lessonDao.getLessonById(lessonId);
     }
 
-    @GetMapping("/courses/{courseId}/modules/{moduleId}/lessons")
+    @GetMapping("/course/{courseId}/module/{moduleId}/lessons")
     public List<Lesson> getLessonsByModule(@PathVariable int courseId, @PathVariable int moduleId) {
         return lessonDao.getLessonsByModule(moduleId, courseId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/courses/{courseId}/modules/{moduleId}/lessons")
+    @PostMapping("/course/{courseId}/module/{moduleId}/lessons")
     public Lesson createLesson(@Valid @PathVariable int courseId, @PathVariable int moduleId, @RequestBody LessonDTO newLesson) {
         newLesson.setModuleId(moduleId);
         return lessonDao.createLesson(newLesson);

@@ -197,6 +197,31 @@ main section {
     color: #0093E9;
 }
 
+.return-button {
+    background:rgba(0,0,0,0.5);
+    font-size:0.9rem;
+}
+
+button .icon {
+    margin-right:0.5rem;
+}
+
+.icon.invert {
+    filter:invert(1);
+}
+
+button.add {
+    border:1px solid #429CB9;
+}
+
+button.add:hover {
+    background:white;
+    color:#429CB9;
+}
+
+button.add:hover .icon {
+    filter:invert(0);
+}
 
 @media screen and (max-width: 400px)  {
     .form-signin, .form-register {

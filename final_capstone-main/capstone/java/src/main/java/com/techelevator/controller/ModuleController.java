@@ -22,8 +22,8 @@ public class ModuleController {
 
     @PostMapping("/course/module")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     public Module createModule(@RequestBody Module module, Principal principal) {
-
         // Returns a JSON body to the user consisting of module_id, course_id, name, description
         // TODO Somewhere on the frontend we might need the list of courses to display the course Id or allow
         //  teachers to get it
@@ -37,5 +37,10 @@ public class ModuleController {
     public void deleteModule(@PathVariable int id) {
         // TODO Logic to prevent teachers from deleting modules not tired to their course
         moduleDao.deleteModule(id);
+    }
+
+    @GetMapping("/course/{id}/modules")
+    public List<Module> getModulesByClassId(@PathVariable int id) {
+        return moduleDao.getModulesByCourse(id);
     }
 }

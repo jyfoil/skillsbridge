@@ -14,4 +14,5 @@ public interface ModuleDao {
     Module createModule(Module module);
 
     int deleteModule(int moduleId);
+    List<Module> getModulesByCourse(int courseId);
 }

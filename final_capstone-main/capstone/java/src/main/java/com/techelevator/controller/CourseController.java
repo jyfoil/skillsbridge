@@ -64,6 +64,10 @@ public class CourseController {
         courseDao.deleteCourseByCourseId(id);
     }
 
+    @GetMapping("/course/{id}")
+    public Course getCourseById(@PathVariable int id) {
+        return courseDao.getCourseByCourseId(id);
+    }
 
 //    @GetMapping("/teacher/courses")
 //    @PreAuthorize("hasRole('ADMIN')")
