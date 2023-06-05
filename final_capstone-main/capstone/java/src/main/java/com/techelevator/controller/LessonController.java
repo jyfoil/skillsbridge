@@ -23,19 +23,20 @@ public class LessonController {
     @Autowired
     private UserDao userDao;
 
-    @GetMapping("/course/{id}/lessons")
-    public List<Lesson> showLessons(@Valid @PathVariable int id, Principal p) {
-        User user = userDao.findByUsername(p.getName());
-        // pass user id?
-        return lessonDao.getLessonsByCourseId(id);
-    }
-
-    @GetMapping("/course/{courseId}/lesson/{lessonId}")
-    // /course/{courseId}/module/{moduleId}/lesson/{lessonId} ?
-    // TODO endpoint might need to be changed
-    public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
-        return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
-    }
+//    @GetMapping("/course/{id}/lessons")
+//    public List<Lesson> showLessons(@Valid @PathVariable int id, Principal p) {
+//        User user = userDao.findByUsername(p.getName());
+//        // pass user id?
+//        return lessonDao.getLessonsByCourseId(id);
+//    }
+//
+//    @GetMapping("/course/{courseId}/lesson/{lessonId}")
+//    // /course/{courseId}/module/{moduleId}/lesson/{lessonId} ?
+//    public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
+//        return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
+//        // The relationship is already set and we just need to get lesson by its module id and
+//        // because modules table has a course id we can omit needing the courseId in the endpoint
+//    }
 
     @GetMapping("/lesson/{lessonId}")
     public Lesson getLesson(@PathVariable int lessonId) {
@@ -43,8 +44,8 @@ public class LessonController {
     }
 
     @GetMapping("/course/{courseId}/module/{moduleId}/lessons")
-    public List<Lesson> getLessonsByModule(@PathVariable int courseId, @PathVariable int moduleId) {
-        return lessonDao.getLessonsByModule(moduleId, courseId);
+    public List<Lesson> getLessonsByCourseAndModule(@PathVariable int courseId, @PathVariable int moduleId) {
+        return lessonDao.getLessonsByCourseAndModule(moduleId, courseId);
     }
 
 //    @PostMapping("/course/{courseId}/module/{moduleId}/lesson")
@@ -64,9 +65,14 @@ public class LessonController {
     @DeleteMapping("/lesson/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteLesson(@PathVariable int lessonId) {
-        lessonDao.deleteLesson(lessonId);
+    public void deleteLesson(@PathVariable int id) {
+        lessonDao.deleteLesson(id);
     }
+    
 
-    // TODO test all lesson controller methods
+    // Submission method teacher only
+    // SubmissionDTO with content
+    // Pass back true or response status
+
+    // teacherSetSubmissonGrade
 }
