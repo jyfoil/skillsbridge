@@ -226,6 +226,10 @@ button.add:hover .icon {
     filter:invert(0);
 }
 
+.w-100 {
+    width:100%;
+}
+
 @media screen and (max-width: 400px)  {
     .form-signin, .form-register {
         max-width:none;

@@ -124,7 +124,22 @@ export default {
       this.registrationErrors = false;
       this.registrationErrorMsg = 'There were problems registering this user.';
     },
+    navigateToDashboard() {
+      if (this.$store.state.user.authorities[0].name == 'ROLE_USER') {
+        this.$router.push({name: 'Student Home'});
+      }
+      else if (this.$store.state.user.authorities[0].name == 'ROLE_ADMIN') {
+        this.$router.push({name: 'Teacher Home'});
+      }
+    }
   },
+  created: function() {
+    console.log("created");
+    if (this.$store.state.token != '') {
+      console.log("not empty token");
+      this.navigateToDashboard();
+    }
+  }
 };
 </script>
 

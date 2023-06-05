@@ -3,7 +3,7 @@
     <div class="header-left">
       <router-link :to="{ name: 'home' }" class="header-link">
         <div class="logo-container">
-          <img src="../assets/elearning.png" alt="Logo" class="logo">
+          <img src="../assets/SkillsBridge.png" alt="Logo" class="logo">
           <h3 class="portal-title">{{ msg }}</h3>
         </div>
       </router-link>

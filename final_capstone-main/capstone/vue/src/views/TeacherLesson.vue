@@ -15,7 +15,6 @@
                 <div>
                     <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
                     <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <h3>Edit Lesson</h3>
                     <form @submit.prevent="createLesson" class="flex-column">
                         <div>
                             <label for="title">Title:</label>
@@ -56,7 +55,7 @@
 </template>
 
 <script>
-//import courseService from '../services/CourseService.js'
+import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
 import lessonService from '../services/LessonService.js'
 export default {
@@ -92,6 +91,11 @@ export default {
         moduleService.getModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
             if (response.status === 200) {
                 this.module = response.data;
+            }
+        }),
+        courseService.getCourse(this.$route.params.courseId).then(response => {
+            if (response.status === 200) {
+                this.course = response.data;
             }
         })
     },
