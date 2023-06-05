@@ -87,6 +87,30 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
+    public List<User> getStudentsByCourseId(int courseId) {
+        List<User> students = new ArrayList<>();
+        String sql = "SELECT users.user_id, users.firstname, users.lastname, users.username, users.password_hash, " +
+                "users.role " +
+                "FROM users " +
+                "JOIN student_courses ON users.user_id = student_courses.student_id " +
+                "WHERE student_courses.course_id = ?";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+
+            while (results.next()) {
+                students.add(mapRowToUser(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return students;
+    }
+
+    @Override
     public User findByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
 
