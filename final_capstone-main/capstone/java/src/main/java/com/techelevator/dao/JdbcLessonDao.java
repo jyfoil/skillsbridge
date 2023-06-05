@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Lesson;
 import com.techelevator.model.LessonDTO;
-import com.techelevator.model.LessonNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -116,14 +115,28 @@ public class JdbcLessonDao implements LessonDao {
     }
 
     @Override
+    public void deleteLesson(int lessonId) {
+        String sql = "DELETE FROM lessons WHERE lesson_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, lessonId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+    }
+
+    @Override
     public Lesson createLesson(LessonDTO lesson) {
+        Lesson newLesson = null;
         String sql = "INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, " +
                 "has_assignment) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING lesson_id;";
-        Lesson newLesson = null;
         try {
-            Integer lessonId = 0;
-            lessonId = jdbcTemplate.queryForObject(sql, Integer.class, lesson.getModuleId(), lesson.getTitle(),
-                    lesson.getContent(), lesson.getResources(), lesson.getDue_date(), lesson.getInstructions(),
+            int lessonId = jdbcTemplate.queryForObject(sql, int.class, lesson.getModuleId(), lesson.getTitle(),
+                    lesson.getContent(), lesson.getResources(), lesson.getDueDate(), lesson.getInstructions(),
                     lesson.isHas_assignment());
             newLesson = getLessonById(lessonId);
         } catch (CannotGetJdbcConnectionException e) {

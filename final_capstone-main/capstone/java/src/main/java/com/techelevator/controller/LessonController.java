@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+
 @RestController
 @CrossOrigin
-
 @PreAuthorize("isAuthenticated()")
 public class LessonController {
     @Autowired
@@ -31,6 +31,8 @@ public class LessonController {
     }
 
     @GetMapping("/course/{courseId}/lesson/{lessonId}")
+    // /course/{courseId}/module/{moduleId}/lesson/{lessonId} ?
+    // TODO endpoint might need to be changed
     public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
         return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
     }
@@ -45,11 +47,26 @@ public class LessonController {
         return lessonDao.getLessonsByModule(moduleId, courseId);
     }
 
+//    @PostMapping("/course/{courseId}/module/{moduleId}/lesson")
+//    I don't think this long path is needed the relationship between these are all established in the database
+    // That path is probably what the frontend path in router of vue will look like
+
+    @PostMapping("/lesson")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/course/{courseId}/module/{moduleId}/lessons")
-    public Lesson createLesson(@Valid @PathVariable int courseId, @PathVariable int moduleId, @RequestBody LessonDTO newLesson) {
-        newLesson.setModuleId(moduleId);
+    @PreAuthorize("hasRole('ADMIN')")
+    public Lesson createLesson(@RequestBody LessonDTO newLesson) {
         return lessonDao.createLesson(newLesson);
     }
 
+//    @DeleteMapping("/course/{courseId}//module/{moduleId}/lesson/{id}")
+    // These paths above is not needed for the backend but the front end should look like this
+
+    @DeleteMapping("/lesson/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLesson(@PathVariable int lessonId) {
+        lessonDao.deleteLesson(lessonId);
+    }
+
+    // TODO test all lesson controller methods
 }
