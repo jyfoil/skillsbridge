@@ -72,30 +72,45 @@ const router = new Router({
     {
       path: "/student-home",
       name: "Student Home",
-      component: StudentHome
+      component: StudentHome,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/teacher-home",
       name: "Teacher Home",
-      component: TeacherHome
+      component: TeacherHome,
+      meta: {
+        requiresAuth: true
+      }
     },
     
     {
       path: '/teacher-home/course/:courseId',
       name: 'teacher-course',
-      component: TeacherCourse
+      component: TeacherCourse,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: '/teacher-home/course/:courseId/module/:moduleId',
       name: 'teacher-module',
-      component: TeacherModule
+      component: TeacherModule,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/teacher-home/course/:courseId/module/:moduleId/lesson/:lessonId',
       name: 'teacher-lesson',
-      component: TeacherLesson
+      component: TeacherLesson,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })

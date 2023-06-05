@@ -30,6 +30,26 @@
                         </div>
                     </form>
                 </div>
+                <h2>Students</h2>
+                <section id="students">
+                    <div class="student-list-column">
+                        <h3>Current Students</h3>
+                        <select class="student-list w-100 form-control" size="8">
+                            <option disabled value="">Select a Student</option>
+                            <option v-for="student in students" :key="student.id" value="student.id">{{student.firstname}} {{student.lastname}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h3>Student Details</h3>
+                    </div>
+                </section>
+                <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
+                <div class="accordian" :class="{ hide: hideAddStudentForm }">
+                    <input type="text" v-model="studentSearch">
+                    <div class="aStudendList">
+                        <div v-for="allStudent in allStudents" :key="allStudent.id">{{allStudent.firstname}} {{allStudent.lastname}}</div>
+                    </div>
+                </div>
             </div>
             <section>
                 <h3>Latest Activity</h3>
@@ -46,17 +66,48 @@ export default {
     data() {
         return {
             modules: [],
-             hideAddModuleForm: true,
-             course: {
-                 courseId: this.$route.params.courseId,
-                 name: '',
-                 description: ''
-             },
-             successMsg: '',
-             errorMsg: '',
-             newModule: {
-                 courseId: this.$route.params.courseId,
-             }
+            hideAddStudentForm: true,
+            hideAddModuleForm: true,
+            studentSearch: '',
+            course: {
+                courseId: this.$route.params.courseId,
+                name: '',
+                description: ''
+            },
+            successMsg: '',
+            errorMsg: '',
+            newModule: {
+                courseId: this.$route.params.courseId,
+            },
+            students: [
+                {
+                id:3,
+                firstname:'Studious',
+                lastname:'Maximus',
+                },
+                {
+                id:4,
+                firstname:'Ferris',
+                lastname:'Beuller',
+                }
+            ],
+            allStudents: [
+                {
+                id:3,
+                firstname:'Studious',
+                lastname:'Maximus',
+                },
+                {
+                id:4,
+                firstname:'Ferris',
+                lastname:'Beuller',
+                },
+                {
+                id:1,
+                firstname:'Sally',
+                lastname:'User',
+                }
+            ]
         }
     },
     created: function() {
@@ -95,11 +146,28 @@ export default {
                     this.errorMsg = "There was an error creating the module.";
                 }
             });
+        },
+        addStudentForm() {
+            // todo: grab list of all students from the back end (costly, eventually want to add search function)
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    #students {
+        display:flex;
+        gap:12px;
+        align-content: start;
+    }
+    .student-list-column {
+        width:25%;
+    }
+    select.form-control {
+        padding: inherit;
+        outline:1px solid #888;
+    }
+    .student-list option {
+        padding: 2px 10px;
+    }
 </style>

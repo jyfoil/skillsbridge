@@ -84,7 +84,7 @@ export default {
         //console.log(this.courses);
     },
     components: {
-        CourseListing
+        CourseListing,
     },
     methods: {
         cancelForm() {
