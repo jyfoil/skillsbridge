@@ -4,7 +4,6 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 public class LessonDTO {
-    private int id = 0;
     private int moduleId;
     @NotEmpty
     private String title;
@@ -12,7 +11,7 @@ public class LessonDTO {
     private String content;
     @NotEmpty
     private String resources;
-    private LocalDate due_date;
+    private LocalDate dueDate;
     private String instructions;
     private boolean has_assignment = false;
 
@@ -20,35 +19,28 @@ public class LessonDTO {
 
     }
 
-    public LessonDTO(String title, String content, String resources, LocalDate due_date, String instructions) {
+    public LessonDTO(String title, String content, String resources, LocalDate dueDate, String instructions) {
         this.title = title;
         this.content = content;
         this.resources = resources;
-        this.due_date = due_date;
+        this.dueDate = dueDate;
         this.instructions = instructions;
         if (instructions != "" && instructions != null) {
             this.has_assignment = true;
         }
     }
 
-    public LessonDTO(int moduleId, String title, String content, String resources, LocalDate due_date, String instructions) {
+    public LessonDTO(int moduleId, String title, String content, String resources, LocalDate dueDate,
+                     String instructions) {
         this.moduleId = moduleId;
         this.title = title;
         this.content = content;
         this.resources = resources;
-        this.due_date = due_date;
+        this.dueDate = dueDate;
         this.instructions = instructions;
         if (instructions != "" && instructions != null) {
             this.has_assignment = true;
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getModuleId() {
@@ -83,12 +75,12 @@ public class LessonDTO {
         this.resources = resources;
     }
 
-    public LocalDate getDue_date() {
-        return due_date;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(LocalDate due_date) {
-        this.due_date = due_date;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getInstructions() {
@@ -114,13 +106,12 @@ public class LessonDTO {
 
     @Override
     public String toString() {
-        return "Lesson{" +
-                "id=" + id +
-                ", moduleId=" + moduleId +
+        return "LessonDTO{" +
+                "moduleId=" + moduleId +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", resources='" + resources + '\'' +
-                ", due_date=" + due_date +
+                ", due_date=" + dueDate +
                 ", instructions='" + instructions + '\'' +
                 ", has_assignment=" + has_assignment +
                 '}';

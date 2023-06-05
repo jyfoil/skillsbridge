@@ -35,11 +35,12 @@ public class ModuleController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteModule(@PathVariable int id) {
-        // TODO Logic to prevent teachers from deleting modules not tired to their course
+        // TODO Logic to prevent teachers from deleting modules not tied to their course
         moduleDao.deleteModule(id);
     }
 
     @GetMapping("/course/{id}/modules")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<Module> getModulesByClassId(@PathVariable int id) {
         return moduleDao.getModulesByCourse(id);
     }
