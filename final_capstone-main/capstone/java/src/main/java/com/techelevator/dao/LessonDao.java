@@ -17,5 +17,7 @@ public interface LessonDao {
 
     List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId);
 
+    Lesson updateLesson(Lesson lesson);
+
     void deleteLesson(int id);
 }

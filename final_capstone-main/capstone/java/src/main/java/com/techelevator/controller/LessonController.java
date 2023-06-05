@@ -68,7 +68,12 @@ public class LessonController {
     public void deleteLesson(@PathVariable int id) {
         lessonDao.deleteLesson(id);
     }
-    
+
+    @PutMapping("/lesson/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Lesson updateLesson(@RequestBody Lesson lesson) {
+        return lessonDao.updateLesson(lesson);
+    }
 
     // Submission method teacher only
     // SubmissionDTO with content

@@ -30,7 +30,8 @@ public class JdbcLessonDao implements LessonDao {
 //        // TODO thinking that maybe it should be lesson id and module id?
 //
 //        Lesson lesson = null;
-//        String sql = "SELECT * FROM lessons l JOIN modules m ON m.module_id = l.module_id WHERE l.lesson_id = ? AND m" +
+//        String sql = "SELECT * FROM lessons l JOIN modules m ON m.module_id = l.module_id WHERE l.lesson_id = ? AND
+//        m" +
 //                ".course_id = ?;";
 //
 //        try {
@@ -115,6 +116,35 @@ public class JdbcLessonDao implements LessonDao {
     }
 
     @Override
+    public Lesson updateLesson(Lesson lesson) {
+        Lesson updatedLesson = null;
+        String sql = "UPDATE lessons SET module_id = ?, title = ?, content = ?, resources = ?, due_date = ?, " +
+                "instructions = ? " +
+                "WHERE lesson_id = ?";
+
+        try {
+            int numberOfRows = jdbcTemplate.update(sql, lesson.getModuleId(), lesson.getTitle(), lesson.getContent(),
+                    lesson.getResources(), lesson.getDueDate(), lesson.getInstructions(), lesson.getId());
+
+            if (numberOfRows == 0) {
+                throw new DaoException("Zero rows affected, expected at least one");
+            } else {
+                updatedLesson = getLessonById(lesson.getId());
+            }
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+
+        return updatedLesson;
+    }
+
+
+    @Override
     public void deleteLesson(int lessonId) {
         String sql = "DELETE FROM lessons WHERE lesson_id = ?";
 
@@ -149,7 +179,6 @@ public class JdbcLessonDao implements LessonDao {
         return newLesson;
     }
 
-
     private Lesson mapRowToLesson(SqlRowSet rs) {
         Lesson lesson = new Lesson();
         lesson.setId(rs.getInt("lesson_id"));
@@ -159,10 +188,12 @@ public class JdbcLessonDao implements LessonDao {
         lesson.setResources(rs.getString("resources"));
         lesson.setHas_assignment(rs.getBoolean("has_assignment"));
         if (rs.getDate("due_date") != null) {
-            lesson.setDue_date(rs.getDate("due_date").toLocalDate());
+            lesson.setDueDate(rs.getDate("due_date").toLocalDate());
         }
         lesson.setInstructions(rs.getString("instructions"));
 
         return lesson;
     }
+
+
 }
