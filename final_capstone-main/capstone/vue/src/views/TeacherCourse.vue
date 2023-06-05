@@ -8,7 +8,7 @@
             <div id="content">
                 <h2>Modules</h2>
                 <section id="modules">
-                    <div v-for="module in modules" :key="module.id">{{ module.name }}</div>
+                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, id: module.id }}">{{ module.name }}</router-link></div>
                 </section>
                 <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
                 <div class="accordion" :class="{ hide: hideAddModuleForm }">

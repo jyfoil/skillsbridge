@@ -43,4 +43,9 @@ public class ModuleController {
     public List<Module> getModulesByClassId(@PathVariable int id) {
         return moduleDao.getModulesByCourse(id);
     }
+
+    @GetMapping("/course/{courseId}/module/{moduleId}")
+    public Module getModuleById(@PathVariable int courseId, @PathVariable int moduleId) {
+        return moduleDao.getModuleById(moduleId);
+    }
 }

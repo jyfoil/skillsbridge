@@ -9,6 +9,7 @@ import Courses from '../views/CourseList.vue'
 import StudentHome from '../views/StudentHome.vue'
 import TeacherHome from '../views/TeacherHome.vue'
 import TeacherCourse from '../views/TeacherCourse.vue'
+import TeacherModule from '../views/TeacherModule.vue'
 
 Vue.use(Router)
 
@@ -83,6 +84,12 @@ const router = new Router({
       path: '/teacher-home/course/:id',
       name: 'teacher-course',
       component: TeacherCourse
+    },
+
+    {
+      path: '/teacher-home/course/:courseId/module/:id',
+      name: 'teacher-module',
+      component: TeacherModule
     }
 
   ]
