@@ -6,7 +6,7 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
-                <h2>Modules</h2>
+                <h2 class="underline">Modules</h2>
                 <section id="modules">
                     <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }}</router-link></div>
                 </section>
@@ -30,7 +30,7 @@
                         </div>
                     </form>
                 </div>
-                <h2>Students</h2>
+                <h2 class="underline">Students</h2>
                 <section id="students">
                     <div class="student-list-column">
                         <h3>Current Students</h3>
@@ -43,11 +43,13 @@
                         <h3>Student Details</h3>
                     </div>
                 </section>
-                <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
-                <div class="accordian" :class="{ hide: hideAddStudentForm }">
-                    <input type="text" v-model="studentSearch">
-                    <div class="aStudendList">
-                        <div v-for="allStudent in allStudents" :key="allStudent.id">{{allStudent.firstname}} {{allStudent.lastname}}</div>
+                <button class="add" @click="hideAddStudentForm = !hideAddStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
+                <div class="accordion" :class="{ hide: hideAddStudentForm }">
+                    <h3>Add Student to Course</h3>
+                    <label for="student-search">Search: </label><input id="student-search" type="text" class="mb-1 form-control" v-model="studentSearch">
+                    <div class="aStudentList">
+                        <div v-if="filteredStudents.length > 1">{{ filteredStudents.length }} students matched.</div>
+                        <div v-else v-for="allStudent in filteredStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}}</div><button class="small add">Add Student</button></div>
                     </div>
                 </div>
             </div>
@@ -149,6 +151,16 @@ export default {
         },
         addStudentForm() {
             // todo: grab list of all students from the back end (costly, eventually want to add search function)
+        },
+
+    },
+    computed: {
+        filteredStudents() {
+            let search = this.studentSearch.toLowerCase();
+            return this.allStudents.filter(s => {
+                let fullname = s.firstname.toLowerCase() + " " + s.lastname.toLowerCase();
+                return  (fullname.includes(search));
+            })
         }
     }
 }

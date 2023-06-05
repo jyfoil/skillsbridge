@@ -8,9 +8,10 @@
             <div id="content">
                 <div> 
                     <h3>Module Description:</h3>
-                    <p>{{ module.description }}</p>
+                    <p class="description">{{ module.description }}</p>
+                    <div v-if="lessons.length > 0"><div class="small capsule">{{lessons.length}} Lesson(s) in this module.</div></div>
                     <!--<p>Editable name/description by clicking on fields? (use enter key or 'save' button to commit)</p>-->
-                    <button @click="deleteModule" :disabled="lessons.length > 0">Delete Module</button>
+                    <button @click="deleteModule" :disabled="lessons.length > 0" class="mt-1">Delete Module</button>
                 </div>
                 <h2>Lessons</h2>
                 <section id="lessons">

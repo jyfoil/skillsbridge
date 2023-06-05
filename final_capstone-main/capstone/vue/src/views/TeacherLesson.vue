@@ -8,43 +8,48 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
-                <div> 
-
+                <div class="button-bar left"> 
+                    <button class="edit" @click="hideEditLessonForm = !hideEditLessonForm"><img class="icon invert" src="../assets/edit.svg" />Edit Lesson</button>
+                    <button class="delete" ><img class="icon invert" src="../assets/delete.svg" />Delete Lesson</button>
                 </div>
-                <h2>Edit Lesson</h2>
-                <div>
-                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <form @submit.prevent="createLesson" class="flex-column">
-                        <div>
-                            <label for="title">Title:</label>
-                            <input id="title" type="text" class="form-control" v-model="lesson.title" placeholder="Lesson Title" required />
-                        </div>
-                        <div>
-                            <label for="content">Content:</label>
-                            <textarea id="content" class="form-control" v-model="lesson.content" placeholder="Lesson Content" required></textarea>
-                        </div>
-                        <div>
-                            <label for="resources">Resources:</label>
-                            <textarea id="resources" class="form-control" v-model="lesson.resources" placeholder="Lesson Content"></textarea>
-                        </div>
-                        <div>
-                            <label for="hasAssignment">Create Assignment?</label>
-                            <input type="checkbox" id="hasAssignment" v-model="lesson.has_assignment" />
-                        </div>
-                        <div v-show="lesson.has_assignment">
-                            <label for="dueDate">Due Date</label>
-                            <input type="datetime" id="dueDate" v-model="lesson.due_date" />
-                        </div>
-                        <div v-show="lesson.has_assignment">
-                            <label for="instructions">Instructions</label>
-                            <textarea type="textarea" id="instructions"></textarea>
-                        </div>
-                        <div class="button-bar">
-                            <button>Save</button>
-                        </div>
-                    </form>
+                <div class="accordion" :class="{ hide: hideEditLessonForm }">
+                    <h3>Edit Lesson</h3>
+                    <div>
+                        <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
+                        <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
+                        <form @submit.prevent="updateLesson" class="flex-column">
+                            <div>
+                                <label for="title">Title:</label>
+                                <input id="title" type="text" class="form-control" v-model="lesson.title" placeholder="Lesson Title" required />
+                            </div>
+                            <div>
+                                <label for="content">Content:</label>
+                                <textarea id="content" class="form-control" v-model="lesson.content" placeholder="Lesson Content" required></textarea>
+                            </div>
+                            <div>
+                                <label for="resources">Resources:</label>
+                                <textarea id="resources" class="form-control" v-model="lesson.resources" placeholder="Lesson Content"></textarea>
+                            </div>
+                            <div>
+                                <label for="hasAssignment">Create Assignment?</label>
+                                <input type="checkbox" id="hasAssignment" v-model="lesson.has_assignment" />
+                            </div>
+                            <div v-show="lesson.has_assignment">
+                                <label for="dueDate">Due Date</label>
+                                <input type="date" id="dueDate" class="form-control" v-model="lesson.due_date" />
+                            </div>
+                            <div v-show="lesson.has_assignment">
+                                <label for="instructions">Instructions</label>
+                                <textarea type="textarea" class="form-control" id="instructions"></textarea>
+                            </div>
+                            <div class="button-bar">
+                                <button>Save</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+                <h2 v-if="lesson.has_assignment">Submissions</h2>
+                <p v-if="submissions.length === 0">No submissions yet</p>
             </div>
             <section>
                 <h3>Latest Activity</h3>
@@ -61,6 +66,7 @@ import lessonService from '../services/LessonService.js'
 export default {
     data() {
         return {
+            hideEditLessonForm: true,
             course: {},
             module: {
                 id: this.$route.params.moduleId,
@@ -79,7 +85,8 @@ export default {
                 has_assignment: false,
                 due_date: '',
                 instructions: ''
-             }
+            },
+            submissions: []
         }
     },
     created: function() {
@@ -100,11 +107,18 @@ export default {
         })
     },
     methods: {
-
+        updateLesson() {
+            lessonService.updateLesson(this.lesson).then(response => {
+                if (response.status === 200) {
+                    this.lesson = response.data;
+                    this.$router.push({name: 'teacher-course', params: {courseId:this.lesson.courseId}})
+                }
+            });
+        }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    
 </style>
