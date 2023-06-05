@@ -16,7 +16,7 @@
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
       <div>
-      <label for="username" class="sr-only">Username</label>
+      <!-- <label for="username" class="sr-only">Username</label> -->
       <input
         type="text"
         id="username"
@@ -27,7 +27,7 @@
         autofocus
       /></div>
       <div>
-      <label for="password" class="sr-only">Password</label>
+      <!-- <label for="password" class="sr-only">Password</label> -->
       <input
         type="password"
         id="password"
