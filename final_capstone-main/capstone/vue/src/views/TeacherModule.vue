@@ -2,18 +2,19 @@
     <div class="dashboard">
         <div id="heading-bg">
             <h1 class="dashboard-title">{{ course.name }} - <span class="course-name">{{ module.name }}</span></h1>
-            <router-link class="return-button" tag="button" :to="{ name: 'teacher-course', props: { id: course.id }}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Course</router-link>
+            <router-link class="return-button" tag="button" :to="{ name: 'teacher-course', props: { courseId: module.courseId }}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Course</router-link>
         </div>
         <main id="dashboard-content">
             <div id="content">
                 <div> 
-                    <h3>Module: {{ module.name }}</h3>
-                    <p>Description:<br />{{ module.description }}</p>
+                    <h4>Description:</h4>
+                    <p>{{ module.description }}</p>
                     <p>Editable name/description by clicking on fields? (use enter key or 'save' button to commit)</p>
+                    <button @click="deleteModule" :disabled="lessons.length > 0">Delete Module</button>
                 </div>
                 <h2>Lessons</h2>
                 <section id="lessons">
-                    <div v-for="lesson in lessons" :key="lesson.id"><h4>{{ lesson.title }}</h4></div>
+                    <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'teacher-lesson', props: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }} ({{$route.params.courseId}}, {{$route.params.moduleId}}, {{lesson.id}})</router-link></h4></div>
                 </section>
                 <button @click="hideAddLessonForm = !hideAddLessonForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Lesson</button>
                 <div class="accordion" :class="{ hide: hideAddLessonForm }">
@@ -96,12 +97,12 @@ export default {
                 this.course = response.data;
             }
         }),
-        moduleService.getModule(this.$route.params.courseId, this.$route.params.id).then(response => {
+        moduleService.getModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
             if (response.status === 200) {
                 this.module = response.data;
             }
         }),
-        lessonService.getLessonsByModule(this.$route.params.courseId, this.$route.params.id).then(response => {
+        lessonService.getLessonsByModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
             if (response.status === 200) {
                 this.lessons = response.data;
             }
@@ -121,7 +122,7 @@ export default {
             this.newLesson.description = '';
         },
         createLesson() {
-            lessonService.createLesson(this.module.courseId, this.module.id, this.newLesson).then(response => {
+            lessonService.createLesson(this.newLesson).then(response => {
                 if (response.status === 201) {
                     this.successMsg = "Lesson Created Successfully.";
                     this.lessons.push(response.data);
@@ -131,6 +132,13 @@ export default {
                     this.errorMsg = "There was an error creating the lesson.";
                 }
             });
+        },
+        deleteModule() {
+            moduleService.deleteModule(this.module.id).then(response => {
+                if (response.status === 204) {
+                    this.$router.push({name: 'teacher-course', params: { id:this.module.courseId }});
+                }
+            })
         }
     }
 }

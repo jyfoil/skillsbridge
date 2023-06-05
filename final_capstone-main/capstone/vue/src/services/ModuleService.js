@@ -12,6 +12,9 @@ export default {
     },
     getModule(courseId, moduleId) {
       return axios.get(`/course/${courseId}/module/${moduleId}`);
+    },
+    deleteModule(moduleId) {
+      return axios.delete(`/course/module/${moduleId}`);
     }
 
   }

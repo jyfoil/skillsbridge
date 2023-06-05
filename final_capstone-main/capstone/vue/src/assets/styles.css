@@ -31,7 +31,7 @@ h1, h2, h3 {
 
 #notifications img { opacity:0.5; }
 
-#notifications.alert::before { content:"•"; color:red; font-size:50px; position:absolute; top:-21px; z-index:10;  }
+#notifications.notify::before { content:"•"; color:red; font-size:50px; position:absolute; top:-21px; z-index:10;  }
 
 #nav {
     display:flex;
@@ -79,6 +79,7 @@ button {
     transition:all 200ms;
     display:flex;
     align-items: center;
+    justify-content: center;
 }
 
 button:hover {
@@ -86,6 +87,9 @@ button:hover {
     box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
+button:disabled {
+    opacity:0.3;
+}
 
 a {
     transition:all 200ms;

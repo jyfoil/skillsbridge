@@ -8,7 +8,7 @@
             <div id="content">
                 <h2>Modules</h2>
                 <section id="modules">
-                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, id: module.id }}">{{ module.name }}</router-link></div>
+                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }}</router-link></div>
                 </section>
                 <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
                 <div class="accordion" :class="{ hide: hideAddModuleForm }">
@@ -48,25 +48,24 @@ export default {
             modules: [],
              hideAddModuleForm: true,
              course: {
-                 courseId: this.$route.params.id,
+                 courseId: this.$route.params.courseId,
                  name: '',
                  description: ''
              },
              successMsg: '',
              errorMsg: '',
              newModule: {
-                 courseId: this.$route.params.id,
+                 courseId: this.$route.params.courseId,
              }
         }
     },
     created: function() {
-        courseService.getCourse(this.$route.params.id).then(response => {
-            console.log("courseservice run");
+        courseService.getCourse(this.$route.params.courseId).then(response => {
             if (response.status === 200) {
                 this.course = response.data;
             }
         }),
-        moduleService.getModules(this.$route.params.id).then(response => {
+        moduleService.getModules(this.$route.params.courseId).then(response => {
             if (response.status === 200) {
                 this.modules = response.data;
             }

@@ -10,6 +10,7 @@ import StudentHome from '../views/StudentHome.vue'
 import TeacherHome from '../views/TeacherHome.vue'
 import TeacherCourse from '../views/TeacherCourse.vue'
 import TeacherModule from '../views/TeacherModule.vue'
+import TeacherLesson from '../views/TeacherLesson.vue'
 
 Vue.use(Router)
 
@@ -81,17 +82,21 @@ const router = new Router({
     },
     
     {
-      path: '/teacher-home/course/:id',
+      path: '/teacher-home/course/:courseId',
       name: 'teacher-course',
       component: TeacherCourse
     },
 
     {
-      path: '/teacher-home/course/:courseId/module/:id',
+      path: '/teacher-home/course/:courseId/module/:moduleId',
       name: 'teacher-module',
       component: TeacherModule
+    },
+    {
+      path: '/teacher-home/course/:courseId/module/:moduleId/lesson/:lessonId',
+      name: 'teacher-lesson',
+      component: TeacherLesson
     }
-
   ]
 })
 

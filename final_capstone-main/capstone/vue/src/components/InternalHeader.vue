@@ -12,8 +12,8 @@
     <!-- Right navigation -->
     <div id="nav" class="right-nav">
       <div class="header-item">
-        <div id="notifications" class="icon alert">
-          <img src="../assets/notifications.svg" @click="toggleNotificationTray" />
+        <div id="notifications" class="icon notify" @click="toggleNotificationTray" :class="{ show: isNotificationTrayVisible }">
+          <img src="../assets/notifications.svg"  />
           <div id="notification-tray" :class="{ active: isNotificationTrayVisible }" tabindex="-1">
             <ul>
               <li>Notification #1</li>
