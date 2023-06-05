@@ -16,5 +16,7 @@ public interface UserDao {
 
     List<User> getStudentsByRoleName(String role);
 
+    List<User> getStudentsByCourseId(int courseId);
+
     boolean create(String username, String firstname, String lastname, String password, String role);
 }

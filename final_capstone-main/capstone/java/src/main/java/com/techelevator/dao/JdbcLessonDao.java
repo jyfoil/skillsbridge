@@ -98,7 +98,8 @@ public class JdbcLessonDao implements LessonDao {
     public List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId) {
         List<Lesson> lessons = new ArrayList<>();
         String sql = "SELECT * FROM lessons l JOIN modules m ON m.module_id = l.module_id WHERE l.module_id = ? AND m" +
-                ".course_id = ?;";
+                ".course_id = ? " +
+                "ORDER BY lesson_id";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, moduleId, courseId);
             while (results.next()) {

@@ -87,6 +87,10 @@ button:disabled {
     opacity:0.3;
 }
 
+button.small {
+    padding:0.25rem 1rem;
+}
+
 a {
     transition:all 200ms;
 }
@@ -95,6 +99,15 @@ a {
     display:flex;
     flex-direction: column;
     gap:10px;
+}
+
+.flex {
+    display:flex;
+    gap:10px;
+}
+
+.f-between {
+    justify-content: space-between;
 }
 
 .form-control {
@@ -122,7 +135,7 @@ a {
 label {
     display:block;
     margin-bottom:0.5rem;
-    font-size:0.8rem;
+    font-size:0.9rem;
     font-weight:bold;
 }
 
@@ -130,6 +143,10 @@ label {
     display:flex;
     gap:12px;
     justify-content: end;
+}
+
+.button-bar.left {
+    justify-content: start;
 }
 
 .center {
@@ -191,9 +208,18 @@ main section {
     height:19px;
 }
 
+.edit .icon, .delete .icon { height:18px; }
+
 .accordion {
     margin:1rem 0;
+    border:1px solid #CCC;
+    padding:12px;
 }
+
+.accordion h2, .accordion h3 {
+    margin-top:0;
+}
+
 .sign-up {
     text-decoration: none;
     text-align: center;
@@ -213,21 +239,51 @@ button .icon {
     filter:invert(1);
 }
 
-button.add {
+main button {
     border:1px solid #429CB9;
 }
 
-button.add:hover {
+main button:hover {
     background:white;
     color:#429CB9;
 }
 
-button.add:hover .icon {
+main button:hover .icon {
     filter:invert(0);
 }
 
 .w-100 {
     width:100%;
+}
+
+p.description {
+    background: #F5F5F5;
+    padding:12px;
+    border-radius:4px;
+    border:1px solid #CCC;
+}
+
+.capsule {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    display: inline;
+    border-radius: 5px;
+}
+
+.small {
+    font-size:0.75rem;
+}
+
+.mt-1 {
+    margin-top:1rem;
+}
+
+.mb-1 {
+    margin-bottom:1rem;
+}
+
+.underline {
+    border-bottom:1px solid #CCC;
 }
 
 @media screen and (max-width: 400px)  {

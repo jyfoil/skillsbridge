@@ -15,5 +15,8 @@ export default {
     },
     getLesson(lessonId) {
       return axios.get(`/lesson/${lessonId}`);
+    },
+    updateLesson(lesson) {
+      return axios.put(`/module/${lesson.moduleId}/lesson/${lesson.id}`, lesson);
     }
   }
