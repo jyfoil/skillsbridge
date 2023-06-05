@@ -8,7 +8,7 @@ public class Lesson {
     private String title;
     private String content;
     private String resources;
-    private LocalDate due_date;
+    private LocalDate dueDate;
     private String instructions;
     private boolean has_assignment;
 
@@ -16,13 +16,13 @@ public class Lesson {
 
     }
 
-    public Lesson(int id, int moduleId, String title, String content, String resources, LocalDate due_date, String instructions, boolean has_assignment) {
+    public Lesson(int id, int moduleId, String title, String content, String resources, LocalDate dueDate, String instructions, boolean has_assignment) {
         this.id = id;
         this.moduleId = moduleId;
         this.title = title;
         this.content = content;
         this.resources = resources;
-        this.due_date = due_date;
+        this.dueDate = dueDate;
         this.instructions = instructions;
         this.has_assignment = has_assignment;
     }
@@ -67,12 +67,12 @@ public class Lesson {
         this.resources = resources;
     }
 
-    public LocalDate getDue_date() {
-        return due_date;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setDue_date(LocalDate due_date) {
-        this.due_date = due_date;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getInstructions() {
@@ -99,7 +99,7 @@ public class Lesson {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", resources='" + resources + '\'' +
-                ", due_date=" + due_date +
+                ", due_date=" + dueDate +
                 ", instructions='" + instructions + '\'' +
                 ", has_assignment=" + has_assignment +
                 '}';

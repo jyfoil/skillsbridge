@@ -4,7 +4,7 @@
     <div class="header-left">
     <router-link :to="{ name: 'home' }" class="header-link">
       <div class="logo-container">
-        <img src="../assets/elearning.png" alt="Logo" class="logo">
+        <img src="../assets/SkillsBridge.png" alt="Logo" class="logo">
         <h3 class="portal-title">{{ msg }}</h3>
       </div>
     </router-link>
@@ -15,8 +15,8 @@
       <!-- Commenting out the notification bell -->
       <!--
       <div class="header-item">
-        <div id="notifications" class="icon alert">
-          <img src="../assets/notifications.svg" @click="toggleNotificationTray" />
+        <div id="notifications" class="icon notify" @click="toggleNotificationTray" :class="{ show: isNotificationTrayVisible }">
+          <img src="../assets/notifications.svg"  />
           <div id="notification-tray" :class="{ active: isNotificationTrayVisible }" tabindex="-1">
             <ul>
               <li>Notification #1</li>
