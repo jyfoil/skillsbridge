@@ -118,12 +118,12 @@ public class JdbcLessonDao implements LessonDao {
     @Override
     public Lesson updateLesson(Lesson lesson) {
         Lesson updatedLesson = null;
-        String sql = "UPDATE lessons SET module_id = ?, title = ?, content = ?, resources = ?, due_date = ?, " +
+        String sql = "UPDATE lessons SET title = ?, content = ?, resources = ?, due_date = ?, " +
                 "instructions = ? " +
                 "WHERE lesson_id = ?";
 
         try {
-            int numberOfRows = jdbcTemplate.update(sql, lesson.getModuleId(), lesson.getTitle(), lesson.getContent(),
+            int numberOfRows = jdbcTemplate.update(sql, lesson.getTitle(), lesson.getContent(),
                     lesson.getResources(), lesson.getDueDate(), lesson.getInstructions(), lesson.getId());
 
             if (numberOfRows == 0) {

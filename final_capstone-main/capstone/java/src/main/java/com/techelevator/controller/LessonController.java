@@ -69,9 +69,11 @@ public class LessonController {
         lessonDao.deleteLesson(id);
     }
 
-    @PutMapping("/lesson/{id}")
+    @PutMapping("/module/{moduleId}/lesson/{lessonId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Lesson updateLesson(@RequestBody Lesson lesson) {
+    public Lesson updateLesson(@PathVariable int moduleId, @PathVariable int lessonId, @RequestBody Lesson lesson) {
+        lesson.setModuleId(moduleId);
+        lesson.setId(lessonId);
         return lessonDao.updateLesson(lesson);
     }
 
