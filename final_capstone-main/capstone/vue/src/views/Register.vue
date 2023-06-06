@@ -6,7 +6,7 @@
     <main>
     <form class="form-register flex-column" @submit.prevent="register">
       <!--<h2 class="h3 mb-3 font-weight-normal">Create Account</h2>-->
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
+      <div class="alert alert-danger" @click="registrationErrors=false" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <div>

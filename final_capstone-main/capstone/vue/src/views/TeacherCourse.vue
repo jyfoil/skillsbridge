@@ -42,16 +42,17 @@
                             <input class="form-control filter-students" type="text" v-model="studentSearch" placeholder="Filter Students" />
                         </div>
                     </div>
-                    <div>
+                    <div class="student-details">
                         <div v-show="removeSuccessMsg != ''" @click="removeSuccessMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <div v-show="removeErrorMsg != ''" @click="removeErrorMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <student-details :student="selectedStudent" v-show="selectedStudent.username != ''" />
+                        <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
                     </div>
                 </section>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
                 <div class="accordion" :class="{ hide: hideAddStudentForm }">
                     <h3>Add Student to Course</h3>
-                    <label for="student-search">Search: </label><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email">
+                    <label for="student-search">Search: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
                     <div class="aStudentList">
                         <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched.</div>
                         <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
@@ -95,7 +96,8 @@ export default {
                 courseId: this.$route.params.courseId,
             },
             students: [],
-            allStudents: []
+            allStudents: [],
+            studentIds: []
         }
     },
     created: function() {
@@ -112,6 +114,7 @@ export default {
         studentService.getCourseStudents(this.$route.params.courseId).then(response => {
             if (response.status === 200) {
                 this.students = response.data;
+                this.updateStudentIdArray();
             }
         })
     },
@@ -119,6 +122,11 @@ export default {
         StudentDetails,
     },
     methods: {
+        updateStudentIdArray() {
+            this.students.forEach(s => {
+                this.studentIds.push(s.id);
+            });
+        },
         cancelForm() {
             this.clearForm();
             this.hideAddModuleForm = true;
@@ -155,20 +163,31 @@ export default {
             courseService.addStudent(this.course.courseId, this.foundStudent.id).then(response => {
                 if (response.status === 200) {
                     this.students.push(this.foundStudent);
+                    this.foundStudent = {};
+                    this.updateStudentIdArray();
                 }
             });
         },
         removeStudent() {
-            courseService.addStudent(this.course.courseId, this.foundStudent.id).then(response => {
-                if (response.status === 204) {
-                    this.students.pop(this.foundStudent);
-                    this.selectedStudent = '';
-                    this.removeSuccessMsg = "Student successfully removed from course.";
-                } else {
-                    this.removeErrorMsg = "There was an error removing the student.";
+            courseService.removeStudent(this.course.courseId, this.selectedStudent.id).then(response => {
+                if (confirm("Do you really want to remove this student from the course?")) {
+                    if (response.status === 204) {
+                        this.students.pop(this.selectedStudent);
+                        this.selectedStudent = { fullname:'', username:'' };
+                        this.removeSuccessMsg = "Student successfully removed from course.";
+                        this.updateStudentIdArray();
+                    } else {
+                        this.removeErrorMsg = "There was an error removing the student.";
+                    }
                 }
             });
         },
+        resetMessages() {
+            this.successMsg = '';
+            this.errorMsg = '';
+            this.removeSuccessMsg = '';
+            this.removeErrorMsg = '';
+        }
     },
     computed: {
         filteredAllStudents() {
@@ -176,7 +195,7 @@ export default {
             let search = this.studentAllSearch.toLowerCase();
             return this.allStudents.filter(s => {
                 let fullname = s.firstname.toLowerCase() + " " + s.lastname.toLowerCase();
-                return  (fullname.includes(search) || s.username.includes(search));
+                return  ((fullname.includes(search) || s.username.includes(search)) && !this.studentIds.includes(s.id));
             })
         },
         filteredStudents() {
@@ -194,6 +213,12 @@ export default {
             } else {
                 this.foundStudent = {};
             }
+        },
+        selectedStudent: function(s) {
+            //this.resetMessages();
+            if (s.username != '') {
+                this.resetMessages();
+            }
         }
     }
 }
@@ -207,6 +232,9 @@ export default {
     }
     .student-list-column {
         width:25%;
+    }
+    .student-details  {
+        flex-grow:1;
     }
     select.form-control {
         padding: inherit;
