@@ -144,11 +144,11 @@ label {
 .button-bar {
     display:flex;
     gap:12px;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .button-bar.left {
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 .center {
@@ -319,18 +319,43 @@ button.small {
     width:100%;
 }
 
-p.description {
-    background: #F5F5F5;
-    padding:12px;
-    border-radius:4px;
-    border:1px solid #CCC;
-}
+
+
+
+
+/* in module listing component? */
+
+
+
+
+
 
 .capsule {
     padding: 0.25rem 0.5rem;
     border: 1px solid #ccc;
     display: inline;
     border-radius: 5px;
+    cursor: pointer;
+    background:#dbeff5;
+}
+
+.utilities {
+    position:absolute;
+    right:0px;
+    bottom:6px;
+}
+
+.utilities > * {
+    cursor:pointer;
+}
+
+
+.bold {
+    font-weight:bold;
+}
+
+.border-top {
+    border-top:1px solid #ccc;
 }
 
 .small {
@@ -361,6 +386,13 @@ p.description {
     margin-bottom:1rem;
 }
 
+.mt-2 {
+    margin-top:2rem;
+}
+
+.mb-2 {
+    margin-bottom:2rem;
+}
 
 .underline {
     border-bottom:1px solid #CCC;

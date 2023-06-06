@@ -6,9 +6,15 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
-                <h2 class="underline">Modules</h2>
-                <section id="modules">
-                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }}</router-link></div>
+                <h2 class="underline">Course Description</h2>
+                <section id="description">
+                    <textarea class="form-control" type="text" :disabled="descriptionDisabled" v-model="course.description"></textarea>
+                    <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled" class="small">Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
+                </section>
+                <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
+                <section id="modules" :class="{ grid: gridView}">
+                    <!--<router-link class="module-listing" v-for="module in modules" :key="module.id" :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }} - <span class="small ">{{ module.description }}</span></router-link>-->
+                    <module-listing v-for="module in modules" :key="module.id" :module="module" />
                 </section>
                 <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
                 <div class="accordion" :class="{ hide: hideAddModuleForm }">
@@ -30,7 +36,7 @@
                         </div>
                     </form>
                 </div>
-                <h2 class="underline">Students</h2>
+                <h2 class="underline mt-2">Students</h2>
                 <section id="students">
                     <div class="student-list-column">
                         <h3 class="mt-0">Current Students</h3>
@@ -54,14 +60,18 @@
                     <h3>Add Student to Course</h3>
                     <label for="student-search">Search: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
                     <div class="aStudentList">
-                        <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched.</div>
+                        <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched. <span v-show="hideExtendedResults" @click="hideExtendedResults = false"><strong >View List</strong></span></div>
                         <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
                         <div v-else v-for="allStudent in filteredAllStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}} [{{allStudent.username}}]</div><button @click="addStudent" class="small add">Add Student</button></div>
+                    </div>
+                    <div class="flex border-top extended-results" v-show="!hideExtendedResults">
+                        <span>First five results:</span>
+                        <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
                     </div>
                 </div>
             </div>
             <section>
-                <h3>Latest Activity</h3>
+                <submissions-list :submissions="notifications" />
             </section>
         </main>
 
@@ -73,12 +83,17 @@ import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
 import studentService from '../services/StudentService.js'
 import StudentDetails from '../components/StudentDetails.vue'
+import ModuleListing from '../components/ModuleListing.vue'
+import SubmissionsList from '../components/SubmissionsList.vue'
 export default {
     data() {
         return {
             modules: [],
+            gridView: false,
+            descriptionDisabled: true,
             hideAddStudentForm: true,
             hideAddModuleForm: true,
+            hideExtendedResults: true,
             studentAllSearch: '',
             studentSearch: '',
             selectedStudent: { fullname:'', username:'' },
@@ -97,7 +112,21 @@ export default {
             },
             students: [],
             allStudents: [],
-            studentIds: []
+            studentIds: [],
+            notifications: [
+                {
+                    id: 10,
+                    fullname: "Harry Potter",
+                    lessonName: "Day Two Lesson",
+                    submitted_at: "2023-06-06 08:55:52.461254"
+                },
+                {
+                    id: 123,
+                    fullname: "John McClane",
+                    lessonName: "Day One Lesson",
+                    submitted_at: "2023-06-05 12:55:52.461254"
+                }
+            ],
         }
     },
     created: function() {
@@ -119,7 +148,7 @@ export default {
         })
     },
     components: {
-        StudentDetails,
+        StudentDetails, ModuleListing, SubmissionsList
     },
     methods: {
         updateStudentIdArray() {
@@ -164,6 +193,9 @@ export default {
                 if (response.status === 200) {
                     this.students.push(this.foundStudent);
                     this.foundStudent = {};
+                    this.studentAllSearch = '';
+                    this.hideAddStudentForm = true;
+                    this.hideExtendedResults = true;
                     this.updateStudentIdArray();
                 }
             });
@@ -229,6 +261,9 @@ export default {
         display:flex;
         gap:12px;
         align-content: start;
+        padding-bottom:1rem;
+        border-bottom:1px solid #CCC;
+        margin-bottom:1rem;
     }
     .student-list-column {
         width:25%;
@@ -256,4 +291,27 @@ export default {
         top:3px;
         opacity: 0.5;
     }
+    #description textarea {
+        min-height:150px;
+        resize:none;
+    }
+    #description textarea:disabled {
+        padding:0;
+        border:none;
+        background:white;
+    }
+    .extended-results {
+        padding-top:12px;
+        margin-top:12px;
+        align-items:center;
+    }
+    .grid {
+        display:flex;
+        gap:12px;
+    }
+    .grid .module-listing {
+        flex-basis:33%;
+        padding:2rem 1rem;
+    }
+
 </style>

@@ -7,13 +7,13 @@
         <main id="dashboard-content">
             <div id="content">
                 <div> 
-                    <h3>Module Description:</h3>
+                    <h2 class="underline">Module Description</h2>
                     <p class="description">{{ module.description }}</p>
                     <div v-if="lessons.length > 0"><div class="small capsule">{{lessons.length}} Lesson(s) in this module.</div></div>
                     <!--<p>Editable name/description by clicking on fields? (use enter key or 'save' button to commit)</p>-->
                     <button @click="deleteModule" :disabled="lessons.length > 0" class="mt-1 delete red small"><img class="icon invert" src="../assets/delete.svg" /> Delete Module</button>
                 </div>
-                <h2>Lessons</h2>
+                <h2 class="underline">Lessons</h2>
                 <section id="lessons">
                     <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'teacher-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}</router-link></h4></div>
                 </section>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <section>
-                <h3>Latest Activity</h3>
+                <h3>Latest Submissions</h3>
             </section>
         </main>
 
