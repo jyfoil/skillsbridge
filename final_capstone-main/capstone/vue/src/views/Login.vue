@@ -7,7 +7,7 @@
     <form class="form-signin flex-column" @submit.prevent="login">
       <div
         class="alert alert-danger"
-        role="alert"
+        role="alert" @click="invalidCredentials = false"
         v-if="invalidCredentials"
       >Invalid username and password!</div>
       <div
@@ -92,7 +92,6 @@ export default {
     }
   },
   created: function() {
-    console.log("created");
     if (this.$store.state.token != '') {
       console.log("not empty token");
       this.navigateToDashboard();
@@ -103,6 +102,9 @@ export default {
 <style>
 @import url('../assets/styles.css');
 
-
-
+</style>
+<style scoped>
+  .alert-success::after {
+    display:none;
+  }
 </style>

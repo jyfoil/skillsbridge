@@ -6,7 +6,7 @@ export default {
     },
     createLesson(lesson) {
       return axios.post(`/lesson`, lesson);
-  },
+    },
     getLessons(courseId) {
       return axios.get(`/course/${courseId}/lessons`);
     },
@@ -18,5 +18,8 @@ export default {
     },
     updateLesson(lesson) {
       return axios.put(`/module/${lesson.moduleId}/lesson/${lesson.id}`, lesson);
+    },
+    deleteLesson(lessonId) {
+      return axios.delete(`/lesson/${lessonId}`);
     }
   }

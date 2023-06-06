@@ -7,6 +7,16 @@ INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('user2@test.com', 'Ferris', 'Beuller', '$2a$10$0k0K2koW5bDX0sIBLusVVuy/OEf0bPmbSgMs0sIcm5uuCW.oCzd1C','ROLE_USER'); --user1/user1
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher1@test.edu', 'John', 'Kimble', '$2a$10$fvi6xnxafiZQm5y0.OAULOhLRJSUxEUIP0/1VIbmavTm7rQyMilrO','ROLE_ADMIN'); --teacher1@test.edu/teacher1
 INSERT INTO users (username, firstname, lastname, password_hash, role) VALUES ('teacher2@nowhere.edu', 'Nicole', 'Teacherly', '$2a$10$ncPxcUqCZHQpCgckZ32ubOKpG/doLvAoCGEKGHIY/WXcVwI4sY7em','ROLE_ADMIN'); -- teacher2/teacher2
+
+INSERT INTO users VALUES (7, 'Drud', 'Ochterlony', 'dochterlony0@skyrock.com', '$2a$10$5G87IPrht36eEREueKh2tOQkVHc/2ZUY/Pk0xqt840KE.Hkqo18W.', 'ROLE_USER'); -- passwords are first part of email (before @)
+INSERT INTO users VALUES (8, 'Danita', 'Jerams', 'djerams1@t.co', '$2a$10$.qovoI3Ws/eMAikOl.H3Zu0EoTvqNNrxeETrO93sz/rcItkTn9Xsy', 'ROLE_USER');
+INSERT INTO users VALUES (9, 'Athene', 'MacIlraith', 'amacilraith2@ifeng.com', '$2a$10$eT5WR5hypYJ/SgrXAV3qpuuvWbftGrUDP7kfmoYqYfGLLARadv9m2', 'ROLE_USER');
+INSERT INTO users VALUES (10, 'Bealle', 'Henke', 'bhenke3@theguardian.com', '$2a$10$1vWEp7WuJ30kmEH0O8VkQOF1tTCg8bXo0kMARA0lE/PUdEbkBX1E2', 'ROLE_USER');
+INSERT INTO users VALUES (11, 'Dewey', 'Dankov', 'ddankov@ebay.com', '$2a$10$jaTf8D0aIzGpn8qbvVppeeY4iII11Tl1.7heD0ndJR.WcIpbXPz8m', 'ROLE_USER');
+INSERT INTO users VALUES (12, 'Chris', 'Fosh', 'cfoshd@altervista.org', '$2a$10$7PNvFEoT0EFxLA1v/acu2eTDn6JFtNS68S./l5YkkdUIpus3BNJLK', 'ROLE_USER');
+
+
+
 INSERT INTO courses (teacher_id, name, description, difficulty) VALUES ((SELECT user_id FROM users WHERE username = 'teacher1@test.edu'), 'Intro to Things', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Moderate');
 insert into courses (teacher_id, name, description, difficulty) values ((SELECT user_id FROM users WHERE username = 'teacher2@nowhere.edu'), 'Debt, The', 'Donec posuere metus vitae ipsum. Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet.', 'Expert');
 insert into courses (teacher_id, name, description, difficulty) values ((SELECT user_id FROM users WHERE username = 'teacher1@test.edu'), 'I Love You Too', 'Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam. Nam tristique tortor eu pede.', 'Hard');

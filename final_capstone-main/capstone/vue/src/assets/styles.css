@@ -85,6 +85,7 @@ button:hover {
 
 button:disabled {
     opacity:0.3;
+    cursor:not-allowed;
 }
 
 button.small {
@@ -119,6 +120,7 @@ a {
     box-sizing:border-box;
     width:100%;
     font-family:Roboto;
+    font-size:0.9rem;
 }
 
 .form-signin, .form-register {
@@ -183,6 +185,10 @@ main section {
     display:none;
 }
 
+.show {
+    display:block;
+}
+
 .alert {
     border-radius:4px;
     border:1px solid #ccc;
@@ -190,6 +196,15 @@ main section {
     margin-bottom: 1rem;
     display:flex;
     justify-content: space-between;
+}
+
+.alert::after {
+    content: '';
+    background-image: url('close.svg');
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .alert-success {
@@ -219,6 +234,19 @@ main section {
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(247 247 247) 100%);
 }
 
+.header-accordion {
+    border:1px solid #ccc;
+    background-color: #efefef;
+    border-radius:2px;
+    padding:10px;
+    display:flex;
+    justify-content: space-between;
+}
+
+.accordion-container .accordion {
+    padding:12px;
+}
+
 .accordion h2, .accordion h3 {
     margin-top:0;
     position:absolute;
@@ -231,6 +259,11 @@ main section {
     box-sizing: border-box;
 }
 
+.height-limit {
+    max-height:400px;
+    overflow:auto;
+}
+
 .sign-up {
     text-decoration: none;
     text-align: center;
@@ -240,6 +273,9 @@ main section {
 .return-button {
     background:rgba(0,0,0,0.5);
     font-size:0.9rem;
+}
+.return-button:hover {
+    background:rgba(0,0,0,0.9);
 }
 
 button .icon {
@@ -254,12 +290,12 @@ main button {
     border:1px solid #429CB9;
 }
 
-main button:hover {
+main button:not([disabled]):hover {
     background:white;
     color:#429CB9;
 }
 
-main button:hover .icon {
+main button:not([disabled]):hover .icon {
     filter:invert(0);
 }
 
@@ -268,7 +304,7 @@ button.red {
     border-color: #c73d3d;
 }
 
-button.red:hover {
+button.red:not([disabled]):hover {
     background:white;
     color:#c73d3d;
 }
@@ -301,6 +337,14 @@ p.description {
     font-size:0.75rem;
 }
 
+.p-0 {
+    padding:0;
+}
+
+.m-0 {
+    margin:0;
+}
+
 .mt-0 {
     margin-top:0;
 }
@@ -316,6 +360,7 @@ p.description {
 .mb-1 {
     margin-bottom:1rem;
 }
+
 
 .underline {
     border-bottom:1px solid #CCC;

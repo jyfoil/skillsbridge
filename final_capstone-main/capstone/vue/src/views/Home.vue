@@ -35,7 +35,7 @@
                 <button type="submit">Sign in</button>
               </form>
           </div>
-          <router-link v-if="$store.state.token === ''" tag="button" :to="{ name: 'Student Home' }">View Available Courses</router-link>
+          <!--<router-link v-if="$store.state.token === ''" tag="button" :to="{ name: 'Student Home' }">View Available Courses</router-link>-->
           <div v-else-if="$store.state.user.authorities[0].name === 'ROLE_USER'"><h4 class="center">Hello, {{ $store.state.user.firstname }}</h4><router-link tag="button" :to="{ name: 'Student Home' }">View My Courses</router-link></div>
           <div v-else-if="$store.state.user.authorities[0].name === 'ROLE_ADMIN'"><h4 class="center">Hello, {{ $store.state.user.firstname }}</h4><router-link tag="button" :to="{ name: 'Teacher Home' }">View My Courses</router-link></div>
         </div>

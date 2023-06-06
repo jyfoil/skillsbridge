@@ -8,9 +8,17 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
+                <div class="accordion-container mb-1">
+                    <div class="header-accordion" @click="displayLesson = !displayLesson"><h3 class="m-0">Lesson Content</h3><img v-show="!displayLesson" class="icon" src="../assets/arrow_drop_down.svg" /><img v-show="displayLesson" class="icon" src="../assets/arrow_drop_up.svg" /></div>
+                    <div class="accordion mt-0 height-limit" v-show="displayLesson">
+                        {{ lesson.content }}
+                    </div>
+
+                </div>
+
                 <div class="button-bar left"> 
                     <button class="edit" @click="hideEditLessonForm = !hideEditLessonForm"><img class="icon invert" src="../assets/edit.svg" />Edit Lesson</button>
-                    <button class="delete" ><img class="icon invert" src="../assets/delete.svg" />Delete Lesson</button>
+                    <button class="delete red small" @click="deleteLesson"><img class="icon invert" src="../assets/delete.svg" />Delete Lesson</button>
                 </div>
                 <div class="accordion" :class="{ hide: hideEditLessonForm }">
                     <h3>Edit Lesson</h3>
@@ -36,11 +44,11 @@
                             </div>
                             <div v-show="lesson.has_assignment">
                                 <label for="dueDate">Due Date</label>
-                                <input type="date" id="dueDate" class="form-control" v-model="lesson.due_date" />
+                                <input type="date" id="dueDate" class="form-control" v-model="lesson.dueDate" />
                             </div>
                             <div v-show="lesson.has_assignment">
                                 <label for="instructions">Instructions</label>
-                                <textarea type="textarea" class="form-control" id="instructions"></textarea>
+                                <textarea type="textarea" class="form-control" id="instructions" v-model="lesson.instructions"></textarea>
                             </div>
                             <div class="button-bar">
                                 <button>Save</button>
@@ -66,6 +74,7 @@ import lessonService from '../services/LessonService.js'
 export default {
     data() {
         return {
+            displayLesson: false,
             hideEditLessonForm: true,
             course: {},
             module: {
@@ -111,7 +120,17 @@ export default {
             lessonService.updateLesson(this.lesson).then(response => {
                 if (response.status === 200) {
                     this.lesson = response.data;
-                    this.$router.push({name: 'teacher-course', params: {courseId:this.lesson.courseId}})
+                    this.successMsg = "Lesson updated.";
+                    //this.$router.push({name: 'teacher-course', params: {courseId:this.lesson.courseId}})
+                } else {
+                    this.errorMsg = "There was a problem updating the lesson.";
+                }
+            });
+        },
+        deleteLesson() {
+            lessonService.deleteLesson(this.lesson.id).then(response => {
+                if (response.status === 204) {
+                    this.$router.push({name: 'teacher-module', params: { courseId: this.module.courseId, moduleId: this.module.id}})
                 }
             });
         }
