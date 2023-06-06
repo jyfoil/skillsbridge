@@ -214,10 +214,21 @@ main section {
     margin:1rem 0;
     border:1px solid #CCC;
     padding:12px;
+    position:relative;
+    padding-top:3.5rem;
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(247 247 247) 100%);
 }
 
 .accordion h2, .accordion h3 {
     margin-top:0;
+    position:absolute;
+    padding:0.5rem 1rem;
+    background:#14536f;
+    color:white;
+    top:0;
+    left:0;
+    width:100%;
+    box-sizing: border-box;
 }
 
 .sign-up {
@@ -252,6 +263,22 @@ main button:hover .icon {
     filter:invert(0);
 }
 
+button.red {
+    background: #c73d3d;
+    border-color: #c73d3d;
+}
+
+button.red:hover {
+    background:white;
+    color:#c73d3d;
+}
+
+button.small {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    font-weight:normal;
+}
+
 .w-100 {
     width:100%;
 }
@@ -274,6 +301,14 @@ p.description {
     font-size:0.75rem;
 }
 
+.mt-0 {
+    margin-top:0;
+}
+
+.mb-0 {
+    margin-bottom:0;
+}
+
 .mt-1 {
     margin-top:1rem;
 }
@@ -284,6 +319,10 @@ p.description {
 
 .underline {
     border-bottom:1px solid #CCC;
+}
+
+.p-relative {
+    position:relative;
 }
 
 @media screen and (max-width: 400px)  {
