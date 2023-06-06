@@ -128,6 +128,25 @@ public class JdbcCourseDao implements CourseDao {
     }
 
     @Override
+    public String getCourseNameFromLessonId(int id) {
+        String courseName = null;
+        String sql = "SELECT c.name FROM lessons l " +
+                "JOIN modules m ON l.module_id = m.module_id " +
+                "JOIN courses c on m.course_id = c.course_id " +
+                "WHERE l.lesson_id = ?";
+
+        try {
+            courseName = jdbcTemplate.queryForObject(sql, String.class, id);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return courseName;
+    }
+
+    @Override
     public void addStudentToCourse(int studentId, int courseId) {
         String sql = "INSERT INTO student_courses VALUES (?, ?)";
 

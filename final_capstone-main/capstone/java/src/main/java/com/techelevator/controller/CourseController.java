@@ -65,6 +65,7 @@ public class CourseController {
     }
 
     @GetMapping("/course/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Course getCourseById(@PathVariable int id) {
         return courseDao.getCourseByCourseId(id);
     }

@@ -69,6 +69,23 @@ public class JdbcLessonDao implements LessonDao {
         return lesson;
     }
 
+    @Override
+    public String getLessonNameFromLessonId(int id) {
+        String lessonName = null;
+
+        String sql = "SELECT title FROM lessons WHERE lesson_id = ?";
+
+        try {
+            lessonName = jdbcTemplate.queryForObject(sql, String.class, id);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return lessonName;
+    }
+
 //    @Override
 //    public List<Lesson> getLessonsByCourseId(int courseId) {
 //        // check that user has access to this course

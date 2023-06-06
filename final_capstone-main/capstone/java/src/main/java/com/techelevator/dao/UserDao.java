@@ -14,6 +14,8 @@ public interface UserDao {
 
     int findIdByUsername(String username);
 
+    String getNameByUsername(String username);
+
     List<User> getStudentsByRoleName(String role);
 
     List<User> getStudentsByCourseId(int courseId);

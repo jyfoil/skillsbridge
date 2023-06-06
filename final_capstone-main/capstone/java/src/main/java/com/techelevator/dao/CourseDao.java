@@ -17,6 +17,8 @@ public interface CourseDao {
 
     List<Course> getStudentCoursesByStudentId(int id);
 
+    String getCourseNameFromLessonId(int id);
+
     void addStudentToCourse(int studentId, int courseId);
 
     void deleteStudentFromCourse(int studentId, int courseId);

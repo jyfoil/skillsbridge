@@ -76,10 +76,4 @@ public class LessonController {
         lesson.setId(lessonId);
         return lessonDao.updateLesson(lesson);
     }
-
-    // Submission method teacher only
-    // SubmissionDTO with content
-    // Pass back true or response status
-
-    // teacherSetSubmissonGrade
 }

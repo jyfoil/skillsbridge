@@ -13,6 +13,8 @@ public interface LessonDao {
 
 //    List<Lesson> getLessonsByCourseId(int courseId);
 
+    String getLessonNameFromLessonId(int id);
+
     Lesson createLesson(LessonDTO newLesson);
 
     List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId);
