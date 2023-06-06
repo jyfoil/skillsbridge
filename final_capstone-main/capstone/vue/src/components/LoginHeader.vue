@@ -1,29 +1,17 @@
 <template>
   <header id="header">
-    <router-link :to="{ name: 'home' }" class="header-link">
-      <div class="logo-container">
-        <img src="../assets/elearning.png" alt="Logo" class="logo">
-        <h3 class="portal-title">{{ msg }}</h3>
-      </div>
-    </router-link>
-    
-
-    <div id="nav" v-if="$store.state.token != ''">
-      <router-link :to="{ name: 'my-courses' }" class="header-link">My Courses</router-link>
-      <div id="notifications" class="icon alert show">
-        <img src="../assets/notifications.svg" />
-        <div id="notification-tray">
-          <ul>
-            <li>Notification #1</li>
-            <li>Notification #2</li>
-          </ul>
+    <div class="header-left">
+      <router-link :to="{ name: 'home' }" class="header-link">
+        <div class="logo-container">
+          <img src="../assets/SkillsBridge.png" alt="Logo" class="logo">
+          <h3 class="portal-title">{{ msg }}</h3>
         </div>
-      </div>
-      <router-link :to="{ name: 'logout' }" >Logout</router-link>
+      </router-link>
     </div>
-    <div id="nav" v-else>
-      <router-link v-bind:to="{ name: 'login' }" > Login</router-link>
-      <router-link v-bind:to="{ name: 'register' }" >Register</router-link>
+    <div class="header-right">
+      <router-link :to="{ name: 'login' }">Login</router-link>
+      <span class="separator"> |</span>
+      <router-link :to="{ name: 'register' }">Register</router-link>
     </div>
   </header>
 </template>
@@ -38,35 +26,50 @@ export default {
 header {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0px 10px 0px 10px;
 }
 
-header .portal-title {
+.header-left {
   flex-grow: 1;
 }
 
-#notification-tray {
-  display: none;
-  position: absolute;
+.logo-container {
+  display: flex;
+  align-items: center;
 }
 
-#notifications.show #notification-tray {
-  display: block;
-  right: 0;
-  min-width: 200px;
-  border: 1px solid #CCC;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background: white;
-  z-index: 100;
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.portal-title {
+  margin-left: 10px;
+  color: #444 ;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
 }
 
 header a {
   color: #429CB9;
   text-decoration: none;
   font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 header a:hover {
   color: #195468;
 }
+
+.separator {
+  margin: 0 5px;
+  color: #429CB9;
+  font-weight: bold;
+}
+
 </style>

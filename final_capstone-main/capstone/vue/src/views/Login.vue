@@ -16,7 +16,7 @@
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
       <div>
-      <label for="username" class="sr-only">Username</label>
+      <!-- <label for="username" class="sr-only">Username</label> -->
       <input
         type="text"
         id="username"
@@ -27,7 +27,7 @@
         autofocus
       /></div>
       <div>
-      <label for="password" class="sr-only">Password</label>
+      <!-- <label for="password" class="sr-only">Password</label> -->
       <input
         type="password"
         id="password"
@@ -68,12 +68,7 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            if (this.$store.state.user.authorities[0].name == 'ROLE_USER') {
-              this.$router.push({name: 'Student Home'});
-            }
-            else if (this.$store.state.user.authorities[0].name == 'ROLE_ADMIN') {
-              this.$router.push({name: 'Teacher Home'});
-            }
+            this.navigateToDashboard();
           }
         })
         .catch(error => {
@@ -86,6 +81,21 @@ export default {
     },
     navigateToCourses() {
       this.$router.push("/course-list");
+    },
+    navigateToDashboard() {
+      if (this.$store.state.user.authorities[0].name == 'ROLE_USER') {
+        this.$router.push({name: 'Student Home'});
+      }
+      else if (this.$store.state.user.authorities[0].name == 'ROLE_ADMIN') {
+        this.$router.push({name: 'Teacher Home'});
+      }
+    }
+  },
+  created: function() {
+    console.log("created");
+    if (this.$store.state.token != '') {
+      console.log("not empty token");
+      this.navigateToDashboard();
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="course-listing">
-      <router-link :to="{name:'teacher-course', params: { id: course.courseId }}"><div class="course-title">{{course.name}}</div></router-link>
+      <router-link :to="{name:'teacher-course', params: { courseId: course.courseId }}"><div class="course-title">{{course.name}}</div></router-link>
   </div>
 </template>
 

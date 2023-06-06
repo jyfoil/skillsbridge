@@ -9,6 +9,11 @@ import Courses from '../views/CourseList.vue'
 import StudentHome from '../views/StudentHome.vue'
 import TeacherHome from '../views/TeacherHome.vue'
 import TeacherCourse from '../views/TeacherCourse.vue'
+import TeacherModule from '../views/TeacherModule.vue'
+import TeacherLesson from '../views/TeacherLesson.vue'
+import StudentCourse from '../views/StudentCourse.vue'
+import StudentModule from '../views/StudentModule.vue'
+import StudentLesson from '../views/StudentLesson.vue'
 
 Vue.use(Router)
 
@@ -70,21 +75,73 @@ const router = new Router({
     {
       path: "/student-home",
       name: "Student Home",
-      component: StudentHome
+      component: StudentHome,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
       path: "/teacher-home",
       name: "Teacher Home",
-      component: TeacherHome
+      component: TeacherHome,
+      meta: {
+        requiresAuth: true
+      }
     },
     
     {
-      path: '/teacher-home/course/:id',
+      path: '/teacher-home/course/:courseId',
       name: 'teacher-course',
-      component: TeacherCourse
-    }
+      component: TeacherCourse,
+      meta: {
+        requiresAuth: true
+      }
+    },
 
+    {
+      path: '/teacher-home/course/:courseId/module/:moduleId',
+      name: 'teacher-module',
+      component: TeacherModule,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/teacher-home/course/:courseId/module/:moduleId/lesson/:lessonId',
+      name: 'teacher-lesson',
+      component: TeacherLesson,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: '/student-home/course/:courseId',
+      name: 'student-course',
+      component: StudentCourse,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: '/student-home/course/:courseId/module/:moduleId',
+      name: 'student-module',
+      component: StudentModule,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: '/student-home/course/:courseId/module/:moduleId/lesson/:lessonId',
+      name: 'student-lesson',
+      component: StudentLesson,
+      meta: {
+        requiresAuth: true
+      }
+    }
   ]
 })
 

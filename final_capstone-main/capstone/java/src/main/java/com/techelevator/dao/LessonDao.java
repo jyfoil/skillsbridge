@@ -7,15 +7,17 @@ import java.security.Principal;
 import java.util.List;
 
 public interface LessonDao {
-    Lesson getLessonByIdAndCourseId(int lessonId, int courseId);
+//    Lesson getLessonByIdAndCourseId(int lessonId, int courseId);
 
     Lesson getLessonById(int lessonId);
 
-    List<Lesson> getLessonsByCourseId(int courseId);
+//    List<Lesson> getLessonsByCourseId(int courseId);
 
     Lesson createLesson(LessonDTO newLesson);
 
-    List<Lesson> getLessonsByModule(int moduleId, int courseId);
+    List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId);
+
+    Lesson updateLesson(Lesson lesson);
 
     void deleteLesson(int id);
 }

@@ -6,9 +6,9 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
-                <h2>Modules</h2>
+                <h2 class="underline">Modules</h2>
                 <section id="modules">
-                    <div v-for="module in modules" :key="module.id">{{ module.name }}</div>
+                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }}</router-link></div>
                 </section>
                 <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
                 <div class="accordion" :class="{ hide: hideAddModuleForm }">
@@ -30,6 +30,28 @@
                         </div>
                     </form>
                 </div>
+                <h2 class="underline">Students</h2>
+                <section id="students">
+                    <div class="student-list-column">
+                        <h3>Current Students</h3>
+                        <select class="student-list w-100 form-control" size="8">
+                            <option disabled value="">Select a Student</option>
+                            <option v-for="student in students" :key="student.id" value="student.id">{{student.firstname}} {{student.lastname}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <h3>Student Details</h3>
+                    </div>
+                </section>
+                <button class="add" @click="hideAddStudentForm = !hideAddStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
+                <div class="accordion" :class="{ hide: hideAddStudentForm }">
+                    <h3>Add Student to Course</h3>
+                    <label for="student-search">Search: </label><input id="student-search" type="text" class="mb-1 form-control" v-model="studentSearch">
+                    <div class="aStudentList">
+                        <div v-if="filteredStudents.length > 1">{{ filteredStudents.length }} students matched.</div>
+                        <div v-else v-for="allStudent in filteredStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}}</div><button class="small add">Add Student</button></div>
+                    </div>
+                </div>
             </div>
             <section>
                 <h3>Latest Activity</h3>
@@ -46,27 +68,57 @@ export default {
     data() {
         return {
             modules: [],
-             hideAddModuleForm: true,
-             course: {
-                 courseId: this.$route.params.id,
-                 name: '',
-                 description: ''
-             },
-             successMsg: '',
-             errorMsg: '',
-             newModule: {
-                 courseId: this.$route.params.id,
-             }
+            hideAddStudentForm: true,
+            hideAddModuleForm: true,
+            studentSearch: '',
+            course: {
+                courseId: this.$route.params.courseId,
+                name: '',
+                description: ''
+            },
+            successMsg: '',
+            errorMsg: '',
+            newModule: {
+                courseId: this.$route.params.courseId,
+            },
+            students: [
+                {
+                id:3,
+                firstname:'Studious',
+                lastname:'Maximus',
+                },
+                {
+                id:4,
+                firstname:'Ferris',
+                lastname:'Beuller',
+                }
+            ],
+            allStudents: [
+                {
+                id:3,
+                firstname:'Studious',
+                lastname:'Maximus',
+                },
+                {
+                id:4,
+                firstname:'Ferris',
+                lastname:'Beuller',
+                },
+                {
+                id:1,
+                firstname:'Sally',
+                lastname:'User',
+                }
+            ]
         }
     },
     created: function() {
-        courseService.getCourse(this.$route.params.id).then(response => {
-            console.log("courseservice run");
+        courseService.getCourse(this.$route.params.courseId).then(response => {
             if (response.status === 200) {
                 this.course = response.data;
             }
         }),
-        moduleService.getModules(this.$route.params.id).then(response => {
+        moduleService.getModules(this.$route.params.courseId).then(response => {
             if (response.status === 200) {
                 this.modules = response.data;
             }
@@ -96,11 +148,38 @@ export default {
                     this.errorMsg = "There was an error creating the module.";
                 }
             });
+        },
+        addStudentForm() {
+            // todo: grab list of all students from the back end (costly, eventually want to add search function)
+        },
+
+    },
+    computed: {
+        filteredStudents() {
+            let search = this.studentSearch.toLowerCase();
+            return this.allStudents.filter(s => {
+                let fullname = s.firstname.toLowerCase() + " " + s.lastname.toLowerCase();
+                return  (fullname.includes(search));
+            })
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    #students {
+        display:flex;
+        gap:12px;
+        align-content: start;
+    }
+    .student-list-column {
+        width:25%;
+    }
+    select.form-control {
+        padding: inherit;
+        outline:1px solid #888;
+    }
+    .student-list option {
+        padding: 2px 10px;
+    }
 </style>

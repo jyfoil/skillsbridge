@@ -141,7 +141,13 @@ public class CourseController {
         return users;
     }
 
-    @PostMapping("/course/{courseId}/students/{studentId}")
+    @GetMapping("/course/{courseId}/students")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<User> getStudentsByCourse(@PathVariable int courseId) {
+        return userDao.getStudentsByCourseId(courseId);
+    }
+
+    @PostMapping("/course/{courseId}/student/{studentId}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
