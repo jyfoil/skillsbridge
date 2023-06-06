@@ -9,15 +9,15 @@
                 <section id="courses">
                     <course-listing :course="course" v-for="course in courses" :key="course.courseId" />
                 </section>
-                <button @click="hideAddClassForm = !hideAddClassForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Course</button>
+                <button @click="focusCreateForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Create Course</button>
                 <div class="accordion" :class="{ hide: hideAddClassForm }">
                     <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
                     <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <h3>Add New Course</h3>
+                    <h3>Create New Course</h3>
                     <form @submit.prevent="createClass" class="flex-column">
                         <div>
                             <label for="name">Name:</label>
-                            <input id="name" type="text" class="form-control" v-model="newCourse.name" placeholder="Course Name" required />
+                            <input id="name" ref="courseName" type="text" class="form-control" v-model="newCourse.name" placeholder="Course Name" required />
                         </div>
                         <div>
                             <label for="description">Description:</label>
@@ -42,10 +42,17 @@
                 </div>
             </div>
             <section>
-                <h3>Latest Activity</h3>
+                <div id="notifications-column">
+                    <h3 class="underline">Latest Activity</h3>
+                    <div id="notifications-list">
+                        <div>
+                            <span class="sName">12 submissions</span> in <span class="lName">Intro to Things</span>
+                        </div>
+                        <div>View All Submissions</div>
+                    </div>
+                </div>
             </section>
         </main>
-
     </div>
 </template>
 
@@ -87,6 +94,12 @@ export default {
         CourseListing,
     },
     methods: {
+        focusCreateForm() {
+            this.hideAddClassForm = !this.hideAddClassForm;
+            if (!this.hideAddClassForm) {
+                this.$refs.courseName.focus();
+            }
+        },
         cancelForm() {
             this.clearForm();
             this.hideAddClassForm = true;
@@ -120,4 +133,26 @@ export default {
         gap:12px; 
     }
     button img.icon { width: 25px; margin-right:0.25rem; margin-top:-2px; margin-left:-7px; }
+    #notifications-column h3 {
+        line-height:1.6;
+    }
+    #notifications-list {
+        font-size:0.9rem;
+    }
+
+    #notifications-list div {
+        border-bottom:1px solid #CCC;
+        padding-bottom:12px;
+        margin-bottom:12px;
+        color:#888;
+    }
+
+    #notifications-list div:last-child {
+        border-bottom:0;
+    }
+
+    .sName, .lName {
+        /* font-weight:bold; */
+        color:#444;
+    }
 </style>

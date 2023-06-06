@@ -9,6 +9,11 @@ export default {
     },
     createCourse(course) {
         return axios.post('/course', course);
+    },
+    addStudent(courseId, studentId) {
+        return axios.post(`/course/${courseId}/student/${studentId}`);
+    },
+    removeStudent(courseId, studentId) {
+        return axios.delete(`/course/${courseId}/students/${studentId}`);
     }
-
   }
