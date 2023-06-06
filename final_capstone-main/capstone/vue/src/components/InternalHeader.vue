@@ -28,7 +28,7 @@
       -->
       
       <div class="header-right">
-        <router-link :to="{ name: 'my-courses' }" class="header-link">
+         <router-link :to="myCoursesLink" class="header-link">
           My Courses
         </router-link>
         <span class="separator"> |</span>
@@ -53,6 +53,18 @@ export default {
     },
     hideNotificationTray() {
       this.isNotificationTrayVisible = false;
+    },
+  },
+
+    computed: {
+    myCoursesLink() {
+      if (this.$store.state.user.authorities[0].name === 'ROLE_TEACHER') {
+        return { name: '/teacher-home' };
+      } else if (this.$store.state.user.authorities[0].name === 'ROLE_STUDENT') {
+        return { name: '/student-home' };
+      } else {
+        return { name: 'home' };
+      }
     },
   },
 };
