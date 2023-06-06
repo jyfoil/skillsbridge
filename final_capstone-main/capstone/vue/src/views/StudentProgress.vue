@@ -23,8 +23,8 @@ export default {
     };
   },
   async mounted() {
-    const userId = /* Retrieve user ID here */;
-    const courseId = /* Retrieve course ID here */;
+    const userId = this.$store.state.userId;;
+    const courseId = this.$store.state.courseId;
     
     const modules = await ModuleService.getModules(courseId);
     const completedLessons = await ProgressService.getCompletedLessonsForUser(userId);
