@@ -29,7 +29,7 @@ CREATE TABLE student_courses (
 CREATE TABLE modules (
     module_id SERIAL,
     course_id INT NOT NULL,
-    name VARCHAR(20),
+    name VARCHAR(100),
     description TEXT,
     CONSTRAINT PK_module PRIMARY KEY(module_id),
     CONSTRAINT FK_module_course FOREIGN KEY(course_id) REFERENCES courses(course_id)
@@ -38,7 +38,7 @@ CREATE TABLE modules (
 CREATE TABLE lessons (
     lesson_id SERIAL,
     module_id INT NOT NULL,
-    title VARCHAR(60) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
     resources TEXT,
     due_date TIMESTAMP,

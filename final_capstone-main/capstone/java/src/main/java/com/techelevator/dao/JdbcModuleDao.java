@@ -1,7 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.exception.DaoException;
-import com.techelevator.model.Lesson;
+import com.techelevator.model.CourseNotFoundException;
 import com.techelevator.model.Module;
 import com.techelevator.model.ModuleNotFoundException;
 import com.techelevator.model.User;
@@ -16,18 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcModuleDao implements ModuleDao{
+public class JdbcModuleDao implements ModuleDao {
     private final JdbcTemplate jdbcTemplate;
+
     public JdbcModuleDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public List<Module> getModulesByUser(User user) {
+
+        // Currently unused method not sure if it is even valid as getting modules should not be by User
+        // There is already a getModulesByCourse method so this might need to be deleted
+
         List<Module> modules = new ArrayList<>();
-        String sql = "SELECT module_id, m.course_id, name, description FROM modules m JOIN student_courses sc ON sc.course_id = m.course_id WHERE student_id = ?;";
+        String sql = "SELECT module_id, m.course_id, name, description FROM modules m JOIN student_courses sc ON sc" +
+                ".course_id = m.course_id WHERE student_id = ?;";
         if (user.getAuthorities().contains("ROLE_ADMIN")) {
-            sql = "SELECT module_id, m.course_id, m.name, m.description FROM modules m JOIN courses c ON c.course_id = m.course_id WHERE c.teacher_id = ?;";
+            sql = "SELECT module_id, m.course_id, m.name, m.description FROM modules m JOIN courses c ON c.course_id " +
+                    "= m.course_id WHERE c.teacher_id = ?;";
         }
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user.getId());
         if (results.next()) {
@@ -40,23 +47,34 @@ public class JdbcModuleDao implements ModuleDao{
 
     @Override
     public Module getModuleById(int moduleId) {
+        Module module = null;
         String sql = "SELECT * FROM modules WHERE module_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, moduleId);
-        if (results.next()) {
-            return mapRowToModule(results);
-        } else {
-            throw new ModuleNotFoundException();
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, moduleId);
+
+            if (results.next()) {
+                module = mapRowToModule(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
         }
+
+        return module;
     }
 
     @Override
     public Module createModule(Module module) {
-        String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
         Module newModule = null;
+        System.out.println(module);
+        String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
         try {
-            Integer moduleId = 0;
-            moduleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(), module.getName(), module.getDescription());
-            newModule = getModuleById(moduleId);
+            Integer newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(),
+                    module.getName(),
+                    module.getDescription());
+            newModule = getModuleById(newModuleId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (BadSqlGrammarException e) {
@@ -81,6 +99,26 @@ public class JdbcModuleDao implements ModuleDao{
             throw new DaoException("Data integrity violation", e);
         }
         return numberOfRows;
+    }
+
+    @Override
+    public List<Module> getModulesByCourse(int courseId) {
+        String sql = "SELECT * FROM modules WHERE course_id = ?";
+        List<Module> modules = new ArrayList<>();
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+            while (results.next()) {
+                modules.add(mapRowToModule(results));
+            }
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return modules;
     }
 
     private Module mapRowToModule(SqlRowSet rs) {

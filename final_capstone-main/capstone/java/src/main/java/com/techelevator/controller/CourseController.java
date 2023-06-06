@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import com.techelevator.dao.CourseDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.model.Authority;
 import com.techelevator.model.Course;
 import com.techelevator.model.CourseDTO;
 import com.techelevator.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -62,48 +64,76 @@ public class CourseController {
         courseDao.deleteCourseByCourseId(id);
     }
 
-    @GetMapping("/teacher/courses")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<CourseDTO> getTeacherCourses(Principal principal) {
-
-        // Similar behavior to create method
-        int teacherId = userDao.findIdByUsername(principal.getName());
-
-        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
-        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
-        for (Course eachTeacherCourse : teacherCourses) {
-            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
-        }
-
-        return teacherCoursesDto;
+    @GetMapping("/course/{id}")
+    public Course getCourseById(@PathVariable int id) {
+        return courseDao.getCourseByCourseId(id);
     }
 
-    @GetMapping("/student/courses")
-    @PreAuthorize("hasRole('USER')")
-    public List<CourseDTO> getStudentCourses(Principal principal) {
+//    @GetMapping("/teacher/courses")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public List<CourseDTO> getTeacherCourses(Principal principal) {
+//        // Similar behavior to create method
+//        int teacherId = userDao.findIdByUsername(principal.getName());
+//
+//        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
+//        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
+//        for (Course eachTeacherCourse : teacherCourses) {
+//            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
+//        }
+//
+//        return teacherCoursesDto;
+//    }
 
-        // TODO Currently gives a invalid column error in postman
-        // TODO Think I figured it out it has to do with the mapping methods
-        // TODO Mapping methods use course_id to get the rowset value
-        // TODO need to figure out a way to change sql string to reflect this
-        // Seems like something about the query string but it works in pgadmin fine
-        int studentId = userDao.findIdByUsername(principal.getName());
-        List<Course> courses = courseDao.getStudentCoursesByStudentId(studentId);
-        List<CourseDTO> studentCoursesDto = new ArrayList<>();
-        for (Course eachCourse : courses) {
-            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+
+//    @GetMapping("/student/courses")
+//    @PreAuthorize("hasRole('USER')")
+//    public List<CourseDTO> getStudentCourses(Principal principal) {
+//
+//        int studentId = userDao.findIdByUsername(principal.getName());
+//
+//        List<Course> studentCourses = courseDao.getStudentCoursesByStudentId(studentId);
+//        List<CourseDTO> studentCoursesDto = new ArrayList<>();
+//        for (Course eachCourse : studentCourses) {
+//            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+//        }
+//
+//        return studentCoursesDto;
+//    }
+
+    @GetMapping("/courses")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<CourseDTO> getCourses(Principal principal) {
+
+        // This method gets the courses of the logged in user
+        // This does what the getStudentCourses and getTeacherCourses does but in a single method
+        // Those methods currently commented out and kept in case needed later
+
+        int userId = userDao.findIdByUsername(principal.getName());
+        User currentLoggedInUser = userDao.getUserById(userId);
+
+        String role = "";
+        Set<Authority> auth = currentLoggedInUser.getAuthorities();
+
+        for (Authority eachAuth : auth) {
+            String authorityName = eachAuth.getName();
+            if (authorityName.equals("ROLE_ADMIN") || (authorityName.equals("ROLE_USER"))) {
+                role = authorityName;
+            }
         }
 
-        return studentCoursesDto;
+        List<Course> courses = (role.equals("ROLE_ADMIN")) ? courseDao.getTeacherCoursesByTeacherId(userId) :
+                courseDao.getStudentCoursesByStudentId(userId);
+        List<CourseDTO> coursesDto = new ArrayList<>();
+        for (Course eachCourse : courses) {
+            coursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
+        }
+
+        return coursesDto;
     }
 
     @GetMapping("/students")
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getStudents() {
-        // Not sure if this should return a String which is the full name
-        // Or if it should return user object
-        // Not sure how it would work on the frontend
-        // Principal is not needed to decide role as students are always ROLE_USER
 
         // Create user object list
         // add all the users who are ROLE_USER (aka students)
@@ -116,6 +146,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
+        // TODO teachers should only be able to add to courses they created
         courseDao.addStudentToCourse(studentId, courseId);
     }
 
@@ -124,6 +155,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentFromCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
+        // TODO teachers should only be able to delete from courses they created
         courseDao.deleteStudentFromCourse(studentId, courseId);
     }
 }

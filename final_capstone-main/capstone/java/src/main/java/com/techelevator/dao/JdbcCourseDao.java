@@ -107,7 +107,7 @@ public class JdbcCourseDao implements CourseDao {
     @Override
     public List<Course> getStudentCoursesByStudentId(int id) {
         List<Course> courses = new ArrayList<>();
-        String sql = "SELECT courses.course_id, courses.name, courses.description, courses.difficulty, courses.cost " +
+        String sql = "SELECT courses.course_id, courses.teacher_id, courses.name, courses.description, courses.difficulty, courses.cost " +
                 "FROM student_courses " +
                 "JOIN courses ON student_courses.course_id = courses.course_id " +
                 "WHERE student_courses.student_id = ?";

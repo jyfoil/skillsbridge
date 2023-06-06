@@ -4,9 +4,10 @@
     <router-link :to="{ name: 'home' }" class="header-link">
       <div class="logo-container">
         <img src="../assets/elearning.png" alt="Logo" class="logo">
+        <h3 class="portal-title">{{ msg }}</h3>
       </div>
     </router-link>
-    <h3 class="portal-title">{{ msg }}</h3>
+    
 
     <!-- Right navigation -->
     <div id="nav" class="right-nav">

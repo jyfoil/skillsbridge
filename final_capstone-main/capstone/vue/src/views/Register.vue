@@ -68,7 +68,7 @@
         Create Account
       </button>
       <br />
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
+      <router-link :to="{ name: 'login' }" class="sign-up">Already have an account?</router-link>
     </form>
     </main>
   </div>
