@@ -42,10 +42,17 @@
                 </div>
             </div>
             <section>
-                <h3>Latest Activity</h3>
+                <div id="notifications-column">
+                    <h3 class="underline">Latest Activity</h3>
+                    <div id="notifications-list">
+                        <div>
+                            <span class="sName">12 submissions</span> in <span class="lName">Intro to Things</span>
+                        </div>
+                        <div>View All Submissions</div>
+                    </div>
+                </div>
             </section>
         </main>
-
     </div>
 </template>
 
@@ -126,4 +133,26 @@ export default {
         gap:12px; 
     }
     button img.icon { width: 25px; margin-right:0.25rem; margin-top:-2px; margin-left:-7px; }
+    #notifications-column h3 {
+        line-height:1.6;
+    }
+    #notifications-list {
+        font-size:0.9rem;
+    }
+
+    #notifications-list div {
+        border-bottom:1px solid #CCC;
+        padding-bottom:12px;
+        margin-bottom:12px;
+        color:#888;
+    }
+
+    #notifications-list div:last-child {
+        border-bottom:0;
+    }
+
+    .sName, .lName {
+        /* font-weight:bold; */
+        color:#444;
+    }
 </style>
