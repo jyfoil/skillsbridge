@@ -102,6 +102,11 @@ public class SubmissionController {
         return submissionDao.getSubmissionsForCourse(id);
     }
 
+    @GetMapping("/lesson/{lessonId}/student/{studentId}")
+    public Submission getSubmissionByLessonAndStudentId(@PathVariable int lessonId, @PathVariable int studentId) {
+        return submissionDao.getSubmissionByLessonAndStudentId(lessonId, studentId);
+    }
+
     @GetMapping("/course/{courseId}/student/{studentId}/grade")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public BigDecimal getStudentGradeAverageForCourse(@PathVariable int courseId, @PathVariable int studentId) {

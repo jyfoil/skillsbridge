@@ -82,7 +82,4 @@ public class LessonController {
     public int getNumberOfLessonsInCourse(@PathVariable int courseId) {
         return lessonDao.getNumberOfLessonsInCourse(courseId);
     }
-
-    // return a list of students with the average grade and student id
-    // teachers only
 }
