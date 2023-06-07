@@ -1,11 +1,24 @@
 <template>
-      <router-link class="module-listing" :key="module.id" :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}"><span class="mName">{{ module.name }}</span> <span class="small mDescription">- {{ module.description }}</span></router-link>
+    <router-link :to="getRoute(module)" class="module-listing"> {{ module.name }}
+      <!-- <router-link class="module-listing" :key="module.id" :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}"> -->
+          <span class="mName">{{ module.name }}</span> 
+          <span class="small mDescription">- {{ module.description }}</span>
+        </router-link>
 </template>
 
 <script>
 export default {
     props: [ 'module' ],
-}
+    methods: {
+        getRoute(module) {
+            if (this.$store.state.user.authorities[0].name === 'ROLE_ADMIN') {
+                return { name: 'teacher-module', params: { courseId: module.courseId, moduleId: module.id }};
+            } else {
+                return { name: 'student-module', params: { courseId: module.courseId, moduleId: module.id }};
+            }
+        },
+    },
+};
 </script>
 
 <style scoped>

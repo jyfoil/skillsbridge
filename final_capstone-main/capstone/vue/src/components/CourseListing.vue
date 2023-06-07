@@ -24,31 +24,29 @@ export default {
 
 <style scoped>
 .course-listing {
-  transition: all 200ms;
-  cursor: pointer;
-  padding: 1rem;
-  border: 1px solid #CCC;
-  margin-bottom: 0.25rem;
-  width: 6rem;
-  height: 6rem;
-  border-radius: 50%; 
-  background: white;
-  border-left: 8px solid #429cb9;
-  text-align: center;
-  color: #444;
   display: flex;
-  justify-content: center;
   align-items: center;
+  border: 1px solid #CCC;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border-left: 7px solid #429cb9;
+  text-decoration: none;
+  color: #243e46;
+  width: 10rem;
+  height: 5rem;
 }
 
 .course-listing:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-color: #666;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   transform: scale(1.05);
   border-left-color: #17b0e1;
 }
 
 .course-title {
   font-weight: bold;
+  color: #666;
 }
 
 .course-listing a {
