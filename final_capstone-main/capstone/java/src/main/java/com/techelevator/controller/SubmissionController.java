@@ -89,4 +89,16 @@ public class SubmissionController {
         return submissionDao.getSubmissionsForLesson(id);
     }
 
+    @GetMapping("/module/{id}/submissions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Submission> getSubmissionsForModule(@PathVariable int id) {
+        return submissionDao.getSubmissionsForModule(id);
+    }
+
+    @GetMapping("/course/{id}/submissions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Submission> getSubmissionsForCourse(@PathVariable int id) {
+        return submissionDao.getSubmissionsForCourse(id);
+    }
+
 }

@@ -72,6 +72,7 @@
             </div>
             <section>
                 <submissions-list :submissions="notifications" />
+                <!-- <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission for {{lessons.find(l => l.id == submission.lessonId).title}} at: <span class="small">{{submission.submittedAt.split('.')[0]}}</span></div> -->
             </section>
         </main>
 
@@ -82,6 +83,7 @@
 import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
 import studentService from '../services/StudentService.js'
+import submissionService from '../services/SubmissionService.js'
 import StudentDetails from '../components/StudentDetails.vue'
 import ModuleListing from '../components/ModuleListing.vue'
 import SubmissionsList from '../components/SubmissionsList.vue'
@@ -113,18 +115,19 @@ export default {
             students: [],
             allStudents: [],
             studentIds: [],
+            submissions: [],
             notifications: [
                 {
                     id: 10,
                     fullname: "Harry Potter",
                     lessonName: "Day Two Lesson",
-                    submitted_at: "2023-06-06 08:55:52.461254"
+                    submitted_at: "2023-06-06 08:55:52"
                 },
                 {
                     id: 123,
                     fullname: "John McClane",
                     lessonName: "Day One Lesson",
-                    submitted_at: "2023-06-05 12:55:52.461254"
+                    submitted_at: "2023-06-05 12:55:52"
                 }
             ],
         }
@@ -144,6 +147,11 @@ export default {
             if (response.status === 200) {
                 this.students = response.data;
                 this.updateStudentIdArray();
+            }
+        }),
+        submissionService.getSubmissionsByCourse(this.$route.params.courseId).then(response => {
+            if (response.status === 200) {
+                this.submissions = response.data;
             }
         })
     },

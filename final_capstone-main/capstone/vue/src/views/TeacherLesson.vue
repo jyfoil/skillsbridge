@@ -66,12 +66,13 @@
                 </div>
                 <h2 v-if="lesson.has_assignment" class="mt-2">Submissions</h2>
                 <p v-if="submissions.length === 0">No submissions yet</p>
-                <div class="submission-listing flex flex-column" v-for="submission in submissions" :key="submission.submission_id">
-                    <div class="flex flex-between"><div>{{studentMap.get(submission.student_id)}}</div><div class="capsule grade" v-if="submission.grade != ''">Grade: {{ submission.grade }}/10</div><div class="capsule dark" v-else>Not Graded</div><div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submitted_at}}</span></div><button class="small" v-show="showSubmission != submission.submission_id" @click="showSubmission = submission.submission_id">View</button><button v-show="showSubmission === submission.submission_id" class="small muted" @click="showSubmission = 0">Hide</button></div>
-                    <div class="submission-content" v-show="showSubmission === submission.submission_id">
+                <div v-if="gradeSuccessMsg != ''" @click="gradeSuccessMsg = ''" class="alert alert-success">{{gradeSuccessMsg}}</div>
+                <div class="submission-listing flex flex-column" v-for="submission in submissions" :key="submission.submittedAt">
+                    <div class="flex flex-between"><div>{{studentMap.get(submission.studentId)}}</div><div class="capsule grade" v-if="submission.grade != 0">Grade: {{ submission.grade }}/10</div><div class="capsule dark" v-else>Not Graded</div><div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
+                    <div class="submission-content" v-show="showSubmission === submission.submissionId">
                         {{submission.content}}
                     </div>
-                    <div v-show="showSubmission === submission.submission_id" class="button-bar"><label for="grade">Grade: </label><input id="grade" v-model="submission.grade" type="text" class=form-control /><button @click="updateGrade(submission)" class="small">Submit Grade</button></div>
+                    <div v-show="showSubmission === submission.submissionId" class="button-bar"><label for="grade">Grade: </label><input id="grade" v-model="submission.grade" type="text" class=form-control /><button @click="updateGrade(submission)" class="small">Submit Grade</button></div>
                 </div>
                 <h3 class="mt-2">No submission found for:</h3>
                 <div v-for="student in studentsUnsubmitted" :key="student.id">
@@ -79,7 +80,8 @@
                 </div>
             </div>
             <section>
-                <h3 class="mt-0">Latest Activity</h3>
+                <h3 class="mt-0 underline">Latest Activity</h3>
+                <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission at:<br />{{submission.submittedAt.split('.')[0]}}</div>
             </section>
         </main>
 
@@ -120,22 +122,7 @@ export default {
                 dueDate: '',
                 instructions: ''
             },
-            submissions: [ {
-                submission_id: 1,
-                content: "The dog ate my homework.",
-                lesson_id: 1,
-                student_id: 3,
-                grade: '8',
-                submitted_at: '2023-06-02 08:55:52.461556'
-            }, 
-            {
-                submission_id: 3,
-                content: "Yes, this is all I did.",
-                lesson_id: 1,
-                student_id: 4,
-                grade: '',
-                submitted_at: '2023-06-04 08:55:52.461556'
-            }]
+            submissions: []
         }
     },
     created: function() {
@@ -160,6 +147,11 @@ export default {
                 response.data.forEach(item => {
                     this.studentMap.set(item.id, item.fullname);
                 })
+            }
+        }),
+        submissionService.getSubmissions(this.$route.params.lessonId).then(response => {
+            if (response.status === 200) {
+                this.submissions = response.data;
             }
         })
     },
@@ -192,6 +184,7 @@ export default {
         updateGrade(submission) {
             submissionService.gradeSubmission(submission).then(response => {
                 if (response.status === 200) {
+                    this.showSubmission = 0;
                     this.gradeSuccessMsg = "Grade updated."
                 }                
             });
@@ -199,9 +192,7 @@ export default {
     },
     computed: {
         studentsUnsubmitted() {
-            const studentsSubmitted = this.submissions.map(s => s.submission_id);
-            console.log(studentsSubmitted);
-            console.log(this.students.filter(item => !studentsSubmitted.includes(item.id)));
+            const studentsSubmitted = this.submissions.map(s => s.studentId);
             return this.students.filter(item => !studentsSubmitted.includes(item.id));
         }
     }

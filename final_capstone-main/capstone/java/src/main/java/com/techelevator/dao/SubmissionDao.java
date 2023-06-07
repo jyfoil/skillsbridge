@@ -13,6 +13,10 @@ public interface SubmissionDao {
 
     List<Submission> getSubmissionsForLesson(int lessonId);
 
+    List<Submission> getSubmissionsForModule(int moduleId);
+
+    List<Submission> getSubmissionsForCourse(int courseId);
+
     void setSubmissionGrade(Submission submission, int id);
 
     void deleteSubmission(int id);
