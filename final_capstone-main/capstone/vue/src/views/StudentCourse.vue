@@ -1,27 +1,35 @@
 <template>
-    <div class="dashboard">
-        <div id="heading-bg">
-            <h1 class="dashboard-title">{{ $store.state.user.fullname }} - <span class="course-name">{{ course.name }}</span></h1>
-            <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Dashboard</router-link>
-        </div>
-        <main id="dashboard-content">
-            <div id="content">
-                <h2>Modules</h2>
-                <section id="modules">
-                    <div v-for="module in modules" :key="module.id"><router-link :to="{name:'student-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }}</router-link></div>
-                </section>
-            </div>
-            <section>
-                <h3>Upcoming Assignments</h3>
-            </section>
-        </main>
-
+  <div class="dashboard">
+    <div id="heading-bg">
+      <h1 class="dashboard-title">{{ $store.state.user.fullname }} - <span class="course-name">{{ course.name }}</span></h1>
+      <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Dashboard</router-link>
     </div>
+    <main id="dashboard-content">
+      <div id="content">
+        <h2 class="underline">Course Description</h2>
+        <section id="description">
+          <p>{{course.description}}</p>
+        </section>
+        <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
+        <section id="modules" :class="{ grid: gridView}">
+          <module-listing v-for="module in modules" :key="module.id" :module="module" />
+        </section>
+      </div>
+      <section>
+        <h3>Upcoming Assignments</h3>
+        <div class="contact-teacher-wrapper">
+            <button class="contact-teacher-button">Contact Teacher</button>
+        </div>
+      </section>
+    </main>
+  </div>
 </template>
+
 
 <script>
 import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
+import ModuleListing from '../components/ModuleListing.vue'
 export default {
     data() {
         return {
@@ -36,6 +44,7 @@ export default {
             newModule: {
                 courseId: this.$route.params.courseId,
             },
+            gridView: false
            
         }
     },
@@ -52,6 +61,7 @@ export default {
         })
     },
     components: {
+        ModuleListing
         
     },
     
@@ -59,5 +69,64 @@ export default {
 </script>
 
 <style scoped>
+    select.form-control {
+        padding: inherit;
+        outline:0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    
+    .icon.search-icon {
+        position:absolute;
+        right:4px;
+        top:3px;
+        opacity: 0.5;
+    }
+    #description textarea {
+        min-height:150px;
+        resize:none;
+    }
+    #description textarea:disabled {
+        padding:0;
+        border:none;
+        background:white;
+    }
+    .extended-results {
+        padding-top:12px;
+        margin-top:12px;
+        align-items:center;
+    }
+    .grid {
+        display:flex;
+        gap:12px;
+    }
+    .grid .module-listing {
+        flex-basis:33%;
+        padding:2rem 1rem;
+    }
+
+   .contact-teacher-wrapper {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%;
+    margin-top: 1rem;
+  }
+
+
+  .contact-teacher-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #429cb9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .contact-teacher-button:hover {
+    background-color: #17b0e1;
+  }
+
    
 </style>
