@@ -23,12 +23,15 @@ public class LessonController {
     @Autowired
     private UserDao userDao;
 
-//    @GetMapping("/course/{id}/lessons")
-//    public List<Lesson> showLessons(@Valid @PathVariable int id, Principal p) {
-//        User user = userDao.findByUsername(p.getName());
-//        // pass user id?
-//        return lessonDao.getLessonsByCourseId(id);
-//    }
+    @GetMapping("/course/{id}/lessons")
+    public List<Lesson> showLessons(@PathVariable int id) {
+        return lessonDao.getLessonsByCourseId(id);
+    }
+
+    @GetMapping("/course/{id}/lessons/upcoming")
+    public List<Lesson> showUpcomingLessons(@PathVariable int id) {
+        return lessonDao.getUpcomingLessonsByCourseId(id);
+    }
 //
 //    @GetMapping("/course/{courseId}/lesson/{lessonId}")
 //    // /course/{courseId}/module/{moduleId}/lesson/{lessonId} ?

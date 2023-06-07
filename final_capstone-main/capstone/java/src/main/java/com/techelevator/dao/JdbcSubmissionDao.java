@@ -27,12 +27,12 @@ public class JdbcSubmissionDao implements SubmissionDao {
     @Override
     public Submission postSubmission(Submission submission) {
         Submission createdSubmission = null;
-        String sql = "INSERT INTO submissions (content, lesson_id, student_id, grade) " +
-                "VALUES (?, ?, ?, ?) returning submission_id";
-
+        String sql = "INSERT INTO submissions (content, lesson_id, student_id) " +
+                "VALUES (?, ?, ?) returning submission_id";
+        System.out.println("inserting to lesson: " + submission.getLessonId() + ", student: " + submission.getStudentId());
         try {
             int newSubmissionId = jdbcTemplate.queryForObject(sql, int.class, submission.getContent(),
-                    submission.getLessonId(), submission.getStudentId(), submission.getGrade());
+                    submission.getLessonId(), submission.getStudentId());
             createdSubmission = getSubmission(newSubmissionId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);

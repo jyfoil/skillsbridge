@@ -6,5 +6,8 @@ export default {
     },
     getCourseStudents(courseId) {
         return axios.get(`/course/${courseId}/students`);
-    }
+    },
+    getStudentGrade(courseId, studentId) {
+        return axios.get(`/course/${courseId}/student/${studentId}/grade`);
+    },
   }

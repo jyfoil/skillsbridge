@@ -23,8 +23,8 @@
                 </div>
 
                 <div class="button-bar left"> 
-                    <button class="edit small" @click="hideEditLessonForm = !hideEditLessonForm"><img class="icon invert" src="../assets/edit.svg" />Edit Lesson</button>
-                    <button class="delete red small" @click="deleteLesson" :disabled="submissions.length > 0"><img class="icon invert" src="../assets/delete.svg" />Delete Lesson</button>
+                    <button class="edit" @click="hideEditLessonForm = !hideEditLessonForm"><img class="icon invert" src="../assets/edit.svg" />Edit Lesson</button>
+                    <button class="delete red" @click="deleteLesson" :disabled="submissions.length > 0"><img class="icon invert" src="../assets/delete.svg" />Delete Lesson</button>
                 </div>
                 <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success mt-1">{{ successMsg }} </div>
                 <div class="accordion" :class="{ hide: hideEditLessonForm }">

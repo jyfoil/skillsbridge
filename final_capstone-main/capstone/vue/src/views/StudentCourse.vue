@@ -17,6 +17,12 @@
       </div>
       <section>
         <h3 class="underline">Upcoming Assignments</h3>
+        <div>
+          <div class="mb-1" v-for="assignment in assignments" :key="assignment.id">
+            Lesson: {{assignment.title}}<br />
+            <span class="small">Due on {{assignment.dueDate}}</span>
+          </div>
+        </div>
         <div class="contact-teacher-wrapper">
             <button class="contact-teacher-button">Contact Teacher</button>
         </div>
@@ -29,11 +35,13 @@
 <script>
 import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
+import lessonService from '../services/LessonService.js'
 import ModuleListing from '../components/ModuleListing.vue'
 export default {
     data() {
         return {
             modules: [],
+            assignments: [],
             course: {
                 courseId: this.$route.params.courseId,
                 name: '',
@@ -58,11 +66,16 @@ export default {
             if (response.status === 200) {
                 this.modules = response.data;
             }
+        }),
+        lessonService.getUpcomingLessons(this.$route.params.courseId).then(response => {
+          if (response.status === 200) {
+              this.assignments = response.data;
+          }
         })
+
     },
     components: {
         ModuleListing
-        
     },
     
 }
