@@ -429,6 +429,12 @@ button.small {
     }
 }
 
+@media screen and (max-width: 650px)  {
+    #dashboard-content {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media screen and (max-width: 1280px)  {
     #heading-bg {
         border-radius:0;
