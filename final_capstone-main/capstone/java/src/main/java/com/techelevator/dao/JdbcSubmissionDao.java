@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import javax.sql.RowSet;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,10 +107,30 @@ public class JdbcSubmissionDao implements SubmissionDao {
     }
 
     @Override
+    public BigDecimal getGradeAverageForCourse(int studentId, int courseId) {
+        BigDecimal gradeAvg = BigDecimal.ZERO;
+        String sql = "SELECT AVG(grade) FROM submissions s " +
+                "JOIN lessons l ON l.lesson_id = s.lesson_id " +
+                "JOIN modules m ON m.module_id = l.module_id " +
+                "WHERE s.student_id = ? AND m.course_id = ?";
+
+        try {
+            gradeAvg = jdbcTemplate.queryForObject(sql, BigDecimal.class, studentId, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return gradeAvg;
+    }
+
+    @Override
     public List<Submission> getSubmissionsForCourse(int courseId) {
         List<Submission> submissions = new ArrayList<>();
 
-        String sql = "SELECT * FROM submissions s JOIN lessons l ON l.lesson_id = s.lesson_id JOIN modules m ON m.module_id = l.module_id WHERE m.course_id = ?;";
+        String sql = "SELECT * FROM submissions s JOIN lessons l ON l.lesson_id = s.lesson_id JOIN modules m ON m" +
+                ".module_id = l.module_id WHERE m.course_id = ?;";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
