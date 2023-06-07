@@ -74,7 +74,7 @@
                     </div>
                     <div v-show="showSubmission === submission.submissionId" class="button-bar"><label for="grade">Grade: </label><input id="grade" v-model="submission.grade" type="text" class=form-control /><button @click="updateGrade(submission)" class="small">Submit Grade</button></div>
                 </div>
-                <h3 class="mt-2">No submission found for:</h3>
+                <h3 class="mt-2">No submissions found for:</h3>
                 <div v-for="student in studentsUnsubmitted" :key="student.id">
                     {{ student.fullname }}
                 </div>

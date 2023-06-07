@@ -12,7 +12,7 @@
                 </div>
                 <h2>Lessons</h2>
                 <section id="lessons">
-                    <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'teacher-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}</router-link></h4></div>
+                    <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}</router-link></h4></div>
                 </section>
             </div>
             <section>

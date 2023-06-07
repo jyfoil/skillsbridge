@@ -56,7 +56,7 @@
                 </div>
             </div>
             <section>
-                <h3>Latest Submissions</h3>
+                <h3 class="underline">Latest Submissions</h3>
                 <!-- <div v-for="(item, index) in submissionsPerLesson" :key="index">{{item}} submissions in Lesson {{index}}</div> -->
                 <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission for {{lessons.find(l => l.id == submission.lessonId).title}} at: <span class="small">{{submission.submittedAt.split('.')[0]}}</span></div>
             </section>

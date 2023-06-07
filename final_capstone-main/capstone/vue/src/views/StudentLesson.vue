@@ -7,11 +7,30 @@
         </div>
         <main id="dashboard-content">
             <div id="content">
-                
+                <h2 class="underline">Lesson</h2>
+                <div>{{ lesson.content }}</div>
+                <div class="assignment-details" v-if="lesson.has_assignment">
+                    <h2 class="underline">Assignment</h2>
+                    <p><strong>Instructions:</strong> {{lesson.instructions}} <br />
+                    <strong>Due Date:</strong> {{lesson.dueDate}} </p>
+                </div>
+                <div class="assignment-details" v-else>No Assignment for this Lesson</div>
+                <h3>Submission</h3>
+                <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
+                <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
+                <form @submit.prevent="" class="flex-column">
+                    <div>
+                        <wysiwyg v-model="submission.content" />
+                        <!-- <textarea id="content" class="form-control" v-model="newLesson.content" placeholder="Lesson Content" required></textarea> -->
+                    </div>
+                    <div class="button-bar">
+                        <button v-on:click="cancelForm" type="button">Cancel</button>
+                        <button>Submit</button>
+                    </div>
+                </form>
             </div>
-            <section>
-                <h3>Upcoming Assignments</h3>
-            </section>
+
+
         </main>
 
     </div>
@@ -25,14 +44,20 @@ export default {
     data() {
         return {
             course: {},
+            successMsg: '',
+            errorMsg: '',
             module: {
                 id: this.$route.params.moduleId,
                 courseId: this.$route.params.id,
                 name: '',
                 description: ''
             },
-            successMsg: '',
-            errorMsg: '',
+            lesson: {},
+            submission: {
+                content: '',
+                student_id: this.$store.state.user.id,
+                lesson_id: this.$route.params.lessonId
+            }
         }
     },
     created: function() {
@@ -53,11 +78,15 @@ export default {
         })
     },
     methods: {
-
+        cancelForm() {
+            return 0;
+        }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    #dashboard-content {
+        grid-template-columns: 1fr;
+    }
 </style>
