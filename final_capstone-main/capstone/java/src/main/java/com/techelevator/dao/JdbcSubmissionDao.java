@@ -9,8 +9,6 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
-import javax.sql.RowSet;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +102,30 @@ public class JdbcSubmissionDao implements SubmissionDao {
         }
 
         return submissions;
+    }
+
+    @Override
+    public Submission getSubmissionByLessonAndStudentId(int lessonId, int studentId) {
+        Submission submission = null;
+
+        String sql = "SELECT s.submission_id, s.content, s.lesson_id, s.student_id, s.grade, s.submitted_at " +
+                "FROM submissions s " +
+                "JOIN lessons l ON s.lesson_id = l.lesson_id " +
+                "WHERE s.student_id = ? AND l.lesson_id = ?";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, studentId, lessonId);
+
+            if (results.next()) {
+                submission = mapRowToSubmission(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return submission;
     }
 
     @Override

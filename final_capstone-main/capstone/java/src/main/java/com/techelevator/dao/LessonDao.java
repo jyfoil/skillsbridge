@@ -17,6 +17,8 @@ public interface LessonDao {
 
     String getLessonNameFromLessonId(int id);
 
+    int getNumberOfLessonsInCourse(int courseId);
+
     Lesson createLesson(LessonDTO newLesson);
 
     List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId);

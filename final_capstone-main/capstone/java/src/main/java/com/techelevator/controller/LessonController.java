@@ -79,4 +79,10 @@ public class LessonController {
         lesson.setId(lessonId);
         return lessonDao.updateLesson(lesson);
     }
+
+    @GetMapping("/course/{courseId}/lesson/amount")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public int getNumberOfLessonsInCourse(@PathVariable int courseId) {
+        return lessonDao.getNumberOfLessonsInCourse(courseId);
+    }
 }
