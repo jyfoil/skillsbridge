@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.model.Submission;
 import com.techelevator.model.SubmissionDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface SubmissionDao {
@@ -14,6 +15,8 @@ public interface SubmissionDao {
     List<Submission> getSubmissionsForLesson(int lessonId);
 
     List<Submission> getSubmissionsForModule(int moduleId);
+
+    BigDecimal getGradeAverageForCourse(int studentId, int courseId);
 
     List<Submission> getSubmissionsForCourse(int courseId);
 

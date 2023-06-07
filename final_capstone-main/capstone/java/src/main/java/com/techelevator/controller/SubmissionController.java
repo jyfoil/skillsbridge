@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -101,4 +102,9 @@ public class SubmissionController {
         return submissionDao.getSubmissionsForCourse(id);
     }
 
+    @GetMapping("/course/{courseId}/student/{studentId}/grade")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public BigDecimal getStudentGradeAverageForCourse(@PathVariable int courseId, @PathVariable int studentId) {
+        return submissionDao.getGradeAverageForCourse(studentId, courseId);
+    }
 }
