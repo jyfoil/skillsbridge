@@ -85,6 +85,48 @@ public class JdbcSubmissionDao implements SubmissionDao {
     }
 
     @Override
+    public List<Submission> getSubmissionsForModule(int moduleId) {
+        List<Submission> submissions = new ArrayList<>();
+
+        String sql = "SELECT * FROM submissions s JOIN lessons l ON l.lesson_id = s.lesson_id WHERE l.module_id = ?;";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, moduleId);
+
+            while (results.next()) {
+                submissions.add(mapRowToSubmission(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return submissions;
+    }
+
+    @Override
+    public List<Submission> getSubmissionsForCourse(int courseId) {
+        List<Submission> submissions = new ArrayList<>();
+
+        String sql = "SELECT * FROM submissions s JOIN lessons l ON l.lesson_id = s.lesson_id JOIN modules m ON m.module_id = l.module_id WHERE m.course_id = ?;";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+
+            while (results.next()) {
+                submissions.add(mapRowToSubmission(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return submissions;
+    }
+
+    @Override
     public void setSubmissionGrade(Submission submission, int id) {
         Submission updatedSubmission = null;
         String sql = "UPDATE submissions SET grade = ? " +
@@ -126,6 +168,8 @@ public class JdbcSubmissionDao implements SubmissionDao {
         submission.setContent(rowSet.getString("content"));
         submission.setLessonId(rowSet.getInt("lesson_id"));
         submission.setStudentId(rowSet.getInt("student_id"));
+        submission.setGrade(rowSet.getInt("grade"));
+        submission.setSubmittedAt(rowSet.getString("submitted_at"));
         return submission;
     }
 

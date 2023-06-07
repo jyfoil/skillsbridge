@@ -256,7 +256,7 @@ main section {
     margin-top:0;
     position:absolute;
     padding:0.5rem 1rem;
-    background:#14536f;
+    background:linear-gradient(160deg, #02517e 0%, #429cb9 100%);
     color:white;
     top:0;
     left:0;

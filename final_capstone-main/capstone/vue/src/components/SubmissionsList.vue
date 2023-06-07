@@ -5,7 +5,6 @@
             <div v-for="n in submissions" :key="n.id">
                 <span class="sName">{{n.fullname}}</span> in <span class="lName">{{n.lessonName}}</span><br><span class="sDate small">{{n.submitted_at}}</span>
             </div>
-            <div>View All Submissions</div>
         </div>
     </div>
 </template>
