@@ -16,7 +16,7 @@
         </section>
       </div>
       <section>
-        <h3 class="underline">Upcoming Assignments</h3>
+        <h3 class="assignments">Upcoming Assignments</h3>
         <div class="contact-teacher-wrapper">
             <button class="contact-teacher-button">Contact Teacher</button>
         </div>
@@ -105,28 +105,6 @@ export default {
         padding:2rem 1rem;
     }
 
-   .contact-teacher-wrapper {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 100%;
-    margin-top: 1rem;
-  }
-
-
-  .contact-teacher-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    background-color: #429cb9;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .contact-teacher-button:hover {
-    background-color: #17b0e1;
-  }
-
+  
    
 </style>
