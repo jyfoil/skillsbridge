@@ -1,6 +1,7 @@
 package com.techelevator.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Submission {
     private int submissionId;
@@ -13,13 +14,15 @@ public class Submission {
     public Submission() {
     }
 
-    public Submission(int submissionId, String content, int lessonId, int studentId, int grade, String submittedAt) {
+    public Submission(int submissionId, String content, int lessonId, int studentId, int grade) {
         this.submissionId = submissionId;
         this.content = content;
         this.lessonId = lessonId;
         this.studentId = studentId;
         this.grade = grade;
-        this.submittedAt = submittedAt;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
+        this.submittedAt = LocalDateTime.now().format(formatter);
     }
 
     public int getSubmissionId() {

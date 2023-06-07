@@ -126,6 +126,7 @@ public class JdbcSubmissionDao implements SubmissionDao {
         submission.setContent(rowSet.getString("content"));
         submission.setLessonId(rowSet.getInt("lesson_id"));
         submission.setStudentId(rowSet.getInt("student_id"));
+        submission.setSubmittedAt(rowSet.getString("submitted_at"));
         return submission;
     }
 
