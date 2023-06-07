@@ -15,12 +15,12 @@
                 </div>
                 <h2 class="underline">Lessons</h2>
                 <section id="lessons">
-                    <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'teacher-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}</router-link></h4></div>
+                    <router-link class="lesson-listing" :to="{ name: 'teacher-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }" v-for="lesson in lessons" :key="lesson.id"><h4>{{ lesson.title }}</h4><div v-if="lesson.dueDate != '' && lesson.dueDate != null" class="small flex-grow text-right">Due: <span class="light">{{lesson.dueDate}}</span></div></router-link>
                 </section>
                 <button @click="hideAddLessonForm = !hideAddLessonForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Lesson</button>
                 <div class="accordion" :class="{ hide: hideAddLessonForm }">
-                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
+                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
+                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
                     <h3>Add New Lesson</h3>
                     <form @submit.prevent="createLesson" class="flex-column">
                         <div>
@@ -41,11 +41,11 @@
                         </div>
                         <div v-show="newLesson.has_assignment">
                             <label for="dueDate">Due Date</label>
-                            <input type="date" id="dueDate" v-model="newLesson.due_date" />
+                            <input type="date" id="dueDate" v-model="newLesson.dueDate" />
                         </div>
                         <div v-show="newLesson.has_assignment">
                             <label for="instructions">Instructions</label>
-                            <textarea type="textarea" id="instructions"></textarea>
+                            <textarea type="textarea" id="instructions" class="form-control" v-model="newLesson.instructions"></textarea>
                         </div>
                         <div class="button-bar">
                             <button v-on:click="cancelForm" type="button">Cancel</button>
@@ -87,7 +87,7 @@ export default {
                 content: '',
                 resources: '',
                 has_assignment: false,
-                due_date: '',
+                dueDate: '',
                 instructions: ''
              }
         }
@@ -119,10 +119,22 @@ export default {
         },
         clearForm() {
             //this.hideAddClassForm = true;
-            this.newLesson.name = '';
-            this.newLesson.description = '';
+            this.newLesson.title = '';
+            this.newLesson.content = '';
+            this.newLesson.resources = '';
+            this.newLesson.has_assignment = false;
+            this.newLesson.dueDate = '';
+            this.newLesson.instructions = '';
+            this.errorMsg = "";
+            this.successMsg = "";
         },
         createLesson() {
+            this.errorMsg = "";
+            this.successMsg = "";
+            if (this.newLesson.has_assignment && this.newLesson.dueDate === '') {
+                this.errorMsg = "Must provide a due date.";
+                return;
+            }
             lessonService.createLesson(this.newLesson).then(response => {
                 if (response.status === 201) {
                     this.successMsg = "Lesson Created Successfully.";
@@ -145,6 +157,27 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .lesson-listing {
+        display:flex;
+        align-items:center;
+        border: 1px solid #CCC;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        border-left: 7px solid #429cb9;
+        text-decoration:none;
+        color:#243e46;
+    }
+    .lesson-listing:hover {
+        border-color:#666;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-left-color: #17b0e1;
+    }
+    .lesson-listing > div {
+        align-items: center;
+    }
+    .lesson-listing h4 {
+        margin:0;
+    }
 </style>
