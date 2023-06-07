@@ -9,7 +9,7 @@
                 <h2 class="underline">Course Description</h2>
                 <section id="description">
                     <textarea class="form-control" type="text" :disabled="descriptionDisabled" v-model="course.description"></textarea>
-                    <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled" class="small">Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
+                    <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled"><img class="icon invert" src="../assets/edit.svg" /> Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
                 </section>
                 <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
                 <section id="modules" :class="{ grid: gridView}">
@@ -51,8 +51,10 @@
                     <div class="student-details">
                         <div v-show="removeSuccessMsg != ''" @click="removeSuccessMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <div v-show="removeErrorMsg != ''" @click="removeErrorMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
-                        <student-details :student="selectedStudent" v-show="selectedStudent.username != ''" />
-                        <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
+                        <student-details :student="selectedStudent" :submissions="filteredSubmissions" v-show="selectedStudent.username != ''" />
+                        <div class="button-bar">
+                            <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
+                        </div>
                     </div>
                 </section>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
@@ -116,6 +118,7 @@ export default {
             allStudents: [],
             studentIds: [],
             submissions: [],
+            filteredSubmissions: [],
             notifications: [
                 {
                     id: 10,
@@ -227,7 +230,10 @@ export default {
             this.errorMsg = '';
             this.removeSuccessMsg = '';
             this.removeErrorMsg = '';
-        }
+        },
+        filteredSubmissionsGetter(id) {
+            this.filteredSubmissions = this.submissions.filter(s => s.studentId == id);
+        },
     },
     computed: {
         filteredAllStudents() {
@@ -244,7 +250,8 @@ export default {
                 let fullname = s.firstname.toLowerCase() + " " + s.lastname.toLowerCase();
                 return  (fullname.includes(search) || s.username.includes(search));
             })
-        }
+        },
+
     },
     watch: {
         filteredAllStudents: function(s) {
@@ -259,6 +266,7 @@ export default {
             if (s.username != '') {
                 this.resetMessages();
             }
+            this.filteredSubmissionsGetter(s.id);
         }
     }
 }

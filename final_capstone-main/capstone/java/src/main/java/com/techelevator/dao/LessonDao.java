@@ -11,9 +11,13 @@ public interface LessonDao {
 
     Lesson getLessonById(int lessonId);
 
-//    List<Lesson> getLessonsByCourseId(int courseId);
+    List<Lesson> getLessonsByCourseId(int courseId);
+
+    List<Lesson> getUpcomingLessonsByCourseId(int courseId);
 
     String getLessonNameFromLessonId(int id);
+
+    int getNumberOfLessonsInCourse(int courseId);
 
     Lesson createLesson(LessonDTO newLesson);
 

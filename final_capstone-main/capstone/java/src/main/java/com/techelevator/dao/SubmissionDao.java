@@ -16,6 +16,8 @@ public interface SubmissionDao {
 
     List<Submission> getSubmissionsForModule(int moduleId);
 
+    Submission getSubmissionByLessonAndStudentId(int lessonId, int studentId);
+
     BigDecimal getGradeAverageForCourse(int studentId, int courseId);
 
     List<Submission> getSubmissionsForCourse(int courseId);

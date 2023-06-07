@@ -9,25 +9,28 @@
             <div id="content">
                 <h2 class="underline">Lesson</h2>
                 <div>{{ lesson.content }}</div>
-                <div class="assignment-details" v-if="lesson.has_assignment">
+                <div v-if="lesson.has_assignment">
                     <h2 class="underline">Assignment</h2>
-                    <p><strong>Instructions:</strong> {{lesson.instructions}} <br />
-                    <strong>Due Date:</strong> {{lesson.dueDate}} </p>
+                    <div class="assignment-details">
+                        <p><strong>Instructions:</strong> {{lesson.instructions}} <br />
+                        <strong>Due Date:</strong> {{lesson.dueDate}} </p>
+                    </div>
+                    <h3>Submission</h3>
+                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
+                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
+                    <form @submit.prevent="submitSubmission" class="flex-column">
+                        <div>
+                            <wysiwyg v-model="submission.content" />
+                            <!-- <textarea id="content" class="form-control" v-model="newLesson.content" placeholder="Lesson Content" required></textarea> -->
+                        </div>
+                        <div class="button-bar">
+                            <button>Submit</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="assignment-details" v-else>No Assignment for this Lesson</div>
-                <h3>Submission</h3>
-                <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
-                <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
-                <form @submit.prevent="" class="flex-column">
-                    <div>
-                        <wysiwyg v-model="submission.content" />
-                        <!-- <textarea id="content" class="form-control" v-model="newLesson.content" placeholder="Lesson Content" required></textarea> -->
-                    </div>
-                    <div class="button-bar">
-                        <button v-on:click="cancelForm" type="button">Cancel</button>
-                        <button>Submit</button>
-                    </div>
-                </form>
+                <div class="assignment-details mt-2" v-else>There is no Assignment for this Lesson</div>
+                
+                <router-link class=" small mt-2" tag="button" :to="{ name:'student-module', props: { courseId: module.courseId, moduleId:module.id }}"><img class="icon invert" src="../assets/arrow_back.svg" />Back to Module</router-link>
             </div>
 
 
@@ -40,6 +43,7 @@
 import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
 import lessonService from '../services/LessonService.js'
+import submissionService from '../services/SubmissionService.js'
 export default {
     data() {
         return {
@@ -55,8 +59,8 @@ export default {
             lesson: {},
             submission: {
                 content: '',
-                student_id: this.$store.state.user.id,
-                lesson_id: this.$route.params.lessonId
+                studentId: this.$store.state.user.id,
+                lessonId: this.$route.params.lessonId
             }
         }
     },
@@ -78,11 +82,12 @@ export default {
         })
     },
     methods: {
-        cancelForm() {
-            return 0;
-        },
         submitSubmission() {
-            return 0;
+            submissionService.createSubmission(this.submission).then(response => {
+                if (response.status === 200) {
+                    this.successMsg = "Assigment successfully submitted.";
+                }
+            });
         }
     }
 }
@@ -91,5 +96,12 @@ export default {
 <style scoped>
     #dashboard-content {
         grid-template-columns: 1fr;
+    }
+    .assignment-details {
+        padding:0.75rem;
+        border:1px solid #CCC;
+        background:#EEE;
+        border-top:4px solid #429CB9;
+        border-radius:4px;
     }
 </style>

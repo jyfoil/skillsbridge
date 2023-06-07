@@ -14,6 +14,6 @@ export default {
         return axios.get(`/course/${courseId}/submissions`);
     },
     createSubmission(submission) {
-        return axios.put(`${submission}`);
+        return axios.post('/submission', submission);
     }
 }
