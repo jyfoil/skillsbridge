@@ -16,7 +16,7 @@
         </section>
       </div>
       <section>
-        <h3>Upcoming Assignments</h3>
+        <h3 class="underline">Upcoming Assignments</h3>
         <div class="contact-teacher-wrapper">
             <button class="contact-teacher-button">Contact Teacher</button>
         </div>

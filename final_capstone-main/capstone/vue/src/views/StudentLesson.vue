@@ -80,6 +80,9 @@ export default {
     methods: {
         cancelForm() {
             return 0;
+        },
+        submitSubmission() {
+            return 0;
         }
     }
 }
