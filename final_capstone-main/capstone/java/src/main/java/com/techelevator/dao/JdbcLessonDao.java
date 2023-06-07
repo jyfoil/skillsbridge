@@ -86,6 +86,27 @@ public class JdbcLessonDao implements LessonDao {
         return lessonName;
     }
 
+    @Override
+    public int getNumberOfLessonsInCourse(int courseId) {
+        int numOfLessons = 0;
+
+        String sql = "SELECT COUNT(*) AS lesson_count " +
+                "FROM lessons l " +
+                "JOIN modules m ON l.module_id = m.module_id " +
+                "JOIN courses c ON m.course_id = c.course_id " +
+                "WHERE c.course_id = ?";
+
+        try {
+            numOfLessons = jdbcTemplate.queryForObject(sql, int.class, courseId);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return numOfLessons;
+    }
+
 //    @Override
 //    public List<Lesson> getLessonsByCourseId(int courseId) {
 //        // check that user has access to this course
@@ -160,7 +181,6 @@ public class JdbcLessonDao implements LessonDao {
 
         return updatedLesson;
     }
-
 
     @Override
     public void deleteLesson(int lessonId) {
