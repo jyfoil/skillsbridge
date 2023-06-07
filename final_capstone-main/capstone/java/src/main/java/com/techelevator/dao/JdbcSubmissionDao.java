@@ -11,6 +11,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import javax.sql.RowSet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JdbcSubmissionDao implements SubmissionDao {
@@ -59,6 +61,27 @@ public class JdbcSubmissionDao implements SubmissionDao {
         }
 
         return submission;
+    }
+
+    @Override
+    public List<Submission> getSubmissionsForLesson(int lessonId) {
+        List<Submission> submissions = new ArrayList<>();
+
+        String sql = "SELECT * FROM submissions WHERE lesson_id = ?";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, lessonId);
+
+            while (results.next()) {
+                submissions.add(mapRowToSubmission(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+
+        return submissions;
     }
 
     @Override
