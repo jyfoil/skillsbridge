@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -80,10 +81,12 @@ public class SubmissionController {
         return submissionToUpdate;
     }
 
-
     // teacher can see a list of submissions for a lesson
     // another getSubmissionsForLesson method
+    @GetMapping("/lesson/{id}/submissions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Submission> getSubmissionsForLesson(@PathVariable int id) {
+        return submissionDao.getSubmissionsForLesson(id);
+    }
 
-    // teacher can see a list of all submissions for a course
-    // getSubmissionsForCourse method
 }
