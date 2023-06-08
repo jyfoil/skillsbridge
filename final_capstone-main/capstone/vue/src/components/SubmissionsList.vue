@@ -3,7 +3,7 @@
         <h3 class="underline">Latest Submissions</h3>
         <div id="notifications-list">
             <div v-for="n in submissions" :key="n.id">
-                <span class="sName">{{n.fullname}}</span> in <span class="lName">{{n.lessonName}}</span><br><span class="sDate small">{{n.submitted_at}}</span>
+                <span class="sName">{{n.fullname}}</span><br>on <span class="sDate small">{{n.submitted_at.split('.')[0]}}</span>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@ export default {
 }
 
 #notifications-list div {
-    border-bottom:1px solid #CCC;
+    border-bottom:1px solid #EEE;
     padding-bottom:12px;
     margin-bottom:12px;
     color:#888;

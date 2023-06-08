@@ -22,6 +22,8 @@ public interface SubmissionDao {
 
     List<Submission> getSubmissionsForCourse(int courseId);
 
+    List<Submission> getSubmissionsForCourseAndStudent(int courseId, int studentId);
+
     void setSubmissionGrade(Submission submission, int id);
 
     void deleteSubmission(int id);

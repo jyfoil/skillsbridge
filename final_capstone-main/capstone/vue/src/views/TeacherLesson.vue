@@ -18,7 +18,7 @@
                         </div>
                         <div class="assignment-details" v-else>No Assignment for this Lesson</div>
                         <h4 class="underline mt-0">Content</h4>
-                        <div>{{ lesson.content }}</div>
+                        <div v-html="lesson.content"></div>
                     </div>
                 </div>
 
@@ -39,11 +39,12 @@
                             </div>
                             <div>
                                 <label for="content">Content:</label>
-                                <textarea id="content" class="form-control" v-model="lesson.content" placeholder="Lesson Content" required></textarea>
+                                <wysiwyg id="content" v-model="lesson.content" />
+                                <!-- <textarea id="content" class="form-control" v-model="lesson.content" placeholder="Lesson Content" required></textarea> -->
                             </div>
                             <div>
                                 <label for="resources">Resources:</label>
-                                <textarea id="resources" class="form-control" v-model="lesson.resources" placeholder="Lesson Content"></textarea>
+                                <textarea id="resources" class="form-control" v-model="lesson.resources" placeholder="Resources Content"></textarea>
                             </div>
                             <div>
                                 <label for="hasAssignment">Create Assignment?</label>
@@ -64,19 +65,29 @@
                         </form>
                     </div>
                 </div>
-                <h2 v-if="lesson.has_assignment" class="mt-2">Submissions</h2>
-                <p v-if="submissions.length === 0">No submissions yet</p>
-                <div v-if="gradeSuccessMsg != ''" @click="gradeSuccessMsg = ''" class="alert alert-success">{{gradeSuccessMsg}}</div>
-                <div class="submission-listing flex flex-column" v-for="submission in submissions" :key="submission.submittedAt">
-                    <div class="flex flex-between"><div>{{studentMap.get(submission.studentId)}}</div><div class="capsule grade" v-if="submission.grade != 0">Grade: {{ submission.grade }}/10</div><div class="capsule dark" v-else>Not Graded</div><div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
-                    <div class="submission-content" v-show="showSubmission === submission.submissionId">
-                        {{submission.content}}
+                <div  v-if="lesson.has_assignment">
+                    <h2 class="mt-2">Submissions</h2>
+                    <p v-if="submissions.length === 0">No submissions yet</p>
+                    <div v-if="gradeSuccessMsg != ''" @click="gradeSuccessMsg = ''" class="alert alert-success">{{gradeSuccessMsg}}</div>
+                    <div class="submission-listing flex flex-column" v-for="submission in submissions" :key="submission.submittedAt">
+                        <div class="flex flex-between">
+                            <img class="icon" src="../assets/assignment.svg" />
+                            <div>{{studentMap.get(submission.studentId)}}</div>
+                            <div class="capsule grade" v-if="submission.grade != 0">Grade: {{ submission.grade }}/10</div>
+                            <div class="capsule dark" v-else>Not Graded</div>
+                            <div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
+                        <div class="submission-content" v-show="showSubmission === submission.submissionId">
+                            <div v-html="submission.content"></div>
+                        </div>
+                        <div v-show="showSubmission === submission.submissionId" class="button-bar">
+                            <label for="grade">Grade: </label><input id="grade" v-model="submission.grade" type="text" class=form-control />
+                            <button @click="updateGrade(submission)" class="small">Submit Grade</button>
+                        </div>
                     </div>
-                    <div v-show="showSubmission === submission.submissionId" class="button-bar"><label for="grade">Grade: </label><input id="grade" v-model="submission.grade" type="text" class=form-control /><button @click="updateGrade(submission)" class="small">Submit Grade</button></div>
-                </div>
-                <h3 class="mt-2">No submissions found for:</h3>
-                <div v-for="student in studentsUnsubmitted" :key="student.id">
-                    {{ student.fullname }}
+                    <h3 class="mt-2">No submissions found for:</h3>
+                    <div v-for="student in studentsUnsubmitted" :key="student.id">
+                        {{ student.fullname }}
+                    </div>
                 </div>
             </div>
             <section>
@@ -200,34 +211,14 @@ export default {
 </script>
 
 <style scoped>
+    @import "~vue-wysiwyg/dist/vueWysiwyg.css";
     .assignment-details {
         padding-bottom:12px;
     }
     .heading-info {
         font-weight:normal;
     }
-    .submission-listing {
-        border: 1px solid #CCC;
-        padding: 0.75rem 1rem;
-        border-radius: 4px;
-        margin-bottom: 1rem;
-        border-left: 7px solid #429cb9;
-        text-decoration:none;
-        color:#243e46;
-    }
-    .submission-listing:hover {
-        border-color:#666;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        border-left-color: #17b0e1;
-    }
-    .submission-listing > div {
-        align-items: center;
-    }
-    .grade {
-        color: green;
-        background: #e2f7e2;
-        border: 1px solid #7cbd7c;
-    }
+
     .dark {
         background:gainsboro;
     }
@@ -247,4 +238,5 @@ export default {
         padding-top: 0.296rem;
         padding-bottom: 0.296rem;
     }
+
 </style>

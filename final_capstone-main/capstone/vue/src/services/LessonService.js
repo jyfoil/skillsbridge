@@ -21,5 +21,8 @@ export default {
     },
     deleteLesson(lessonId) {
       return axios.delete(`/lesson/${lessonId}`);
+    },
+    getNumberOfAssignmentsInCourse(courseId) {
+      return axios.get(`/course/${courseId}/lesson/amount`);
     }
   }

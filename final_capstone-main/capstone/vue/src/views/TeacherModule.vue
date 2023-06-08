@@ -124,21 +124,14 @@ export default {
     },
     computed: {
         submissionsPerLesson() {
-            let temp = [];
-            this.submissions.forEach(s => {
-                // if (temp.has(s.lessonId)) {
-                //     temp.set(s.lessonId, temp.get(s.lessonId) + 1);
-                // } else {
-                //     temp.set(s.lessonId, 1);
-                // }
-                if (temp[s.lessonId] == undefined) {
-                    temp[s.lessonId] = 1;
-                } else {
-                    temp[s.lessonId] = temp[s.lessonId] + 1;
-                }
+            let tempObject = {};
+            this.lessons.forEach(l => {
+                Object.defineProperty(tempObject, l.id, { writable:true, value:0, enumerable:true});
             })
-            console.log(temp);
-            return temp;
+            this.submissions.forEach(s => {
+                tempObject[s.lessonId] = tempObject[s.lessonId] + 1;
+            })
+            return tempObject;
         }
     },
     methods: {
