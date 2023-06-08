@@ -57,10 +57,10 @@
                         </div>
                     </div>
                 </section>
+                <h3>Add Student to Course</h3>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
                 <div class="accordion" :class="{ hide: hideAddStudentForm }">
-                    <h3>Add Student to Course</h3>
-                    <label for="student-search">Search: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
+                    <label for="student-search">Search for a student: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
                     <div class="aStudentList" ref="show">
                         <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched. <span v-show="hideExtendedResults" @click="hideExtendedResults = false"><strong >View List</strong></span></div>
                         <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
@@ -71,6 +71,12 @@
                         <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
                     </div>
                 </div>
+
+                <!-- <div class="mt-2 mb-2">
+                    <email-invitation :course="course" />
+                </div> -->
+
+
             </div>
             <section>
                 <submissions-list :submissions="latestSubmissions" />
@@ -88,6 +94,8 @@ import submissionService from '../services/SubmissionService.js'
 import StudentDetails from '../components/StudentDetails.vue'
 import ModuleListing from '../components/ModuleListing.vue'
 import SubmissionsList from '../components/SubmissionsList.vue'
+//import EmailInvitation from '../components/EmailInvitation.vue'
+
 export default {
     data() {
         return {
@@ -117,21 +125,7 @@ export default {
             allStudents: [],
             studentIds: [],
             submissions: [],
-            filteredSubmissions: [],
-            notifications: [
-                {
-                    id: 10,
-                    fullname: "Harry Potter",
-                    lessonName: "Day Two Lesson",
-                    submitted_at: "2023-06-06 08:55:52"
-                },
-                {
-                    id: 123,
-                    fullname: "John McClane",
-                    lessonName: "Day One Lesson",
-                    submitted_at: "2023-06-05 12:55:52"
-                }
-            ],
+            filteredSubmissions: []
         }
     },
     created: function() {
@@ -158,7 +152,7 @@ export default {
         })
     },
     components: {
-        StudentDetails, ModuleListing, SubmissionsList
+        StudentDetails, ModuleListing, SubmissionsList, //EmailInvitation
     },
     methods: {
         updateStudentIdArray() {
@@ -250,14 +244,29 @@ export default {
         },
         latestSubmissions() {
             return this.submissions.map(s => {
-                return {
-                    //name
-                    //lessonid
-                    //submitted_at
-                    id: s.submissionId,
-                    fullname: this.students.find(student => student.id == s.studentId).fullname,
-                    lessonId: s.lessonId,
-                    submitted_at: s.submittedAt
+                let foundStudent = this.students.find(student => student.id == s.studentId);
+                if (foundStudent != undefined) {
+                    return {
+                        //name
+                        //lessonid
+                        //submitted_at
+                        
+                        id: s.submissionId,
+                        fullname: foundStudent.fullname,
+                        lessonId: s.lessonId,
+                        submitted_at: s.submittedAt
+                    }
+                } else {
+                    return {
+                        //name
+                        //lessonid
+                        //submitted_at
+                        
+                        id: s.submissionId,
+                        fullname: "error",
+                        lessonId: s.lessonId,
+                        submitted_at: s.submittedAt
+                    }
                 }
             })
         }
@@ -340,5 +349,10 @@ export default {
     }
     .icon.edit {
         width:20px;
+    }
+    .accordion {
+        padding-top:12px;
+        border-radius:4px;
+        border-top:8px solid #429CB9;
     }
 </style>

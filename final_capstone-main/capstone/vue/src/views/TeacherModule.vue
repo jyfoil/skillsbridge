@@ -2,7 +2,7 @@
     <div class="dashboard">
         <div id="heading-bg">
             <h1 class="dashboard-title">{{ course.name }} - <span class="course-name">{{ module.name }}</span></h1>
-            <router-link class="return-button" tag="button" :to="{ name: 'teacher-course', params: { courseId: module.courseId }}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Course</router-link>
+            <router-link class="return-button" tag="button" :to="{ name: 'teacher-course', params: { courseId: course.courseId }}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Course</router-link>
         </div>
         <main id="dashboard-content">
             <div id="content">
@@ -176,7 +176,7 @@ export default {
         deleteModule() {
             moduleService.deleteModule(this.module.id).then(response => {
                 if (response.status === 204) {
-                    this.$router.push({name: 'teacher-course', params: { id:this.module.courseId }});
+                    this.$router.push({name: 'teacher-course', params: { courseId:this.module.courseId }});
                 }
             })
         }

@@ -2,9 +2,9 @@
   <div class="dashboard">
     <div id="heading-bg" class="p-relative tall">
       <h1 class="dashboard-title"><span class="hide-mobile">{{ $store.state.user.fullname }} - </span><span class="course-name">{{ course.name }}</span></h1>
-      <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back <span class="hide-mobile">to Dashboard</span></router-link>
+      <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> <span class="back">Back</span> <span class="hide-mobile"> to Dashboard</span></router-link>
       <div id="course-stats" class="p-absolute flex">
-        <div class="score">
+        <div class="score" v-if="grade > 1">
           <div>Grade</div>
           <div class="course-grade">{{grade*10}}%</div>
         </div>
@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="contact-teacher-wrapper">
-            <button class="contact-teacher-button">Contact Teacher</button>
+            <a class="contact-teacher-button" href="mailto:teacher1@test.edu">Contact Teacher</a>
         </div>
       </section>
     </main>
@@ -168,28 +168,7 @@ export default {
         padding:2rem 1rem;
     }
 
-   .contact-teacher-wrapper {
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start; 
-    height: 100%;
-    margin-top: 1rem;
-  }
 
-
-  .contact-teacher-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    background-color: #429cb9;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .contact-teacher-button:hover {
-    background-color: #17b0e1;
-  }
 
   #course-stats {
     right:0;

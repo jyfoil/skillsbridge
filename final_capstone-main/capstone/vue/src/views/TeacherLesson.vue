@@ -75,7 +75,7 @@
                             <div>{{studentMap.get(submission.studentId)}}</div>
                             <div class="capsule grade" v-if="submission.grade != 0">Grade: {{ submission.grade }}/10</div>
                             <div class="capsule dark" v-else>Not Graded</div>
-                            <div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
+                            <div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt.split(".")[0]}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
                         <div class="submission-content" v-show="showSubmission === submission.submissionId">
                             <div v-html="submission.content"></div>
                         </div>
