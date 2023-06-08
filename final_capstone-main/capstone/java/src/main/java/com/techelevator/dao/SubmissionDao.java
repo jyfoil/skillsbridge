@@ -2,6 +2,8 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Submission;
 import com.techelevator.model.SubmissionDTO;
+import com.techelevator.model.SubmissionGradeSummaryDTO;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,6 +23,8 @@ public interface SubmissionDao {
     BigDecimal getGradeAverageForCourse(int studentId, int courseId);
 
     List<Submission> getSubmissionsForCourse(int courseId);
+
+    List<SubmissionGradeSummaryDTO> getAverageGradeSummaryForStudentsInCourse(@PathVariable int courseId);
 
     void setSubmissionGrade(Submission submission, int id);
 

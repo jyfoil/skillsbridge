@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Submission;
 import com.techelevator.model.SubmissionDTO;
+import com.techelevator.model.SubmissionGradeSummaryDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -170,8 +171,27 @@ public class JdbcSubmissionDao implements SubmissionDao {
     }
 
     @Override
+    public List<SubmissionGradeSummaryDTO> getAverageGradeSummaryForStudentsInCourse(int courseId) {
+        List<SubmissionGradeSummaryDTO> summaries = new ArrayList<>();
+
+        String sql = "SELECT CONCAT(u.firstname, ' ', u.lastname) AS full_name, c.name AS course_name, AVG(s.grade) " +
+                "AS average_grade " +
+                "FROM users u " +
+                "JOIN student_courses sc ON u.user_id = sc.student_id " +
+                "JOIN courses c ON sc.course_id = c.course_id " +
+                "LEFT JOIN submissions s ON u.user_id = s.student_id " +
+                "LEFT JOIN lessons l ON s.lesson_id = l.lesson_id " +
+                "WHERE c.course_id = 38 " +
+                "GROUP BY u.user_id, full_name, course_name;";
+
+
+
+        return summaries;
+
+    }
+
+    @Override
     public void setSubmissionGrade(Submission submission, int id) {
-        Submission updatedSubmission = null;
         String sql = "UPDATE submissions SET grade = ? " +
                 "WHERE submission_id = ?";
 
