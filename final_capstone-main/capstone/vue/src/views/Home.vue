@@ -97,9 +97,22 @@ export default {
 <style scoped>
   #hero { height:520px; }
   #hero .content h1 { background:rgba(0,0,0,0.6); display:inline-block; padding: 0.5rem 1rem; position:absolute; bottom:0; }
-  #hero .content { background-image: url('../assets/althomephoto.jpg'); height:520px; background-size:cover; background-repeat:no-repeat; background-position-y: center; background-position-x:center; box-sizing: border-box; padding:20px; position:relative; }
+  #hero .content { background-image: url('../assets/althomephoto.jpg'); height:520px; background-size:cover; background-repeat:no-repeat; background-position-y: center; background-position-x:left; box-sizing: border-box; padding:20px; position:relative; }
   .sidebar { width: 25%; padding:20px; box-sizing:border-box; background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%); height: 100%; display:flex; flex-direction: column; gap:12px; justify-content: center; align-items:center; min-width:280px; }
   .sidebar h4 { color:white; }
   .sidebar button { background:white; color:#429CB9; width: 100%; }
   .sidebar .loginbox { padding: 20px; width:100%; box-sizing:border-box; background: rgba(255,255,255,0.8); border-radius:0.25rem; box-shadow:0 0 10px rgba(0,0,0,0.2); }
+
+  @media screen and (max-width: 800px)  {
+    #hero {
+      flex-direction: column;
+    }
+    #hero .content {
+      width:100%;
+    }
+    #hero .sidebar {
+      background-image:none;
+    }
+  }
+
 </style>

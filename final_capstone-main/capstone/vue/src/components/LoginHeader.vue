@@ -4,14 +4,17 @@
       <router-link :to="{ name: 'home' }" class="header-link">
         <div class="logo-container">
           <img src="../assets/SkillsBridge.png" alt="Logo" class="logo">
-          <h3 class="portal-title">{{ msg }}</h3>
+          <h3 class="portal-title">Welcome to SkillsBridge</h3>
         </div>
       </router-link>
     </div>
     <div class="header-right">
-      <router-link :to="{ name: 'login' }">Login</router-link>
+      <router-link v-if="$store.state.user.authorities[0].name == 'ROLE_ADMIN'" :to="{ name: 'Teacher Home' }">My Courses</router-link>
+      <router-link v-else-if="$store.state.user.authorities[0].name == 'ROLE_USER'" :to="{ name: 'Student Home' }">My Courses</router-link>
+      <router-link v-else :to="{ name: 'login' }">Login</router-link>
       <span class="separator"> |</span>
-      <router-link :to="{ name: 'register' }">Register</router-link>
+      <router-link v-if="$store.state.token != ''" :to="{ name: 'logout' }">Logout</router-link>
+      <router-link v-else :to="{ name: 'register' }">Register</router-link>
     </div>
   </header>
 </template>
@@ -67,9 +70,15 @@ header a:hover {
 }
 
 .separator {
-  margin: 0 5px;
-  color: #429CB9;
-  font-weight: bold;
+  margin: 0;
+  color: #cbcbcb;
+  font-weight: normal;
+}
+
+@media screen and (max-width: 550px)  {
+    .hide-550 {
+        display:none;
+    }
 }
 
 </style>

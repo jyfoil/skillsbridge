@@ -71,6 +71,15 @@
                         <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
                     </div>
                 </div>
+
+                <div class="mt-2 mb-2">
+                    <h3>Invite a Student</h3>
+                    <form @submit.prevent="">
+                        <input type="text" />
+                    </form>
+                </div>
+
+
             </div>
             <section>
                 <submissions-list :submissions="latestSubmissions" />
