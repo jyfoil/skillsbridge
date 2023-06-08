@@ -11,16 +11,18 @@
                     <p>{{ module.description }}</p>
                 </div>
 
+            <div class="p-relative">
                 <h2 class="underline">Lessons</h2>
-                <section id="lessons" :class="{ grid: gridView }">
+                <div class="utilities small">
                     <span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span>
-                    <div v-for="lesson in lessons" :key="lesson.id">
-                        <h4>
-                            <router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}
-                            </router-link>
-                        </h4>
-                    </div>
-                </section>
+                </div>
+            </div>
+            <section id="lessons" :class="{ grid: gridView }">
+                <div v-for="lesson in lessons" :key="lesson.id">
+                    <router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}
+                    </router-link>
+                </div>
+            </section>
             </div>
             
             <section>
