@@ -16,26 +16,5 @@ export default {
 </script>
 
 <style scoped>
-#notifications-column h3 {
-    line-height:1.6;
-}
-#notifications-list {
-    font-size:0.9rem;
-}
 
-#notifications-list div {
-    border-bottom:1px solid #EEE;
-    padding-bottom:12px;
-    margin-bottom:12px;
-    color:#888;
-}
-
-#notifications-list div:last-child {
-    border-bottom:0;
-}
-
-.sName, .lName {
-    /* font-weight:bold; */
-    color:#444;
-}
 </style>

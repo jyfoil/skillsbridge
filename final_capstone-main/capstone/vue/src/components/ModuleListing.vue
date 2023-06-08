@@ -1,5 +1,5 @@
 <template>
-      <router-link class="module-listing" :key="module.id" :to="{name:moduleView, params: { courseId: module.courseId, moduleId: module.id }}"><span class="mName">{{ module.name }}</span> <span class="small mDescription">- {{ module.description }}</span></router-link>
+      <router-link class="module-listing" :key="module.id" :to="{name:moduleView, params: { courseId: module.courseId, moduleId: module.id }}"><span class="mName">{{ module.name }}</span> <span class="small mDescription hide-mobile">- {{ module.description }}</span></router-link>
 </template>
 
 <script>

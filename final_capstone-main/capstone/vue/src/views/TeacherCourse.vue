@@ -11,15 +11,15 @@
                     <textarea class="form-control" type="text" :disabled="descriptionDisabled" v-model="course.description"></textarea>
                     <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled"><img class="icon invert edit" src="../assets/edit.svg" /> Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
                 </section>
-                <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
+                <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small hide-mobile"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
                 <section id="modules" :class="{ grid: gridView}">
                     <!--<router-link class="module-listing" v-for="module in modules" :key="module.id" :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }} - <span class="small ">{{ module.description }}</span></router-link>-->
                     <module-listing v-for="module in modules" :key="module.id" :module="module" />
                 </section>
                 <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
                 <div class="accordion" :class="{ hide: hideAddModuleForm }">
-                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
+                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
+                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
                     <h3>Add New Module</h3>
                     <form @submit.prevent="createModule" class="flex-column">
                         <div>
@@ -52,17 +52,17 @@
                         <div v-show="removeSuccessMsg != ''" @click="removeSuccessMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <div v-show="removeErrorMsg != ''" @click="removeErrorMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <student-details :student="selectedStudent" :submissions="filteredSubmissions" v-show="selectedStudent.username != ''" />
-                        <div class="button-bar">
+                        <div class="button-bar mt-1">
                             <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
                         </div>
                     </div>
                 </section>
                 <h3>Add Student to Course</h3>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
-                <div class="accordion" :class="{ hide: hideAddStudentForm }">
+                <div class="accordion student-accordion" :class="{ hide: hideAddStudentForm }">
                     <label for="student-search">Search for a student: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
                     <div class="aStudentList" ref="show">
-                        <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched. <span v-show="hideExtendedResults" @click="hideExtendedResults = false"><strong >View List</strong></span></div>
+                        <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched.</div>
                         <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
                         <div v-else v-for="allStudent in filteredAllStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}} [{{allStudent.username}}]</div><button @click="addStudent" class="small add">Add Student</button></div>
                     </div>
@@ -71,12 +71,6 @@
                         <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
                     </div>
                 </div>
-
-                <!-- <div class="mt-2 mb-2">
-                    <email-invitation :course="course" />
-                </div> -->
-
-
             </div>
             <section>
                 <submissions-list :submissions="latestSubmissions" />
@@ -341,18 +335,34 @@ export default {
     }
     .grid {
         display:flex;
+        flex-wrap:wrap;
         gap:12px;
     }
     .grid .module-listing {
-        flex-basis:33%;
+        flex-basis:28%;
         padding:2rem 1rem;
     }
     .icon.edit {
         width:20px;
     }
-    .accordion {
+    .student-accordion {
         padding-top:12px;
         border-radius:4px;
         border-top:8px solid #429CB9;
+    }
+
+    @media screen and (max-width: 850px)  {
+        .student-list-column {
+            width:33%;
+        }
+    }
+
+    @media screen and (max-width: 590px)  {
+        #students {
+            flex-direction:column;
+        }
+        .student-list-column {
+            width:100%;
+        }
     }
 </style>

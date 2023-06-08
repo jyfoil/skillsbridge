@@ -11,8 +11,8 @@
                 </section>
                 <button @click="focusCreateForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Create Course</button>
                 <div class="accordion" :class="{ hide: hideAddClassForm }">
-                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} <img class="icon" src="../assets/close.svg"></div>
-                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} <img class="icon" src="../assets/close.svg"></div>
+                    <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
+                    <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
                     <h3>Create New Course</h3>
                     <form @submit.prevent="createClass" class="flex-column">
                         <div>

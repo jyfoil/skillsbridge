@@ -18,7 +18,7 @@
                         </div>
                         <div class="assignment-details" v-else>No Assignment for this Lesson</div>
                         <h4 class="underline mt-0">Content</h4>
-                        <div v-html="lesson.content"></div>
+                        <div class="html-content" v-html="lesson.content"></div>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                         </form>
                     </div>
                 </div>
-                <div  v-if="lesson.has_assignment">
+                <div v-if="lesson.has_assignment">
                     <h2 class="mt-2">Submissions</h2>
                     <p v-if="submissions.length === 0">No submissions yet</p>
                     <div v-if="gradeSuccessMsg != ''" @click="gradeSuccessMsg = ''" class="alert alert-success">{{gradeSuccessMsg}}</div>
@@ -90,9 +90,11 @@
                     </div>
                 </div>
             </div>
-            <section>
+            <section id="notifications-column">
                 <h3 class="mt-0 underline">Latest Activity</h3>
-                <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission at:<br />{{submission.submittedAt.split('.')[0]}}</div>
+                <div id="notifications-list">
+                    <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId"><span class="sName">Submission at:</span><br />{{submission.submittedAt.split('.')[0]}}</div>
+                </div>
             </section>
         </main>
 

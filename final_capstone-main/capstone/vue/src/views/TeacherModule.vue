@@ -55,10 +55,12 @@
                     </form>
                 </div>
             </div>
-            <section>
+            <section id="notifications-column">
                 <h3 class="underline">Latest Submissions</h3>
                 <!-- <div v-for="(item, index) in submissionsPerLesson" :key="index">{{item}} submissions in Lesson {{index}}</div> -->
-                <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission for {{lessons.find(l => l.id == submission.lessonId).title}} at: <span class="small">{{submission.submittedAt.split('.')[0]}}</span></div>
+                <div id="notifications-list">
+                    <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId"><span class="sName">Submission for {{lessons.find(l => l.id == submission.lessonId).title}} at:</span> <span class="small">{{submission.submittedAt.split('.')[0]}}</span></div>
+                </div>
             </section>
         </main>
 

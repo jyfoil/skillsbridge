@@ -8,7 +8,7 @@
         <main id="dashboard-content">
             <div id="content">
                 <h2 class="underline">Lesson</h2>
-                <div>{{ lesson.content }}</div>
+                <div class="html-content" v-html="lesson.content"></div>
                 <div v-if="lesson.has_assignment">
                     <h2 class="underline">Assignment</h2>
                     <div class="assignment-details">

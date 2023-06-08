@@ -273,7 +273,7 @@ main > section > h3 {
     border-top:0;
 }
 
-.accordion h2, .accordion h3 {
+.accordion>h2, .accordion>h3 {
     margin-top:0;
     position:absolute;
     padding:0.5rem 1rem;
@@ -532,6 +532,33 @@ button.small {
   .contact-teacher-button:hover {
     background-color: #17b0e1;
   }
+
+#notifications-column h3 {
+    line-height:1.6;
+}
+#notifications-list {
+    font-size:0.9rem;
+}
+
+#notifications-list div {
+    border-bottom:1px solid #EEE;
+    padding-bottom:12px;
+    margin-bottom:12px;
+    color:#888;
+}
+
+#notifications-list div:last-child {
+    border-bottom:0;
+}
+
+.sName, .lName {
+    /* font-weight:bold; */
+    color:#444;
+}
+
+.html-content {
+
+}
 
 @media screen and (max-width: 400px)  {
     .form-signin, .form-register {
