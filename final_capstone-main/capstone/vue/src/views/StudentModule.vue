@@ -22,7 +22,7 @@
 
         <section id="lessons" :class="{ grid: gridView }">
           <div v-for="lesson in lessons" :key="lesson.id" class="lesson-link">
-            <router-link :to="{ name: 'student-lesson', params: { courseId: $route.params.courseId, moduleId: $route.params.moduleId, lessonId: lesson.id } }">
+            <router-link class="lesson-listing" :to="{ name: 'student-lesson', params: { courseId: $route.params.courseId, moduleId: $route.params.moduleId, lessonId: lesson.id } }">
               {{ lesson.title }}
             </router-link>
           </div>
