@@ -9,7 +9,7 @@
                 <h2 class="underline">Course Description</h2>
                 <section id="description">
                     <textarea class="form-control" type="text" :disabled="descriptionDisabled" v-model="course.description"></textarea>
-                    <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled" class="small">Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
+                    <div class="button-bar"><button v-show="descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled"><img class="icon invert edit" src="../assets/edit.svg" /> Edit</button><button class="small" v-show="!descriptionDisabled" @click="descriptionDisabled = !descriptionDisabled">Save</button></div>
                 </section>
                 <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
                 <section id="modules" :class="{ grid: gridView}">
@@ -51,15 +51,17 @@
                     <div class="student-details">
                         <div v-show="removeSuccessMsg != ''" @click="removeSuccessMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <div v-show="removeErrorMsg != ''" @click="removeErrorMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
-                        <student-details :student="selectedStudent" v-show="selectedStudent.username != ''" />
-                        <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
+                        <student-details :student="selectedStudent" :submissions="filteredSubmissions" v-show="selectedStudent.username != ''" />
+                        <div class="button-bar">
+                            <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
+                        </div>
                     </div>
                 </section>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
                 <div class="accordion" :class="{ hide: hideAddStudentForm }">
                     <h3>Add Student to Course</h3>
                     <label for="student-search">Search: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
-                    <div class="aStudentList">
+                    <div class="aStudentList" ref="show">
                         <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched. <span v-show="hideExtendedResults" @click="hideExtendedResults = false"><strong >View List</strong></span></div>
                         <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
                         <div v-else v-for="allStudent in filteredAllStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}} [{{allStudent.username}}]</div><button @click="addStudent" class="small add">Add Student</button></div>
@@ -71,8 +73,7 @@
                 </div>
             </div>
             <section>
-                <submissions-list :submissions="notifications" />
-                <!-- <div class="mb-1" v-for="submission in submissions" :key="submission.submissionId">Submission for {{lessons.find(l => l.id == submission.lessonId).title}} at: <span class="small">{{submission.submittedAt.split('.')[0]}}</span></div> -->
+                <submissions-list :submissions="latestSubmissions" />
             </section>
         </main>
 
@@ -116,6 +117,7 @@ export default {
             allStudents: [],
             studentIds: [],
             submissions: [],
+            filteredSubmissions: [],
             notifications: [
                 {
                     id: 10,
@@ -186,8 +188,6 @@ export default {
         },
         addStudentForm() {
             this.hideAddStudentForm = !this.hideAddStudentForm;
-            console.log(this.$refs.studentsearch);
-            this.$refs.studentsearch.focus();
             if (this.allStudents.length === 0) {
                 studentService.getAllStudents().then(response => {
                     if (response.status === 200) {
@@ -227,7 +227,10 @@ export default {
             this.errorMsg = '';
             this.removeSuccessMsg = '';
             this.removeErrorMsg = '';
-        }
+        },
+        filteredSubmissionsGetter(id) {
+            this.filteredSubmissions = this.submissions.filter(s => s.studentId == id);
+        },
     },
     computed: {
         filteredAllStudents() {
@@ -244,6 +247,19 @@ export default {
                 let fullname = s.firstname.toLowerCase() + " " + s.lastname.toLowerCase();
                 return  (fullname.includes(search) || s.username.includes(search));
             })
+        },
+        latestSubmissions() {
+            return this.submissions.map(s => {
+                return {
+                    //name
+                    //lessonid
+                    //submitted_at
+                    id: s.submissionId,
+                    fullname: this.students.find(student => student.id == s.studentId).fullname,
+                    lessonId: s.lessonId,
+                    submitted_at: s.submittedAt
+                }
+            })
         }
     },
     watch: {
@@ -259,6 +275,7 @@ export default {
             if (s.username != '') {
                 this.resetMessages();
             }
+            this.filteredSubmissionsGetter(s.id);
         }
     }
 }
@@ -321,5 +338,7 @@ export default {
         flex-basis:33%;
         padding:2rem 1rem;
     }
-
+    .icon.edit {
+        width:20px;
+    }
 </style>

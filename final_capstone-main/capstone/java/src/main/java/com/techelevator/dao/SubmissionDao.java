@@ -25,6 +25,8 @@ public interface SubmissionDao {
     List<Submission> getSubmissionsForCourse(int courseId);
 
     List<SubmissionGradeSummaryDTO> getAverageGradeSummaryForStudentsInCourse(@PathVariable int courseId);
+    
+    List<Submission> getSubmissionsForCourseAndStudent(int courseId, int studentId);
 
     void setSubmissionGrade(Submission submission, int id);
 

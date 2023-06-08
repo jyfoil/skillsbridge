@@ -7,16 +7,27 @@
         <main id="dashboard-content">
             <div id="content">
                 <div> 
-                    <h3>Module Description:</h3>
+                    <h2 class="underline">Module Description:</h2>
                     <p>{{ module.description }}</p>
                 </div>
-                <h2>Lessons</h2>
-                <section id="lessons">
-                    <div v-for="lesson in lessons" :key="lesson.id"><h4><router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}</router-link></h4></div>
+
+                <h2 class="underline">Lessons</h2>
+                <section id="lessons" :class="{ grid: gridView }">
+                    <span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span>
+                    <div v-for="lesson in lessons" :key="lesson.id">
+                        <h4>
+                            <router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}
+                            </router-link>
+                        </h4>
+                    </div>
                 </section>
             </div>
+            
             <section>
-            <h3>Upcoming Assignments</h3>
+            <h3 class="assignments">Upcoming Assignments</h3>
+            <div class="contact-teacher-wrapper">
+                <button class="contact-teacher-button">Contact Teacher</button>
+            </div>
         </section>
         </main>
     </div>
@@ -65,3 +76,12 @@ export default {
     
 }
 </script>
+
+<style scoped>
+
+.lesson-link {
+  margin-bottom: 0.5rem;
+}
+
+
+</style>

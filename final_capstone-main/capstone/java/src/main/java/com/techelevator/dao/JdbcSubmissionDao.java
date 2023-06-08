@@ -26,12 +26,12 @@ public class JdbcSubmissionDao implements SubmissionDao {
     @Override
     public Submission postSubmission(Submission submission) {
         Submission createdSubmission = null;
-        String sql = "INSERT INTO submissions (content, lesson_id, student_id, grade) " +
-                "VALUES (?, ?, ?, ?) returning submission_id";
-
+        String sql = "INSERT INTO submissions (content, lesson_id, student_id) " +
+                "VALUES (?, ?, ?) returning submission_id";
+        System.out.println("inserting to lesson: " + submission.getLessonId() + ", student: " + submission.getStudentId());
         try {
             int newSubmissionId = jdbcTemplate.queryForObject(sql, int.class, submission.getContent(),
-                    submission.getLessonId(), submission.getStudentId(), submission.getGrade());
+                    submission.getLessonId(), submission.getStudentId());
             createdSubmission = getSubmission(newSubmissionId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
@@ -187,7 +187,23 @@ public class JdbcSubmissionDao implements SubmissionDao {
 
 
         return summaries;
-
+    }
+    
+    public List<Submission> getSubmissionsForCourseAndStudent(int courseId, int studentId) {
+        List<Submission> submissions = new ArrayList<>();
+        String sql = "SELECT * FROM submissions s JOIN lessons l ON l.lesson_id = s.lesson_id JOIN modules m ON m" +
+                ".module_id = l.module_id WHERE m.course_id = ? AND s.student_id = ?;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId, studentId);
+            while (results.next()) {
+                submissions.add(mapRowToSubmission(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
+        return submissions;
     }
 
     @Override

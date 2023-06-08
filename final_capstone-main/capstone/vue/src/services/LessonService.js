@@ -7,8 +7,8 @@ export default {
     createLesson(lesson) {
       return axios.post(`/lesson`, lesson);
     },
-    getLessons(courseId) {
-      return axios.get(`/course/${courseId}/lessons`);
+    getUpcomingLessons(courseId) {
+      return axios.get(`/course/${courseId}/lessons/upcoming`);
     },
     getLessonsByModule(courseId, moduleId) {
       return axios.get(`/course/${courseId}/module/${moduleId}/lessons`);
@@ -21,5 +21,8 @@ export default {
     },
     deleteLesson(lessonId) {
       return axios.delete(`/lesson/${lessonId}`);
+    },
+    getNumberOfAssignmentsInCourse(courseId) {
+      return axios.get(`/course/${courseId}/lesson/amount`);
     }
   }

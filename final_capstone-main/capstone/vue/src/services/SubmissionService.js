@@ -14,6 +14,12 @@ export default {
         return axios.get(`/course/${courseId}/submissions`);
     },
     createSubmission(submission) {
-        return axios.put(`${submission}`);
+        return axios.post('/submission', submission);
+    },
+    getSubmissionsByCourseAndStudent(courseId, studentId) {
+        return axios.get(`/course/${courseId}/student/${studentId}/submissions`);
+    },
+    getSubmissionByLessonAndStudent(lessonId, studentId) {
+        return axios.get(`/lesson/${lessonId}/student/${studentId}`);
     }
 }

@@ -11,7 +11,7 @@
                     <p class="description">{{ module.description }}</p>
                     <div v-if="lessons.length > 0"><div class="small capsule">{{lessons.length}} Lesson(s) in this module.</div></div>
                     <!--<p>Editable name/description by clicking on fields? (use enter key or 'save' button to commit)</p>-->
-                    <button @click="deleteModule" :disabled="lessons.length > 0" class="mt-1 delete red small"><img class="icon invert" src="../assets/delete.svg" /> Delete Module</button>
+                    <button @click="deleteModule" :disabled="lessons.length > 0" class="mt-1 delete red"><img class="icon invert" src="../assets/delete.svg" /> Delete Module</button>
                 </div>
                 <h2 class="underline">Lessons</h2>
                 <section id="lessons">
@@ -124,21 +124,14 @@ export default {
     },
     computed: {
         submissionsPerLesson() {
-            let temp = [];
-            this.submissions.forEach(s => {
-                // if (temp.has(s.lessonId)) {
-                //     temp.set(s.lessonId, temp.get(s.lessonId) + 1);
-                // } else {
-                //     temp.set(s.lessonId, 1);
-                // }
-                if (temp[s.lessonId] == undefined) {
-                    temp[s.lessonId] = 1;
-                } else {
-                    temp[s.lessonId] = temp[s.lessonId] + 1;
-                }
+            let tempObject = {};
+            this.lessons.forEach(l => {
+                Object.defineProperty(tempObject, l.id, { writable:true, value:0, enumerable:true});
             })
-            console.log(temp);
-            return temp;
+            this.submissions.forEach(s => {
+                tempObject[s.lessonId] = tempObject[s.lessonId] + 1;
+            })
+            return tempObject;
         }
     },
     methods: {

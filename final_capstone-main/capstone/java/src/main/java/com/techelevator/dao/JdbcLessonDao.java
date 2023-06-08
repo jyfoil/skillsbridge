@@ -87,6 +87,30 @@ public class JdbcLessonDao implements LessonDao {
     }
 
     @Override
+    public List<Lesson> getLessonsByCourseId(int courseId) {
+        // check that user has access to this course
+        // need to add course_id to both WHERE sections below:
+        // SELECT lesson_id FROM lessons l JOIN courses c ON c.course_id = l.course_id JOIN student_courses sc ON sc
+        // .course_id = l.course_id WHERE sc.student_id = 4 UNION SELECT lesson_id FROM lessons l JOIN courses c ON c
+        // .course_id = l.course_id WHERE c.teacher_id = 4;
+        List<Lesson> lessons = new ArrayList<>();
+        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ?;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+            while (results.next()) {
+                lessons.add(mapRowToLesson(results));
+            }
+        }  catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return lessons;
+    }
+
+
     public int getNumberOfLessonsInCourse(int courseId) {
         int numOfLessons = 0;
 
@@ -94,14 +118,16 @@ public class JdbcLessonDao implements LessonDao {
                 "FROM lessons l " +
                 "JOIN modules m ON l.module_id = m.module_id " +
                 "JOIN courses c ON m.course_id = c.course_id " +
-                "WHERE c.course_id = ?";
+                "WHERE c.course_id = ? AND l.has_assignment = true";
 
         try {
             numOfLessons = jdbcTemplate.queryForObject(sql, int.class, courseId);
-        } catch (CannotGetJdbcConnectionException e) {
+        }  catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         } catch (BadSqlGrammarException e) {
             throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
         }
 
         return numOfLessons;
@@ -131,6 +157,30 @@ public class JdbcLessonDao implements LessonDao {
 //        return lessons;
 //    }
 
+
+    @Override
+    public List<Lesson> getUpcomingLessonsByCourseId(int courseId) {
+        // check that user has access to this course
+        // need to add course_id to both WHERE sections below:
+        // SELECT lesson_id FROM lessons l JOIN courses c ON c.course_id = l.course_id JOIN student_courses sc ON sc
+        // .course_id = l.course_id WHERE sc.student_id = 4 UNION SELECT lesson_id FROM lessons l JOIN courses c ON c
+        // .course_id = l.course_id WHERE c.teacher_id = 4;
+        List<Lesson> lessons = new ArrayList<>();
+        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ? AND due_date > NOW();;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
+            while (results.next()) {
+                lessons.add(mapRowToLesson(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return lessons;
+    }
 
     @Override
     public List<Lesson> getLessonsByCourseAndModule(int moduleId, int courseId) {

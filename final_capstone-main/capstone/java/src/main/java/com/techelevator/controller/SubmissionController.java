@@ -104,6 +104,13 @@ public class SubmissionController {
         return submissionDao.getSubmissionsForCourse(id);
     }
 
+    @GetMapping("/course/{courseId}/student/{studentId}/submissions")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<Submission> getSubmissionsForCourseAndStudent(@PathVariable int courseId, @PathVariable int studentId) {
+        System.out.println("Got Request");
+        return submissionDao.getSubmissionsForCourseAndStudent(courseId, studentId);
+    }
+
     @GetMapping("/lesson/{lessonId}/student/{studentId}")
     public Submission getSubmissionByLessonAndStudentId(@PathVariable int lessonId, @PathVariable int studentId) {
         return submissionDao.getSubmissionByLessonAndStudentId(lessonId, studentId);
