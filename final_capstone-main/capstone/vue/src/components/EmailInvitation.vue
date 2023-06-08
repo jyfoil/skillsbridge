@@ -14,6 +14,21 @@ export default {
     
     data() {
         return {
+            /*
+java objects:
+
+First
+    personalizations list/array (to list/array, from: contact)
+    from: contact
+    reply_to: contact
+    subject: String
+    content: list/array (type & value)
+
+
+
+
+
+            */
             emailTemplate: {
                 "personalizations":[
                     {
