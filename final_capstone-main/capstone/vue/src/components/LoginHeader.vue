@@ -9,9 +9,10 @@
       </router-link>
     </div>
     <div class="header-right">
-      <router-link v-if="$store.state.user.authorities[0].name == 'ROLE_ADMIN'" :to="{ name: 'Teacher Home' }">My Courses</router-link>
+      <router-link v-if="$store.state.token == ''" :to="{ name: 'login' }">Login</router-link>
+      <router-link v-else-if="$store.state.user.authorities[0].name == 'ROLE_ADMIN'" :to="{ name: 'Teacher Home' }">My Courses</router-link>
       <router-link v-else-if="$store.state.user.authorities[0].name == 'ROLE_USER'" :to="{ name: 'Student Home' }">My Courses</router-link>
-      <router-link v-else :to="{ name: 'login' }">Login</router-link>
+      
       <span class="separator"> |</span>
       <router-link v-if="$store.state.token != ''" :to="{ name: 'logout' }">Logout</router-link>
       <router-link v-else :to="{ name: 'register' }">Register</router-link>
