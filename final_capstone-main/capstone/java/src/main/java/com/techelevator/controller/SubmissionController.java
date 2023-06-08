@@ -6,6 +6,7 @@ import com.techelevator.dao.SubmissionDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Submission;
 import com.techelevator.model.SubmissionDTO;
+import com.techelevator.model.SubmissionGradeSummaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -119,4 +121,13 @@ public class SubmissionController {
     public BigDecimal getStudentGradeAverageForCourse(@PathVariable int courseId, @PathVariable int studentId) {
         return submissionDao.getGradeAverageForCourse(studentId, courseId);
     }
+
+    // return a json with student name course name grade
+    @GetMapping("/course/{courseId}/students/grade/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<SubmissionGradeSummaryDTO> getAverageGradSummaryForStudentsInCourse(@PathVariable int courseId) {
+
+        return null;
+    }
+
 }

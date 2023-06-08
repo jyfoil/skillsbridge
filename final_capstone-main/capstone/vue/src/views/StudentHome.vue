@@ -10,7 +10,7 @@
                    <course-listing :course="course" v-for="course in courses" :key="course.courseId" />
                 </section>
             </div>
-            <section>
+            <section class="underline">
                 <h3>Upcoming Assignments</h3>
             </section>
         </main>
