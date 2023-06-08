@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div id="hero">
-        <div class="content"><h1>The Bridge to your Future</h1></div>
+        <div class="content"><h1>The Bridge to your New Career</h1></div>
         <div class="sidebar">
           <div class="loginbox" v-if="$store.state.token === ''">
               <form @submit.prevent="login" class="flex-column">
