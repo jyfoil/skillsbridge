@@ -126,8 +126,7 @@ public class SubmissionController {
     @GetMapping("/course/{courseId}/students/grade/all")
     @PreAuthorize("hasRole('ADMIN')")
     public List<SubmissionGradeSummaryDTO> getAverageGradSummaryForStudentsInCourse(@PathVariable int courseId) {
-
-        return null;
+        return submissionDao.getAverageGradeSummaryForStudentsInCourse(courseId);
     }
 
 }

@@ -181,10 +181,20 @@ public class JdbcSubmissionDao implements SubmissionDao {
                 "JOIN courses c ON sc.course_id = c.course_id " +
                 "LEFT JOIN submissions s ON u.user_id = s.student_id " +
                 "LEFT JOIN lessons l ON s.lesson_id = l.lesson_id " +
-                "WHERE c.course_id = 38 " +
+                "WHERE c.course_id = ? " +
                 "GROUP BY u.user_id, full_name, course_name;";
 
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
 
+            while (results.next()) {
+                summaries.add(mapRowToSubmissionGradeSummaryDto(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (BadSqlGrammarException e) {
+            throw new DaoException("SQL syntax error", e);
+        }
 
         return summaries;
     }
@@ -250,6 +260,14 @@ public class JdbcSubmissionDao implements SubmissionDao {
         submission.setGrade(rowSet.getInt("grade"));
         submission.setSubmittedAt(rowSet.getString("submitted_at"));
         return submission;
+    }
+
+    private SubmissionGradeSummaryDTO mapRowToSubmissionGradeSummaryDto(SqlRowSet rowSet) {
+        SubmissionGradeSummaryDTO gradeSummary = new SubmissionGradeSummaryDTO();
+        gradeSummary.setFullName(rowSet.getString("full_name"));
+        gradeSummary.setCourseName(rowSet.getString("course_name"));
+        gradeSummary.setAverageGrade(rowSet.getBigDecimal("average_grade"));
+        return gradeSummary;
     }
 
     public Submission mapSubmissionDtoToSubmission(SubmissionDTO submissionDto, int lessonId,
