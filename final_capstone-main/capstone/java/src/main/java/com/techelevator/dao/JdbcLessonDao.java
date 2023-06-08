@@ -21,34 +21,6 @@ public class JdbcLessonDao implements LessonDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-//    @Override
-//    public Lesson getLessonByIdAndCourseId(int lessonId, int courseId) {
-//        // need to check that user has access to this course?
-//        // using user_id to check:
-//        // SELECT * FROM lessons l JOIN courses c ON c.course_id = l.course_id JOIN student_courses sc ON sc
-//        // .course_id = l.course_id  WHERE (sc.student_id = 4 OR c.teacher_id = 4) AND l.lesson_id = 1;
-//        // TODO thinking that maybe it should be lesson id and module id?
-//
-//        Lesson lesson = null;
-//        String sql = "SELECT * FROM lessons l JOIN modules m ON m.module_id = l.module_id WHERE l.lesson_id = ? AND
-//        m" +
-//                ".course_id = ?;";
-//
-//        try {
-//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, lessonId, courseId);
-//
-//            if (results.next()) {
-//                lesson = mapRowToLesson(results);
-//            }
-//        } catch (CannotGetJdbcConnectionException e) {
-//            throw new DaoException("Unable to connect to server or database", e);
-//        } catch (BadSqlGrammarException e) {
-//            throw new DaoException("SQL syntax error", e);
-//        }
-//
-//        return lesson;
-//    }
-
     @Override
     public Lesson getLessonById(int lessonId) {
         Lesson lesson = null;
@@ -132,31 +104,6 @@ public class JdbcLessonDao implements LessonDao {
 
         return numOfLessons;
     }
-
-//    @Override
-//    public List<Lesson> getLessonsByCourseId(int courseId) {
-//        // check that user has access to this course
-//        // need to add course_id to both WHERE sections below:
-//        // SELECT lesson_id FROM lessons l JOIN courses c ON c.course_id = l.course_id JOIN student_courses sc ON sc
-//        // .course_id = l.course_id WHERE sc.student_id = 4 UNION SELECT lesson_id FROM lessons l JOIN courses c ON c
-//        // .course_id = l.course_id WHERE c.teacher_id = 4;
-//        List<Lesson> lessons = new ArrayList<>();
-//        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ?;";
-//        try {
-//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
-//            while (results.next()) {
-//                lessons.add(mapRowToLesson(results));
-//            }
-//        } catch (CannotGetJdbcConnectionException e) {
-//            throw new DaoException("Unable to connect to server or database", e);
-//        } catch (BadSqlGrammarException e) {
-//            throw new DaoException("SQL syntax error", e);
-//        } catch (DataIntegrityViolationException e) {
-//            throw new DaoException("Data integrity violation", e);
-//        }
-//        return lessons;
-//    }
-
 
     @Override
     public List<Lesson> getUpcomingLessonsByCourseId(int courseId) {

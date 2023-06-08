@@ -36,8 +36,6 @@ public class SubmissionController {
     @PostMapping("/submission")
     @PreAuthorize("hasRole('USER')")
     public SubmissionDTO postSubmission(@RequestBody SubmissionDTO submissionDto, Principal principal) {
-        // On the frontend the lessonID should not have to be entered by the user
-        // This lesson id can be received from the path lesson/:lessonID I believe
 
         int studentId = userDao.findIdByUsername(principal.getName());
         Submission submission = submissionDao.mapSubmissionDtoToSubmission(submissionDto, submissionDto.getLessonId()
@@ -72,7 +70,6 @@ public class SubmissionController {
         submissionDao.deleteSubmission(id);
     }
 
-    // teacherSetSubmissonGrade teacher only
     @PutMapping("/submission/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Submission setSubmissionGrade(@RequestBody Submission submission, @PathVariable int id) {
@@ -84,8 +81,6 @@ public class SubmissionController {
         return submissionToUpdate;
     }
 
-    // teacher can see a list of submissions for a lesson
-    // another getSubmissionsForLesson method
     @GetMapping("/lesson/{id}/submissions")
     @PreAuthorize("hasRole('ADMIN')")
     public List<Submission> getSubmissionsForLesson(@PathVariable int id) {
