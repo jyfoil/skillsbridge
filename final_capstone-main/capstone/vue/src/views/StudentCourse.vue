@@ -2,7 +2,7 @@
   <div class="dashboard">
     <div id="heading-bg" class="p-relative tall">
       <h1 class="dashboard-title"><span class="hide-mobile">{{ $store.state.user.fullname }} - </span><span class="course-name">{{ course.name }}</span></h1>
-      <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> <span class="back">Back</span> <span class="hide-mobile"> to Dashboard</span></router-link>
+      <router-link class="return-button" tag="button" :to="{ name: 'Student Home'}"><img class="icon invert" src="../assets/arrow_back.svg" /> <span class="back">Back </span> <span class="hide-mobile"> to Dashboard</span></router-link>
       <div id="course-stats" class="p-absolute flex">
         <div class="score" v-if="grade > 1">
           <div>Grade</div>
