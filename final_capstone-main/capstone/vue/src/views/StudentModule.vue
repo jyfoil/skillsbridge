@@ -10,8 +10,10 @@
                     <h2 class="underline">Module Description:</h2>
                     <p>{{ module.description }}</p>
                 </div>
+
                 <h2 class="underline">Lessons</h2>
-                <section id="lessons">
+                <section id="lessons" :class="{ grid: gridView }">
+                    <span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span>
                     <div v-for="lesson in lessons" :key="lesson.id">
                         <h4>
                             <router-link :to="{ name: 'student-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }">{{ lesson.title }}
@@ -20,6 +22,7 @@
                     </div>
                 </section>
             </div>
+            
             <section>
             <h3 class="assignments">Upcoming Assignments</h3>
             <div class="contact-teacher-wrapper">

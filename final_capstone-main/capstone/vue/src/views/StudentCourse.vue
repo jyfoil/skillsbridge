@@ -10,11 +10,18 @@
         <section id="description">
           <p>{{course.description}}</p>
         </section>
-        <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
+
+        <div class="p-relative">
+          <h2 class="underline">Modules</h2>
+          <div class="utilities small">
+            <span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span>
+          </div>
+        </div>
         <section id="modules" :class="{ grid: gridView}">
           <module-listing v-for="module in modules" :key="module.id" :module="module" />
         </section>
       </div>
+
       <section>
         <h3 class="underline">Upcoming Assignments</h3>
         <div>
