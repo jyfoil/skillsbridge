@@ -196,6 +196,7 @@ export default {
     gap:0;
     height:57px;
   }
+  
    
   .course-grade {
     font-weight:bold;
