@@ -24,7 +24,6 @@ INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'mstudious@gmail.com'), 2);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'mstudious@gmail.com'), 3);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'), 1);
-INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'), 1);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'), 2);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'sbreen@gmail.com'), 1);
 INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM users WHERE username = 'dcommins@gmail.com'), 1);
@@ -34,7 +33,7 @@ INSERT INTO student_courses (student_id, course_id) VALUES ((SELECT user_id FROM
 -- Listing teacher's courses:
 -- SELECT * FROM courses WHERE teacher_id = (SELECT user_id FROM users WHERE username='teacher1@test.edu');
 
-INSERT INTO modules (course_id, name, description) VALUES (1, 'The Development Environment', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt .');
+INSERT INTO modules (course_id, name, description) VALUES (1, 'The Development Environment', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.');
 INSERT INTO modules (course_id, name, description) VALUES (1, 'Chrome Developer Tools', 'Et malesuada fames ac turpis egestas sed tempus. Aliquam id diam maecenas ultricies mi eget. ');
 INSERT INTO modules (course_id, name, description) VALUES (1, 'intelliJ IDE', 'Bibendum neque egestas congue quisque egestas. Integer enim neque volutpat ac tincidunt vitae semper quis.');
 INSERT INTO modules (course_id, name, description) VALUES (2, 'Intro to HTML', 'Ullamcorper eget nulla facilisi etiam dignissim. Lacus suspendisse faucibus interdum posuere.');
@@ -42,19 +41,20 @@ INSERT INTO modules (course_id, name, description) VALUES (2, 'Intro to CSS', 'C
 
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'intelliJ: it does half the work for you', '<h2>Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'Wikipedia.org', '06-05-2023', 'Do this, this, and this.', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day Two Lesson', '<h2>Second Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'geeksforgeeks.com', '06-06-2023', 'Create an ecommerce app!', true);
-INSERT INTO lessons (module_id, title, content, resources, has_assignment) VALUES (1, 'intelliJ: it does half the work for you', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'stackoverflow.com', false);
+INSERT INTO lessons (module_id, title, content, resources, has_assignment) VALUES (1, 'intelliJ: it does half the work for you', '<h2>Lesson: Lesson</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'stackoverflow.com', false);
+INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (1, 'Day Four Lesson', '<h2>Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', '', '06-10-2023', 'Create an ecommerce app!', true);
 
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (2, 'First Lesson', '<h2>Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'Wikipedia.org', '06-05-2023', 'Do this, this, and this.', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (2, 'Second Lesson', '<h2>Second Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'geeksforgeeks.com', '06-06-2023', 'Create an ecommerce app!', true);
 INSERT INTO lessons (module_id, title, content, resources, has_assignment) VALUES (2, 'Third Lesson', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'stackoverflow.com', false);
 
-INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (3, '', '<h2>Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'Wikipedia.org', '06-05-2023', 'Do this, this, and this.', true);
+INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (3, 'intelliJ: The Basics', '<h2>Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'Wikipedia.org', '06-05-2023', 'Do this, this, and this.', true);
 INSERT INTO lessons (module_id, title, content, resources, due_date, instructions, has_assignment) VALUES (4, 'HTML: Use divs for everything', '<h2>Second Lesson Heading</h2><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'geeksforgeeks.com', '06-06-2023', 'Create an ecommerce app!', true);
 INSERT INTO lessons (module_id, title, content, resources, has_assignment) VALUES (5, 'CSS: The bane of your existence', '<h1>Lesson: Lesson</h1><p>First paragraph</p><ul><li>list item one</li><li>list item two</li></ul>', 'stackoverflow.com', false);
 
-INSERT INTO submissions (content, lesson_id, grade, student_id) VALUES ('INSERT wonderful work WHERE username = studiousMaximus', 1, 8, (SELECT user_id FROM users WHERE username = 'mstudious@gmail.com'));
+INSERT INTO submissions (content, lesson_id, grade, student_id) VALUES ('INSERT amazing work WHERE username = studiousMaximus', 1, 8, (SELECT user_id FROM users WHERE username = 'mstudious@gmail.com'));
 INSERT INTO submissions (content, lesson_id, student_id) VALUES ('My dog ate my laptop.', 2, (SELECT user_id FROM users WHERE username = 'mstudious@gmail.com'));
-INSERT INTO submissions (content, lesson_id, student_id) VALUES ('My internet wasn\'t working :(', 2, (SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'));
-INSERT INTO submissions (content, lesson_id, student_id) VALUES ('My dog ate my laptop.', 2, (SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'));
+INSERT INTO submissions (content, lesson_id, grade, student_id) VALUES ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 1, 8, (SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'));
+INSERT INTO submissions (content, lesson_id, grade, student_id) VALUES ('Commodo elit at imperdiet dui accumsan sit amet nulla facilisi. Adipiscing at in tellus intege.', 2, 9, (SELECT user_id FROM users WHERE username = 'fbeuller@gmail.com'));
 
 COMMIT TRANSACTION;
