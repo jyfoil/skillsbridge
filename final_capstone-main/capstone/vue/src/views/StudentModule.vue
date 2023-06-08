@@ -58,50 +58,9 @@
 import courseService from '../services/CourseService.js'
 import moduleService from '../services/ModuleService.js'
 import lessonService from '../services/LessonService.js'
-import LessonListing from '../components/LessonListing.vue'
+// import LessonListing from '../components/LessonListing.vue'
 
 export default {
-<<<<<<< HEAD
-  data() {
-    return {
-      lessons: [],
-      hideAddLessonForm: true,
-      course: {},
-      module: {
-        id: this.$route.params.moduleId,
-        courseId: this.$route.params.id,
-        name: '',
-        description: ''
-      },
-      successMsg: '',
-      errorMsg: '',
-      gridView: false,
-    }
-  },
-  created() {
-    courseService.getCourse(this.$route.params.courseId).then(response => {
-      if (response.status === 200) {
-        this.course = response.data;
-      }
-    });
-
-    moduleService.getModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
-      if (response.status === 200) {
-        this.module = response.data;
-      }
-    });
-
-    lessonService.getLessonsByModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
-      if (response.status === 200) {
-        this.lessons = response.data;
-      }
-    });
-  },
-  components: {
-    LessonListing
-  },
-};
-=======
     data() {
         return {
             lessons: [],
@@ -145,11 +104,10 @@ export default {
     },
     
 }
->>>>>>> main
 </script>
 
 <style scoped>
-/* ... your existing styles ... */
+
 
 .lesson-link {
   margin-bottom: 0.5rem;
