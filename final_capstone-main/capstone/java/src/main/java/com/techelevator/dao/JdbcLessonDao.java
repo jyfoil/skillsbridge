@@ -118,7 +118,7 @@ public class JdbcLessonDao implements LessonDao {
                 "FROM lessons l " +
                 "JOIN modules m ON l.module_id = m.module_id " +
                 "JOIN courses c ON m.course_id = c.course_id " +
-                "WHERE c.course_id = ?";
+                "WHERE c.course_id = ? AND l.has_assignment = true";
 
         try {
             numOfLessons = jdbcTemplate.queryForObject(sql, int.class, courseId);

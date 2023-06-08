@@ -1,7 +1,5 @@
 <template>
-  <div class="course-listing">
-    <router-link :to="getRoute(course)" class="course-title">{{ course.name }}</router-link>
-  </div>
+    <router-link :to="getRoute(course)" class="course-title course-listing">{{ course.name }}</router-link>
 </template>
 
 <script>

@@ -14,6 +14,12 @@ h1, h2, h3 {
     color:white;
 }
 
+/* changed items in heading to flex, so need to override some things */
+div#heading-bg.center {
+    align-items:center;
+    min-height:auto;
+}
+
 .logo-container {
     display: flex;
     align-items: center;
@@ -165,6 +171,17 @@ label {
     color:white;
     margin-bottom:2rem;
     border-radius:6px;
+
+    /* testing */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+#heading-bg.tall {
+    min-height:170px;
 }
 
 #heading-bg.center h1 {
@@ -178,11 +195,15 @@ label {
     display:grid;
     grid-template-columns: 4fr 1fr;
     gap:20px;
-    padding:0 2rem;
+    padding:0;
 }
 
 main section {
     margin-bottom:1rem;
+}
+
+main > section > h3 {
+    line-height:1.6;
 }
 
 .hide {
@@ -340,9 +361,25 @@ button.small {
 
 
 
-
-/* in module listing component? */
-
+.submission-listing {
+    border: 1px solid #CCC;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    border-left: 7px solid #429cb9;
+    text-decoration:none;
+    color:#243e46;
+}
+.submission-listing:hover {
+    border-color:#AAA;
+    border-left-color: #17b0e1;
+}
+.submission-listing > div {
+    align-items: center;
+}
+.submission-listing .icon {
+    opacity:0.5;
+}
 
 
 
@@ -356,6 +393,12 @@ button.small {
     cursor: pointer;
     background:#dbeff5;
     font-size:0.9rem;
+}
+
+.grade { /* for styling capsule */
+    color: green;
+    background: #e2f7e2;
+    border: 1px solid #7cbd7c;
 }
 
 .utilities {
@@ -421,6 +464,11 @@ button.small {
     position:relative;
 }
 
+.p-absolute {
+    position:absolute;
+}
+
+
 @media screen and (max-width: 400px)  {
     .form-signin, .form-register {
         max-width:none;
@@ -429,15 +477,27 @@ button.small {
     }
 }
 
-@media screen and (max-width: 650px)  {
+@media screen and (max-width: 1000px)  {
+    #dashboard-content {
+        grid-template-columns: 3fr 1fr;
+    }
+}
+
+@media screen and (max-width: 700px)  {
     #dashboard-content {
         grid-template-columns: 1fr;
+    }
+    .hide-mobile {
+        display:none;
     }
 }
 
 @media screen and (max-width: 1280px)  {
     #heading-bg {
         border-radius:0;
+    }
+    #dashboard-content {
+        padding:0 2rem;
     }
 }
 
