@@ -7,7 +7,6 @@ import java.security.Principal;
 import java.util.List;
 
 public interface LessonDao {
-//    Lesson getLessonByIdAndCourseId(int lessonId, int courseId);
 
     Lesson getLessonById(int lessonId);
 

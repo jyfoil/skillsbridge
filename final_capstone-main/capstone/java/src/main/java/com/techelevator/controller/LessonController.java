@@ -32,14 +32,6 @@ public class LessonController {
     public List<Lesson> showUpcomingLessons(@PathVariable int id) {
         return lessonDao.getUpcomingLessonsByCourseId(id);
     }
-//
-//    @GetMapping("/course/{courseId}/lesson/{lessonId}")
-//    // /course/{courseId}/module/{moduleId}/lesson/{lessonId} ?
-//    public Lesson getLesson(@PathVariable int courseId, @PathVariable int lessonId) {
-//        return lessonDao.getLessonByIdAndCourseId(lessonId, courseId);
-//        // The relationship is already set and we just need to get lesson by its module id and
-//        // because modules table has a course id we can omit needing the courseId in the endpoint
-//    }
 
     @GetMapping("/lesson/{lessonId}")
     public Lesson getLesson(@PathVariable int lessonId) {
@@ -51,19 +43,12 @@ public class LessonController {
         return lessonDao.getLessonsByCourseAndModule(moduleId, courseId);
     }
 
-//    @PostMapping("/course/{courseId}/module/{moduleId}/lesson")
-//    I don't think this long path is needed the relationship between these are all established in the database
-    // That path is probably what the frontend path in router of vue will look like
-
     @PostMapping("/lesson")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     public Lesson createLesson(@RequestBody LessonDTO newLesson) {
         return lessonDao.createLesson(newLesson);
     }
-
-//    @DeleteMapping("/course/{courseId}//module/{moduleId}/lesson/{id}")
-    // These paths above is not needed for the backend but the front end should look like this
 
     @DeleteMapping("/lesson/{id}")
     @PreAuthorize("hasRole('ADMIN')")

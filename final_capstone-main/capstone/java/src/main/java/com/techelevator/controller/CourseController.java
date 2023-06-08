@@ -29,8 +29,6 @@ public class CourseController {
     @PostMapping("/course")
     @PreAuthorize("hasRole('ADMIN')")
     public CourseDTO createCourse(@RequestBody CourseDTO courseDto, Principal principal) {
-
-
         // Uses principal to get the currently logged in users name
         // This name is used to get the id of the teacher through a method
         int teacherId = userDao.findIdByUsername(principal.getName());
@@ -45,9 +43,6 @@ public class CourseController {
         CourseDTO newCourseDto = courseDao.mapCourseToCourseDTO(createdCourse);
 
         return newCourseDto;
-
-        // We want to return a CourseDto with an id
-        // This id might be used later in the frontend
     }
 
     @DeleteMapping("/course/{id}")
@@ -55,8 +50,6 @@ public class CourseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCourseByCourseId(@PathVariable int id) {
         // Method works and deletes course of specified course ID
-        // TODO Needs business logic to prevent teachers from deleting courses they don't own
-
         // The first DAO method makes sure to delete all students in the course before deleting the course
         // This prevents foreign key constraints
         courseDao.deleteStudentsFromCourse(id);
@@ -70,44 +63,12 @@ public class CourseController {
         return courseDao.getCourseByCourseId(id);
     }
 
-//    @GetMapping("/teacher/courses")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public List<CourseDTO> getTeacherCourses(Principal principal) {
-//        // Similar behavior to create method
-//        int teacherId = userDao.findIdByUsername(principal.getName());
-//
-//        List<Course> teacherCourses = courseDao.getTeacherCoursesByTeacherId(teacherId);
-//        List<CourseDTO> teacherCoursesDto = new ArrayList<>();
-//        for (Course eachTeacherCourse : teacherCourses) {
-//            teacherCoursesDto.add(courseDao.mapCourseToCourseDTO(eachTeacherCourse));
-//        }
-//
-//        return teacherCoursesDto;
-//    }
-
-
-//    @GetMapping("/student/courses")
-//    @PreAuthorize("hasRole('USER')")
-//    public List<CourseDTO> getStudentCourses(Principal principal) {
-//
-//        int studentId = userDao.findIdByUsername(principal.getName());
-//
-//        List<Course> studentCourses = courseDao.getStudentCoursesByStudentId(studentId);
-//        List<CourseDTO> studentCoursesDto = new ArrayList<>();
-//        for (Course eachCourse : studentCourses) {
-//            studentCoursesDto.add(courseDao.mapCourseToCourseDTO(eachCourse));
-//        }
-//
-//        return studentCoursesDto;
-//    }
-
     @GetMapping("/courses")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<CourseDTO> getCourses(Principal principal) {
 
         // This method gets the courses of the logged in user
         // This does what the getStudentCourses and getTeacherCourses does but in a single method
-        // Those methods currently commented out and kept in case needed later
 
         int userId = userDao.findIdByUsername(principal.getName());
         User currentLoggedInUser = userDao.getUserById(userId);
@@ -153,7 +114,6 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public void addStudentToCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
-        // TODO teachers should only be able to add to courses they created
         courseDao.addStudentToCourse(studentId, courseId);
     }
 
@@ -162,7 +122,6 @@ public class CourseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentFromCourse(@PathVariable int courseId, @PathVariable int studentId) {
         // Path variables used to get the courseId and studentId from the endpoint
-        // TODO teachers should only be able to delete from courses they created
         courseDao.deleteStudentFromCourse(studentId, courseId);
     }
 }

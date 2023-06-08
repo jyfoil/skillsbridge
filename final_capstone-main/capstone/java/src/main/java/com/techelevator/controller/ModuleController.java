@@ -24,10 +24,6 @@ public class ModuleController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public Module createModule(@RequestBody Module module, Principal principal) {
-        // Returns a JSON body to the user consisting of module_id, course_id, name, description
-        // TODO Somewhere on the frontend we might need the list of courses to display the course Id or allow
-        //  teachers to get it
-        // TODO because the requestbody needs to include the course id, name, and description
         return moduleDao.createModule(module);
     }
 
@@ -35,7 +31,6 @@ public class ModuleController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteModule(@PathVariable int id) {
-        // TODO Logic to prevent teachers from deleting modules not tied to their course
         moduleDao.deleteModule(id);
     }
 
