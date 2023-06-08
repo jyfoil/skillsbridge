@@ -94,6 +94,8 @@ export default {
 };
 </script>
 
+
+
 <style scoped>
 
 
@@ -102,13 +104,45 @@ export default {
 }
 
 .underline {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .utilities.small {
   margin-top: 0.5rem;
 }
 
-.grid {
-  display: flex
-}
+ .grid {
+        display:flex;
+        gap:20px;
+  }
+  .grid .lesson-listing {
+        flex-basis:33%;
+        padding:2.5rem 3rem;
+  }
+
+  .extended-results {
+        padding-top:12px;
+        margin-top:12px;
+        align-items:center;
+    }
+
+@media screen and (max-width: 800px)  {
+    #course-stats {
+      flex-direction:column;
+      text-align:right;
+      height:137px;
+    }
+    .score {
+      border-right:none;
+      border-bottom:1px solid rgba(255,255,255,0.4);
+      padding-right:0;
+      margin-right:0;
+      padding-bottom:10px;
+      margin-bottom:10px;
+    }
+    button.return-button {
+      padding: 0.5rem;
+    }
+  }
+
+  </style>
