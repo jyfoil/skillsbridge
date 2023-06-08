@@ -25,8 +25,14 @@
             
             <section>
             <h3 class="assignments">Upcoming Assignments</h3>
+            <div>
+            <div class="mb-1" v-for="assignment in assignments" :key="assignment.id">
+                Lesson: {{assignment.title}}<br />
+                <span class="small">Due on {{assignment.dueDate}}</span>
+            </div>
+            </div>
             <div class="contact-teacher-wrapper">
-                <button class="contact-teacher-button">Contact Teacher</button>
+                <a class="contact-teacher-button" href="mailto:teacher1@test.edu">Contact Teacher</a>
             </div>
         </section>
         </main>
@@ -49,6 +55,7 @@ export default {
                 name: '',
                 description: ''
             },
+            assignments: [],
             successMsg: '',
             errorMsg: '',
         }
@@ -67,6 +74,11 @@ export default {
         lessonService.getLessonsByModule(this.$route.params.courseId, this.$route.params.moduleId).then(response => {
             if (response.status === 200) {
                 this.lessons = response.data;
+            }
+        }),
+        lessonService.getUpcomingLessons(this.$route.params.courseId).then(response => {
+            if (response.status === 200) {
+                this.assignments = response.data;
             }
         })
     },

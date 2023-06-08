@@ -166,7 +166,7 @@ public class JdbcLessonDao implements LessonDao {
         // .course_id = l.course_id WHERE sc.student_id = 4 UNION SELECT lesson_id FROM lessons l JOIN courses c ON c
         // .course_id = l.course_id WHERE c.teacher_id = 4;
         List<Lesson> lessons = new ArrayList<>();
-        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ? AND due_date > NOW();;";
+        String sql = "SELECT * FROM lessons l JOIN modules m ON l.module_id = m.module_id WHERE m.course_id = ? AND due_date > NOW() ORDER BY due_date ASC;";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, courseId);
             while (results.next()) {
@@ -208,12 +208,12 @@ public class JdbcLessonDao implements LessonDao {
     public Lesson updateLesson(Lesson lesson) {
         Lesson updatedLesson = null;
         String sql = "UPDATE lessons SET title = ?, content = ?, resources = ?, due_date = ?, " +
-                "instructions = ? " +
+                "instructions = ?, has_assignment = ? " +
                 "WHERE lesson_id = ?";
 
         try {
             int numberOfRows = jdbcTemplate.update(sql, lesson.getTitle(), lesson.getContent(),
-                    lesson.getResources(), lesson.getDueDate(), lesson.getInstructions(), lesson.getId());
+                    lesson.getResources(), lesson.getDueDate(), lesson.getInstructions(), lesson.isHas_assignment(), lesson.getId());
 
             if (numberOfRows == 0) {
                 throw new DaoException("Zero rows affected, expected at least one");

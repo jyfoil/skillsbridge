@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="contact-teacher-wrapper">
-            <button class="contact-teacher-button">Contact Teacher</button>
+            <a class="contact-teacher-button" href="mailto:teacher1@test.edu">Contact Teacher</a>
         </div>
       </section>
     </main>
@@ -168,28 +168,7 @@ export default {
         padding:2rem 1rem;
     }
 
-   .contact-teacher-wrapper {
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start; 
-    height: 100%;
-    margin-top: 1rem;
-  }
 
-
-  .contact-teacher-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    background-color: #429cb9;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .contact-teacher-button:hover {
-    background-color: #17b0e1;
-  }
 
   #course-stats {
     right:0;
