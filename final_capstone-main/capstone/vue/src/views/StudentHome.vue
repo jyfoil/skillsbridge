@@ -6,7 +6,7 @@
         <main id="dashboard-content">
             <div id="content">
                 <h2>My Courses</h2>
-                <section id="courses">
+                <section id="courses" class="flex">
                    <course-listing :course="course" v-for="course in courses" :key="course.courseId" />
                 </section>
             </div>

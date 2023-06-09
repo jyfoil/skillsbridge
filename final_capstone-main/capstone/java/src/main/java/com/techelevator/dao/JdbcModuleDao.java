@@ -68,7 +68,6 @@ public class JdbcModuleDao implements ModuleDao {
     @Override
     public Module createModule(Module module) {
         Module newModule = null;
-        System.out.println(module);
         String sql = "INSERT INTO modules (course_id, name, description) VALUES (?, ?, ?) RETURNING module_id;";
         try {
             Integer newModuleId = jdbcTemplate.queryForObject(sql, Integer.class, module.getCourseId(),

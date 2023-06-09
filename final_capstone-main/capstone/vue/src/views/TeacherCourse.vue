@@ -14,10 +14,13 @@
                 <div class="p-relative"><h2 class="underline">Modules</h2><div class="utilities small hide-mobile"><span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span></div></div>
                 <section id="modules" :class="{ grid: gridView}">
                     <!--<router-link class="module-listing" v-for="module in modules" :key="module.id" :to="{name:'teacher-module', params: { courseId: module.courseId, moduleId: module.id }}">{{ module.name }} - <span class="small ">{{ module.description }}</span></router-link>-->
+
                     <module-listing v-for="module in modules" :key="module.id" :module="module" />
+
                 </section>
-                <button @click="hideAddModuleForm = !hideAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
-                <div class="accordion" :class="{ hide: hideAddModuleForm }">
+                <button @click="showAddModuleForm = !showAddModuleForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Module</button>
+                <transition name="fade">
+                <div class="accordion" v-show="showAddModuleForm">
                     <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
                     <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
                     <h3>Add New Module</h3>
@@ -36,7 +39,8 @@
                         </div>
                     </form>
                 </div>
-                <h2 class="underline mt-2">Students</h2>
+                </transition>
+                <h2 class="underline mt-3">Students</h2>
                 <section id="students">
                     <div class="student-list-column">
                         <h3 class="mt-0">Current Students</h3>
@@ -51,7 +55,9 @@
                     <div class="student-details">
                         <div v-show="removeSuccessMsg != ''" @click="removeSuccessMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
                         <div v-show="removeErrorMsg != ''" @click="removeErrorMsg=''" class="alert alert-success">{{ removeSuccessMsg }}</div>
+                        <transition name="fade">
                         <student-details :student="selectedStudent" :submissions="filteredSubmissions" v-show="selectedStudent.username != ''" />
+                        </transition>
                         <div class="button-bar mt-1">
                             <button v-show="selectedStudent.username != ''" @click="removeStudent" class="delete red small"><img class="icon invert" src="../assets/delete.svg"> Remove Student</button>
                         </div>
@@ -59,17 +65,22 @@
                 </section>
                 <h3>Add Student to Course</h3>
                 <button class="add" @click="addStudentForm"><img class="icon invert" src="../assets/add.svg" /> Add Student</button>
-                <div class="accordion student-accordion" :class="{ hide: hideAddStudentForm }">
-                    <label for="student-search">Search for a student: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email"></div>
-                    <div class="aStudentList" ref="show">
-                        <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched.</div>
-                        <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
-                        <div v-else v-for="allStudent in filteredAllStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}} [{{allStudent.username}}]</div><button @click="addStudent" class="small add">Add Student</button></div>
+                
+                <div class="overflow-hidden">
+                <transition name="fade">
+                    <div class="accordion student-accordion" v-show="hideAddStudentForm">
+                        <label for="student-search">Search for a student: </label><div class="p-relative"><img v-show="studentAllSearch != ''" @click="studentAllSearch=''" class="icon search-icon" src="../assets/close.svg"><input id="student-search" ref="studentsearch" type="text" class="mb-1 form-control" v-model="studentAllSearch" placeholder="Search by student name or Email" autocomplete="off"></div>
+                        <div class="aStudentList" ref="show">
+                            <div v-if="filteredAllStudents.length > 1">{{ filteredAllStudents.length }} students matched.</div>
+                            <div v-else-if="filteredAllStudents.length === 0">{{ filteredAllStudents.length }} students matched.</div>
+                            <div v-else v-for="allStudent in filteredAllStudents" :key="allStudent.id" class="flex f-between"><div><strong>Matched Student:</strong> {{allStudent.firstname}} {{allStudent.lastname}} [{{allStudent.username}}]</div><button @click="addStudent" class="small add">Add Student</button></div>
+                        </div>
+                        <div class="flex border-top extended-results">
+                            <span>First results:</span>
+                            <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
+                        </div>
                     </div>
-                    <div class="flex border-top extended-results" v-show="!hideExtendedResults">
-                        <span>First five results:</span>
-                        <div class="capsule" v-for="s in filteredAllStudents.slice(0,5)" :key="s.id" @click="studentAllSearch = s.fullname">{{s.fullname}}</div>
-                    </div>
+                </transition>
                 </div>
             </div>
             <section>
@@ -96,9 +107,8 @@ export default {
             modules: [],
             gridView: false,
             descriptionDisabled: true,
-            hideAddStudentForm: true,
-            hideAddModuleForm: true,
-            hideExtendedResults: true,
+            hideAddStudentForm: false,
+            showAddModuleForm: false,
             studentAllSearch: '',
             studentSearch: '',
             selectedStudent: { fullname:'', username:'' },
@@ -156,7 +166,7 @@ export default {
         },
         cancelForm() {
             this.clearForm();
-            this.hideAddModuleForm = true;
+            this.showAddModuleForm = false;
         },
         clearForm() {
             //this.hideAddClassForm = true;
@@ -190,8 +200,7 @@ export default {
                     this.students.push(this.foundStudent);
                     this.foundStudent = {};
                     this.studentAllSearch = '';
-                    this.hideAddStudentForm = true;
-                    this.hideExtendedResults = true;
+                    this.hideAddStudentForm = false;
                     this.updateStudentIdArray();
                 }
             });
@@ -200,7 +209,9 @@ export default {
             courseService.removeStudent(this.course.courseId, this.selectedStudent.id).then(response => {
                 if (confirm("Do you really want to remove this student from the course?")) {
                     if (response.status === 204) {
+                        //this.allStudents.push(this.students.pop(this.selectedStudent));
                         this.students.pop(this.selectedStudent);
+                        this.allStudents.push(this.selectedStudent);
                         this.selectedStudent = { fullname:'', username:'' };
                         this.removeSuccessMsg = "Student successfully removed from course.";
                         this.updateStudentIdArray();
@@ -320,7 +331,7 @@ export default {
         opacity: 0.5;
     }
     #description textarea {
-        min-height:150px;
+        min-height:100px;
         resize:none;
     }
     #description textarea:disabled {
@@ -332,6 +343,7 @@ export default {
         padding-top:12px;
         margin-top:12px;
         align-items:center;
+        flex-wrap:wrap;
     }
     .grid {
         display:flex;
@@ -349,6 +361,12 @@ export default {
         padding-top:12px;
         border-radius:4px;
         border-top:8px solid #429CB9;
+    }
+
+
+
+    #app {
+        overflow:hidden;
     }
 
     @media screen and (max-width: 850px)  {

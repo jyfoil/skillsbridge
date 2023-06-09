@@ -46,7 +46,7 @@
                     <h3 class="underline">Latest Activity</h3>
                     <div id="notifications-list">
                         <div>
-                            <span class="sName">12 submissions</span> in <span class="lName">Intro to Things</span>
+                            <span class="sName">4 submissions</span> in <span class="lName">Development Tools</span>
                         </div>
                         <div>View All Submissions</div>
                     </div>

@@ -19,7 +19,7 @@
         </section>
 
         <div class="p-relative">
-          <h2 class="underline">Modules</h2>
+          <h2 class="underline mt-3">Modules</h2>
           <div class="utilities small">
             <span @click="gridView = false" :class="{ bold: !gridView}">List View</span> | <span @click="gridView=true" :class="{ bold: gridView}">Grid View</span>
           </div>
@@ -27,7 +27,7 @@
         <section id="modules" :class="{ grid: gridView}">
           <module-listing v-for="module in modules" :key="module.id" :module="module" />
         </section>
-        <h2 class="underline">Submissions</h2>
+        <h2 class="underline mt-3">Submissions</h2>
 
 
 
@@ -36,7 +36,7 @@
                 <img class="icon" src="../assets/assignment.svg" />
                 <div class="capsule grade" v-if="submission.grade != 0">Grade: {{ submission.grade }}/10</div>
                 <div class="capsule dark" v-else>Not Graded</div>
-                <div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
+                <div class="small flex-grow text-right">Submitted at: <span class="light">{{submission.submittedAt.split('.')[0]}}</span></div><button class="small" v-show="showSubmission != submission.submissionId" @click="showSubmission = submission.submissionId">View</button><button v-show="showSubmission === submission.submissionId" class="small muted" @click="showSubmission = 0">Hide</button></div>
             <div class="submission-content" v-show="showSubmission === submission.submissionId">
                 <div v-html="submission.content"></div>
             </div>
@@ -162,9 +162,10 @@ export default {
     .grid {
         display:flex;
         gap:12px;
+        flex-wrap:wrap;
     }
     .grid .module-listing {
-        flex-basis:33%;
+        flex-basis:28%;
         padding:2rem 1rem;
     }
 

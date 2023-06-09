@@ -26,16 +26,19 @@ export default {
     },
     watch: {
         student: function() {
-            studentService.getStudentGrade(this.$route.params.courseId, this.student.id).then(response => {
-                if (response.status === 200) {
-                    this.grade = response.data;
-                }
-            });
-            lessonService.getNumberOfAssignmentsInCourse(this.$route.params.courseId).then(response => {
-                if (response.status === 200) {
-                    this.numAssignments = response.data;
-                }
-            })
+            if (this.student.id != undefined) {
+                studentService.getStudentGrade(this.$route.params.courseId, this.student.id).then(response => {
+                    if (response.status === 200) {
+                        this.grade = response.data;
+                    }
+                });
+                lessonService.getNumberOfAssignmentsInCourse(this.$route.params.courseId).then(response => {
+                    if (response.status === 200) {
+                        this.numAssignments = response.data;
+                    }
+                })
+            }
+
         },
     }
 }

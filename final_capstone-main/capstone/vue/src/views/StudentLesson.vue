@@ -1,7 +1,8 @@
 <template>
     <div class="dashboard">
         <div id="heading-bg">
-            <h1>{{ lesson.title }}</h1>
+            <h1 class="mb-0">{{ lesson.title }}</h1>
+            <div v-if="lesson.has_assignment" class="heading-info mt-0">Assignment Due Date: {{ lesson.dueDate }}</div>
             <h3 class="dashboard-title">{{ course.name }} - <span class="course-name">{{ module.name }}</span></h3>
             <router-link class="return-button" tag="button" :to="{ name: 'student-module', props: { courseId: module.courseId }}"><img class="icon invert" src="../assets/arrow_back.svg" /> Back to Module</router-link>
         </div>
@@ -94,6 +95,7 @@ export default {
 </script>
 
 <style scoped>
+@import "~vue-wysiwyg/dist/vueWysiwyg.css";
     #dashboard-content {
         grid-template-columns: 1fr;
     }

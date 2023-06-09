@@ -22,8 +22,8 @@
 
         <section id="lessons" :class="{ grid: gridView }">
           <div v-for="lesson in lessons" :key="lesson.id" class="lesson-link">
-            <router-link class="lesson-listing" :to="{ name: 'student-lesson', params: { courseId: $route.params.courseId, moduleId: $route.params.moduleId, lessonId: lesson.id } }">
-              {{ lesson.title }}
+            <router-link class="lesson-listing flex flex-between" :to="{ name: 'student-lesson', params: { courseId: $route.params.courseId, moduleId: $route.params.moduleId, lessonId: lesson.id } }">
+              <div class="mName">{{ lesson.title }}</div><div class="duedate small" v-show="lesson.dueDate != ''">Due Date:{{lesson.dueDate}}</div>
             </router-link>
           </div>
         </section>
@@ -111,13 +111,22 @@ export default {
   margin-top: 0.5rem;
 }
 
+.lesson-listing {
+  align-items:center;
+}
+
  .grid {
         display:flex;
         gap:20px;
   }
+
   .grid .lesson-listing {
         flex-basis:33%;
         padding:2.5rem 3rem;
+  }
+
+  .grid .duedate {
+    display:none;
   }
 
   .extended-results {
@@ -125,6 +134,10 @@ export default {
         margin-top:12px;
         align-items:center;
     }
+
+  .mName {
+    font-weight:bold;
+  }
 
 @media screen and (max-width: 800px)  {
     #course-stats {

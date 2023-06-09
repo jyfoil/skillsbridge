@@ -102,7 +102,6 @@ public class SubmissionController {
     @GetMapping("/course/{courseId}/student/{studentId}/submissions")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<Submission> getSubmissionsForCourseAndStudent(@PathVariable int courseId, @PathVariable int studentId) {
-        System.out.println("Got Request");
         return submissionDao.getSubmissionsForCourseAndStudent(courseId, studentId);
     }
 

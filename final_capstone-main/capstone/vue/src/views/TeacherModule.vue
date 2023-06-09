@@ -15,10 +15,13 @@
                 </div>
                 <h2 class="underline">Lessons</h2>
                 <section id="lessons">
+                    <transition-group name="fade">
                     <router-link class="lesson-listing" :to="{ name: 'teacher-lesson', params: { courseId:$route.params.courseId, moduleId:$route.params.moduleId, lessonId:lesson.id } }" v-for="lesson in lessons" :key="lesson.id"><h4>{{ lesson.title }}</h4><div v-if="lesson.has_assignment" class="small capsule"> Submissions: {{submissionsPerLesson[lesson.id]}}</div><div v-if="lesson.dueDate != '' && lesson.dueDate != null" class="small flex-grow text-right">Due: <span class="light">{{lesson.dueDate}}</span></div></router-link>
+                    </transition-group>
                 </section>
-                <button @click="hideAddLessonForm = !hideAddLessonForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Lesson</button>
-                <div class="accordion" :class="{ hide: hideAddLessonForm }">
+                <button @click="showAddLessonForm = !showAddLessonForm" class="add"><img class="icon invert" src="../assets/add.svg" /> Add Lesson</button>
+                <transition name="fade">
+                <div class="accordion" v-show="showAddLessonForm">
                     <div @click="successMsg = ''" v-show="successMsg != ''" class="alert alert-success">{{ successMsg }} </div>
                     <div @click="errorMsg = ''" v-show="errorMsg != ''" class="alert alert-error">{{ errorMsg }} </div>
                     <h3>Add New Lesson</h3>
@@ -34,7 +37,7 @@
                         </div>
                         <div>
                             <label for="resources">Resources:</label>
-                            <textarea id="resources" class="form-control" v-model="newLesson.resources" placeholder="Lesson Content"></textarea>
+                            <textarea id="resources" class="form-control" v-model="newLesson.resources" placeholder="Lesson Resources"></textarea>
                         </div>
                         <div>
                             <label for="hasAssignment">Create Assignment?</label>
@@ -54,6 +57,7 @@
                         </div>
                     </form>
                 </div>
+                </transition>
             </div>
             <section id="notifications-column">
                 <h3 class="underline">Latest Submissions</h3>
@@ -76,7 +80,7 @@ export default {
     data() {
         return {
             lessons: [],
-            hideAddLessonForm: true,
+            showAddLessonForm: false,
             course: {},
             submissions: [],
             module: {
@@ -144,7 +148,7 @@ export default {
         // },
         cancelForm() {
             this.clearForm();
-            this.hideAddLessonForm = true;
+            this.showAddLessonForm = false;
         },
         clearForm() {
             //this.hideAddClassForm = true;
@@ -166,9 +170,9 @@ export default {
             }
             lessonService.createLesson(this.newLesson).then(response => {
                 if (response.status === 201) {
-                    this.successMsg = "Lesson Created Successfully.";
                     this.lessons.push(response.data);
                     this.clearForm();
+                    this.successMsg = "Lesson Created Successfully.";
                     // COMMIT lesson to store?
                 } else {
                     this.errorMsg = "There was an error creating the lesson.";

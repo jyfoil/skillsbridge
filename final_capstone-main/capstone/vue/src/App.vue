@@ -37,6 +37,7 @@ export default {
 <style>
 #app {
   max-width: 1280px;
+  min-width: 320px;
   margin: 0 auto;
 }
 
