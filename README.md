@@ -17,18 +17,6 @@ Skillsbridge is an eLearning platform designed for teachers and students. It off
 
 ### Demo
 
-#### Test Logins
-
-- Teacher login
-
-  - Username: jkimble@g-email.com
-  - password: teacher1
-
-- Student login
-
-  - Username: mstudious@gmail.com
-  - password: user1
-
 #### Teacher view
 
 ![Teacher](final_capstone-main/capstone/vue/src/assets/teacherview.gif)
